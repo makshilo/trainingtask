@@ -1,9 +1,5 @@
-drop table PROJECT_EMPLOYEE_JOINT;
+drop table TRAININGTASKDB.PROJECT_LIST;
 
-drop table PROJECT_LIST;
+drop table TRAININGTASKDB.TASK_LIST;
 
-drop table TASK_LIST;
-
-drop table EMPLOYEE_LIST;
-
-
+drop table TRAININGTASKDB.EMPLOYEE_LIST;

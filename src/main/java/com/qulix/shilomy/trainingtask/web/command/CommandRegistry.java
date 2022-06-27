@@ -1,11 +1,28 @@
 package com.qulix.shilomy.trainingtask.web.command;
 
 public enum CommandRegistry {
-    MAIN_PAGE( "main_page"),
-    SHOW_BIKES("show_bikes"),
-    ERROR( "show_error"),
-    LOGOUT("logout"),
-    DEFAULT( "");
+    MAIN_PAGE( "mainPage"),
+    PROJECTS_PAGE( "projectsPage"),
+    CREATE_PROJECT_PAGE( "projectCreatePage"),
+    CREATE_PROJECT("createProject"),
+    PROJECT_NAME_IS_BUSY("projectNameBusy"),
+    EDIT_PROJECT_PAGE( "projectEditPage"),
+    EDIT_PROJECT("editProject"),
+    DELETE_PROJECT("deleteProject"),
+    TASKS_PAGE( "tasksPage"),
+    CREATE_TASK_PAGE( "taskCreatePage"),
+    CREATE_TASK("createTask"),
+    EDIT_TASK_PAGE( "taskEditPage"),
+    EDIT_TASK("editTask"),
+    EDIT_TASK_FP("taskEditFromProjectPage"),
+    DELETE_TASK("deleteTask"),
+    EMPLOYEES_PAGE( "employeesPage"),
+    CREATE_EMPLOYEE_PAGE("employeeCreatePage"),
+    CREATE_EMPLOYEE("createEmployee"),
+    EDIT_EMPLOYEE_PAGE("employeeEditPage"),
+    EDIT_EMPLOYEE("editEmployee"),
+    DELETE_EMPLOYEE( "deleteEmployee"),
+    DEFAULT( "mainPage");
 
     private final Command command;
     private final String path;

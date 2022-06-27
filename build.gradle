@@ -1,20 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.hsqldb', name: 'hsqldb', version: gradle.hsqldbVersion
+    }
+}
+
 plugins {
     id 'java'
 }
+
+apply from: 'HSQLDB.gradle'
 
 group 'com.qulix.shilomy'
 version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
-    testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
-    implementation group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '10.1.0-M16'
+    implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
+    implementation group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compileOnly group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.1'
+    runtimeOnly group: 'org.glassfish.web', name: 'jstl-impl', version: '1.2'
+    def tomcatVersion = '9.0.64'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcatVersion
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: tomcatVersion
+    implementation group: 'org.apache.tomcat', name: 'tomcat-el-api', version: '9.0.64'
+    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper-el', version: '9.0.64'
 }
 
-test {
-    useJUnitPlatform()
+task startServer(type: JavaExec) {
+    group = "Execution"
+    description = "Start tomcat embedded server"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.qulix.shilomy.trainingtask.web.EmbeddedTomcatRun'
 }
