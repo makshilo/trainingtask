@@ -8,7 +8,6 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 * jdk-11
-example
   ```sh
   install openjdk-11-jdk
   ```
@@ -25,14 +24,14 @@ example
 <!-- Startup -->
 ## Startup
 
-*Linux
+* Linux
   ```sh
   ./gradlew startDatabase
   ```
   ```sh
   ./gradlew startServer
   ```
-*Windows
+* Windows
   ```sh
   gradlew.bat startDatabase
   ```
