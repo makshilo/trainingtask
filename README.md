@@ -11,6 +11,7 @@ To get a local copy up and running follow these simple example steps.
   ```sh
   install openjdk-11-jdk
   ```
+* any internet browser installed
 
 ### Installation
 
@@ -19,11 +20,10 @@ To get a local copy up and running follow these simple example steps.
    git clone https://github.com/makshilo/trainingtask.git
    ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- Startup -->
 ## Startup
-
+Go to repo folder and execute following in terminal / cmd
 * Linux
   ```sh
   ./gradlew startDatabase
@@ -38,5 +38,8 @@ To get a local copy up and running follow these simple example steps.
   ```sh
   gradlew.bat startServer
   ```
+### Usage
+After startup launch any internet browser and go to page
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+**localhost:8089**
+
