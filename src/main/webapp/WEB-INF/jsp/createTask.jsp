@@ -9,7 +9,7 @@
 <button onclick="window.location.href='/controller?command=tasksPage'">Back</button><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
     <label for="tname">Name:</label>
-    <input required type="text" id="tname" name="tname"><br><br>
+    <input maxlength="50" required type="text" id="tname" name="tname"><br><br>
     <label for="proj">Project:</label>
     <select name="proj" id="proj">
         <c:forEach var="project" items="${requestScope.projects}">
@@ -19,7 +19,7 @@
         </c:forEach>
     </select><br><br>
     <label for="work">Work:</label>
-    <textarea id="work" name="work" rows="4" cols="50"></textarea><br><br>
+    <textarea maxlength="1000" id="work" name="work" rows="4" cols="50"></textarea><br><br>
     <label for="start">Start:</label>
     <input required type="date" id="start" name="start"><br><br>
     <label for="end">End:</label>

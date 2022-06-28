@@ -9,13 +9,13 @@
 
 <form action="<c:url value="/controller?command=editTask&id=${requestScope.task.id}"/>" method="post">
     <label for="tname">Name:</label>
-    <input type="text" id="tname" name="tname" value=${requestScope.task.name}><br><br>
+    <input maxlength="50" type="text" id="tname" name="tname" value=${requestScope.task.name}><br><br>
     <label for="proj">Project:</label>
     <select name="proj" id="proj">
         <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name} </option>
     </select><br><br>
     <label for="work">Work:</label>
-    <textarea id="work" name="work" rows="4" cols="50">${requestScope.task.work}</textarea><br><br>
+    <textarea maxlength="1000" id="work" name="work" rows="4" cols="50">${requestScope.task.work}</textarea><br><br>
     <label for="start">Start:</label>
     <input type="date" id="start" name="start" value="${requestScope.task.startDate}"><br><br>
     <label for="end">End:</label>
