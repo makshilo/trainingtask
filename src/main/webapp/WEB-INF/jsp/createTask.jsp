@@ -6,6 +6,7 @@
     <title>Create Task</title>
 </head>
 <body>
+<button onclick="window.location.href='/controller?command=tasksPage'">Back</button><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
     <label for="tname">Name:</label>
     <input required type="text" id="tname" name="tname"><br><br>

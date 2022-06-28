@@ -5,6 +5,7 @@
     <title>Employee edit page</title>
 </head>
 <body>
+<button onclick="window.location.href='/controller?command=employeesPage'">Back</button><br>
 <h1>Employee edit page</h1>
 <form action="<c:url value="/controller?command=editEmployee&id=${requestScope.employee.id}"/>" method="post">
     <label for="fname">First name:</label>

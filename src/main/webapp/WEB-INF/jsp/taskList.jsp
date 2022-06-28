@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<button onclick="window.location.href='/controller'">Back</button><br><br>
+<button onclick="window.location.href='/'">Back</button><br>
 <h3>Tasks</h3>
 <table>
     <tr>

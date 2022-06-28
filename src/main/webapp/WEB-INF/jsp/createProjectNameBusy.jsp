@@ -5,6 +5,7 @@
   <title>Create project</title>
 </head>
 <body>
+<button onclick="window.location.href='/controller?command=projectsPage'">Back</button><br>
 <form action="<c:url value="/controller?command=createProject"/>" method="post">
   <label for="pname">Project name:</label>
   <input required type="text" id="pname" name="pname">

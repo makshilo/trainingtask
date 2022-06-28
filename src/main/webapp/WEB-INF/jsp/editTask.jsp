@@ -5,6 +5,7 @@
     <title>Edit task</title>
 </head>
 <body>
+<button onclick="window.location.href='/controller?command=tasksPage'">Back</button><br>
 <form action="<c:url value="/controller?command=editTask&id=${requestScope.task.id}"/>" method="post">
     <label for="tname">Name:</label>
     <input type="text" id="tname" name="tname" value=${requestScope.task.name}><br><br>

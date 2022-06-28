@@ -5,6 +5,7 @@
     <title>Create employee</title>
 </head>
 <body>
+<button onclick="window.location.href='/controller?command=employeesPage'">Back</button><br>
 <form action="<c:url value="/controller?command=createEmployee"/>" method="post">
     <label for="fname">First name:</label>
     <input required type="text" id="fname" name="fname"><br><br>
