@@ -18,9 +18,12 @@ public class PropertyContextImpl implements PropertyContext {
     private static final String PAGE_PROPERTIES_PATH = "src/main/resources/page.properties";
     private static final String CONFIG_PROPERTIES_PATH = "src/main/resources/config.properties";
     private static final String COMMAND_PROPERTIES_PATH = "src/main/resources/command.properties";
+    private static final String SERVER_PROPERTIES_PATH = "src/main/resources/server.properties";
     private static final String PAGE_ATTRIBUTE = "page.";
     private static final String DB_ATTRIBUTE = "db.";
     private static final String COMMAND_ATTRIBUTE = "command/";
+
+    private static final String SERVER_ATTRIBUTE = "server.";
     private static final String EMPTY_STRING = "";
 
     private final Map<String, String> propertyByKeys;
@@ -58,6 +61,8 @@ public class PropertyContextImpl implements PropertyContext {
             return CONFIG_PROPERTIES_PATH;
         } else if (name.startsWith(COMMAND_ATTRIBUTE)) {
             return COMMAND_PROPERTIES_PATH;
+        } else if (name.startsWith(SERVER_ATTRIBUTE)) {
+            return SERVER_PROPERTIES_PATH;
         } else {
             throw new FileNotFoundException(format("No such file for: %s", name));
         }
