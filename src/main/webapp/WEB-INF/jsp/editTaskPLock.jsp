@@ -10,10 +10,10 @@
     <label for="tname">Name:</label>
     <input maxlength="50" type="text" id="tname" name="tname" value=${requestScope.task.name}><br><br>
     <label for="proj">Project:</label>
-    <select name="proj" id="proj">
-        <option selected value=0>None</option>
-        <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name} </option>
-    </select><br><br>
+    <select disabled name="proj" id="proj">
+        <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name}</option>
+    </select>
+    <input type="hidden" name="proj" value="${requestScope.currentProject.id}"><br><br>
     <label for="work">Work:</label>
     <input required type="number" id="work" name="work" value=${requestScope.task.work}><br><br>
     <label for="start">Start:</label>
@@ -21,9 +21,9 @@
     <label for="end">End:</label>
     <input type="date" id="end" name="end" value="${requestScope.task.endDate}"><br><br>
     <label for="exec">Executor:</label>
-    <select name="exec" id="exec">
+    <select required name="exec" id="exec">
         <option selected value="${requestScope.currentExecutor.id}">
-            ${requestScope.currentExecutor.firstName}
+            *${requestScope.currentExecutor.firstName}
             ${requestScope.currentExecutor.lastName}</option>
         <option value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">

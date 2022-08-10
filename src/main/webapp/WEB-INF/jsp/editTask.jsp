@@ -10,8 +10,8 @@
     <input maxlength="50" type="text" id="tname" name="tname" value=${requestScope.task.name}><br><br>
     <label for="proj">Project:</label>
     <select name="proj" id="proj">
-        <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name} </option>
-        <option value=0>None</option>
+        <option selected value="${requestScope.currentProject.id}"> *${requestScope.currentProject.name} </option>
+        <option value="">None</option>
         <c:forEach var="project" items="${requestScope.projects}">
             <option value="${project.id}">
                     ${project.name}
@@ -25,11 +25,12 @@
     <label for="end">End:</label>
     <input type="date" id="end" name="end" value="${requestScope.task.endDate}"><br><br>
     <label for="exec">Executor:</label>
-    <select name="exec" id="exec">
-        <option selected value=0>None</option>
-        <option value="${requestScope.currentExecutor.id}">
+    <select required name="exec" id="exec">
+        <option selected value="${requestScope.currentExecutor.id}">
+            *${requestScope.currentExecutor.lastName}
             ${requestScope.currentExecutor.firstName}
-            ${requestScope.currentExecutor.lastName}</option>
+            ${requestScope.currentExecutor.patronymic}</option>
+        <option value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                     ${employee.lastName}
