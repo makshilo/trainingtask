@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <title>Edit task</title>
@@ -12,6 +11,7 @@
     <input maxlength="50" type="text" id="tname" name="tname" value=${requestScope.task.name}><br><br>
     <label for="proj">Project:</label>
     <select name="proj" id="proj">
+        <option selected value=0>None</option>
         <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name} </option>
     </select><br><br>
     <label for="work">Work:</label>
@@ -25,6 +25,7 @@
         <option selected value="${requestScope.currentExecutor.id}">
             ${requestScope.currentExecutor.firstName}
             ${requestScope.currentExecutor.lastName}</option>
+        <option selected value=0>None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                     ${employee.lastName}

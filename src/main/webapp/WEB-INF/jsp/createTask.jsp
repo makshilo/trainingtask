@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <title>Create Task</title>
@@ -12,6 +11,7 @@
     <input maxlength="50" required type="text" id="tname" name="tname"><br><br>
     <label for="proj">Project:</label>
     <select name="proj" id="proj">
+        <option selected value=0>None</option>
         <c:forEach var="project" items="${requestScope.projects}">
             <option value="${project.id}">
                     ${project.name}
@@ -26,6 +26,7 @@
     <input required type="date" id="end" name="end"><br><br>
     <label for="exec">Executor:</label>
     <select name="exec" id="exec">
+        <option selected value=0>None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                 ${employee.lastName}

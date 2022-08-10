@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <title>Edit task</title>
@@ -12,6 +11,7 @@
     <label for="proj">Project:</label>
     <select name="proj" id="proj">
         <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name} </option>
+        <option value=0>None</option>
         <c:forEach var="project" items="${requestScope.projects}">
             <option value="${project.id}">
                     ${project.name}
@@ -26,7 +26,8 @@
     <input type="date" id="end" name="end" value="${requestScope.task.endDate}"><br><br>
     <label for="exec">Executor:</label>
     <select name="exec" id="exec">
-        <option selected value="${requestScope.currentExecutor.id}">
+        <option selected value=0>None</option>
+        <option value="${requestScope.currentExecutor.id}">
             ${requestScope.currentExecutor.firstName}
             ${requestScope.currentExecutor.lastName}</option>
         <c:forEach var="employee" items="${requestScope.employees}">
