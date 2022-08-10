@@ -2,14 +2,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Create Task</title>
+    <title>Добавить задачу</title>
 </head>
 <body>
-<button onclick="window.location.href='/controller?command=tasksPage'">Back</button><br>
+<button onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
-    <label for="tname">Name:</label>
+    <label for="tname">Имя:</label>
     <input maxlength="50" required type="text" id="tname" name="tname"><br><br>
-    <label for="proj">Project:</label>
+    <label for="proj">Проект:</label>
     <select name="proj" id="proj" required>
         <option selected value="">None</option>
         <c:forEach var="project" items="${requestScope.projects}">
@@ -18,13 +18,13 @@
             </option>
         </c:forEach>
     </select><br><br>
-    <label for="work">Work:</label>
+    <label for="work">Работа:</label>
     <input required type="number" id="work" name="work" value="0"><br><br>
-    <label for="start">Start:</label>
+    <label for="start">Начало:</label>
     <input required type="date" id="start" name="start"><br><br>
-    <label for="end">End:</label>
+    <label for="end">Конец:</label>
     <input required type="date" id="end" name="end"><br><br>
-    <label for="exec">Executor:</label>
+    <label for="exec">Исполнитель:</label>
     <select name="exec" id="exec" required>
         <option selected value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
@@ -35,14 +35,14 @@
             </option>
         </c:forEach>
     </select><br><br>
-    <label for="stat">Status:</label>
+    <label for="stat">Статус:</label>
     <select name="stat" id="stat">
-        <option value="NOT_STARTED">Not started</option>
-        <option value="IN_PROGRESS">In progress</option>
-        <option value="DONE">Done</option>
-        <option value="PAUSED">Paused</option>
+        <option value="NOT_STARTED">Не начата</option>
+        <option value="IN_PROGRESS">Выполняется</option>
+        <option value="DONE">Готова</option>
+        <option value="PAUSED">Приостановлена</option>
     </select><br><br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Сохранить">
 </form>
 </body>
 </html>

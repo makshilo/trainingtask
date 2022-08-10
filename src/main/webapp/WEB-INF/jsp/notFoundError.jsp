@@ -1,8 +1,8 @@
 <html>
 <head>
-    <title>Page not found</title>
+    <title>Страница не найдена</title>
 </head>
 <body>
-<h1>Page not found</h1>
+<h1>Страница не найдена</h1>
 </body>
 </html>
