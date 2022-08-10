@@ -10,8 +10,8 @@
     <label for="tname">Name:</label>
     <input maxlength="50" required type="text" id="tname" name="tname"><br><br>
     <label for="proj">Project:</label>
-    <select name="proj" id="proj">
-        <option selected value=0>None</option>
+    <select name="proj" id="proj" required>
+        <option selected value="">None</option>
         <c:forEach var="project" items="${requestScope.projects}">
             <option value="${project.id}">
                     ${project.name}
@@ -19,14 +19,14 @@
         </c:forEach>
     </select><br><br>
     <label for="work">Work:</label>
-    <textarea maxlength="1000" id="work" name="work" rows="4" cols="50"></textarea><br><br>
+    <input required type="number" id="work" name="work" value="0"><br><br>
     <label for="start">Start:</label>
     <input required type="date" id="start" name="start"><br><br>
     <label for="end">End:</label>
     <input required type="date" id="end" name="end"><br><br>
     <label for="exec">Executor:</label>
-    <select name="exec" id="exec">
-        <option selected value=0>None</option>
+    <select name="exec" id="exec" required>
+        <option selected value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                 ${employee.lastName}

@@ -15,7 +15,7 @@
         <option selected value="${requestScope.currentProject.id}"> ${requestScope.currentProject.name} </option>
     </select><br><br>
     <label for="work">Work:</label>
-    <textarea maxlength="1000" id="work" name="work" rows="4" cols="50">${requestScope.task.work}</textarea><br><br>
+    <input required type="number" id="work" name="work" value=${requestScope.task.work}><br><br>
     <label for="start">Start:</label>
     <input type="date" id="start" name="start" value="${requestScope.task.startDate}"><br><br>
     <label for="end">End:</label>
@@ -25,7 +25,7 @@
         <option selected value="${requestScope.currentExecutor.id}">
             ${requestScope.currentExecutor.firstName}
             ${requestScope.currentExecutor.lastName}</option>
-        <option selected value=0>None</option>
+        <option value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                     ${employee.lastName}

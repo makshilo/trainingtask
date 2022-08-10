@@ -19,7 +19,7 @@
         </c:forEach>
     </select><br><br>
     <label for="work">Work:</label>
-    <textarea maxlength="1000" id="work" name="work" rows="4" cols="50">${requestScope.task.work}</textarea><br><br>
+    <input required type="number" id="work" name="work" value=${requestScope.task.work}><br><br>
     <label for="start">Start:</label>
     <input type="date" id="start" name="start" value="${requestScope.task.startDate}"><br><br>
     <label for="end">End:</label>
