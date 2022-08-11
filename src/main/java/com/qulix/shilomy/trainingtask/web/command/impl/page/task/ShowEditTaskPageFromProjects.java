@@ -12,6 +12,7 @@ import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
+import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -53,6 +54,7 @@ public class ShowEditTaskPageFromProjects implements Command {
     public CommandResponse execute(CommandRequest request) {
         final TaskEntity task = taskService.get(Long.parseLong(request.getParameter("id")));
         request.addAttributeToJsp("task", task);
+        request.addAttributeToJsp("status", TaskStatus.status);
         request.addAttributeToJsp("currentProject",projectService.get(task.getProjectId()));
         request.addAttributeToJsp("currentExecutor", employeeService.get(task.getExecutorId()));
         request.addAttributeToJsp("employees", employeeService.findAll());

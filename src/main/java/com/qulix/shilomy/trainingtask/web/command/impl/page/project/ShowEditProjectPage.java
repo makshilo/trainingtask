@@ -13,6 +13,7 @@ import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -54,21 +55,30 @@ public class ShowEditProjectPage implements Command {
         return instance;
     }
 
+    private HashMap<Long, String> getProjectNames() {
+        final HashMap<Long, String> projectNames = new HashMap<>();
+        for (ProjectEntity projectForName : projectService.findAll()) {
+            projectNames.put(projectForName.getId(), projectForName.getName());
+        }
+        return projectNames;
+    }
+
+    private HashMap<Long, String> getEmployeeNames() {
+        final HashMap<Long, String> employeeNames = new HashMap<>();
+        for (EmployeeEntity employee : employeeService.findAll()) {
+            employeeNames.put(employee.getId(), employee.getLastName() + " " + employee.getFirstName());
+        }
+        return employeeNames;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
         ProjectEntity project = projectService.get(Long.parseLong(request.getParameter("id")));
         request.addAttributeToJsp("project", project);
         request.addAttributeToJsp("tasks", taskService.findByProject(project));
-        final HashMap<Long, String> employeeNames = new HashMap<>();
-        for (EmployeeEntity employee : employeeService.findAll()) {
-            employeeNames.put(employee.getId(), employee.getLastName() + " " + employee.getFirstName());
-        }
-        request.addAttributeToJsp("employees", employeeNames);
-        final HashMap<Long, String> projectNames = new HashMap<>();
-        for (ProjectEntity projectForName : projectService.findAll()) {
-            projectNames.put(projectForName.getId(), projectForName.getName());
-        }
-        request.addAttributeToJsp("projects", projectNames);
+        request.addAttributeToJsp("status", TaskStatus.status);
+        request.addAttributeToJsp("employees", getEmployeeNames());
+        request.addAttributeToJsp("projects", getProjectNames());
         return requestFactory.createForwardResponse(propertyContext.get(PROJECT_EDIT_PAGE));
     }
 }

@@ -13,7 +13,7 @@ import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
+import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -22,7 +22,6 @@ import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class ShowTaskListPage implements Command {
     private static ShowTaskListPage instance;
@@ -57,20 +56,28 @@ public class ShowTaskListPage implements Command {
         return instance;
     }
 
-    @Override
-    public CommandResponse execute(CommandRequest request) {
-        final List<TaskEntity> tasks = taskService.findAll();
-        request.addAttributeToJsp("tasks", tasks);
+    private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {
             employeeNames.put(employee.getId(), employee.getLastName() + " " + employee.getFirstName());
         }
-        request.addAttributeToJsp("employees", employeeNames);
+        return employeeNames;
+    }
+
+    private HashMap<Long, String> getProjectNames() {
         final HashMap<Long, String> projectNames = new HashMap<>();
         for (ProjectEntity project : projectService.findAll()) {
             projectNames.put(project.getId(), project.getName());
         }
-        request.addAttributeToJsp("projects", projectNames);
+        return projectNames;
+    }
+
+    @Override
+    public CommandResponse execute(CommandRequest request) {
+        request.addAttributeToJsp("tasks", taskService.findAll());
+        request.addAttributeToJsp("employees", getEmployeeNames());
+        request.addAttributeToJsp("projects", getProjectNames());
+        request.addAttributeToJsp("status", TaskStatus.status);
         return requestFactory.createForwardResponse(propertyContext.get(TASKS_PAGE));
     }
 }

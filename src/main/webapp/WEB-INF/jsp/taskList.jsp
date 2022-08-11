@@ -18,7 +18,7 @@
     </tr>
     <c:forEach var="task" items="${requestScope.tasks}">
         <tr>
-            <td>${task.status}</td>
+            <td>${requestScope.status.get(task.status)}</td>
             <td>${task.name}</td>
             <td>${requestScope.projects.get(task.projectId)}</td>
             <td>${task.work}</td>

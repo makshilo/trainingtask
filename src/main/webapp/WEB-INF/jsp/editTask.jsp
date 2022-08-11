@@ -42,7 +42,7 @@
     <label for="stat">Статус:</label>
     <select name="stat" id="stat">
         <option selected value="${requestScope.task.status}">
-            ${requestScope.task.status}</option>
+            *${requestScope.status.get(task.status)}</option>
         <option value="NOT_STARTED">Не начата</option>
         <option value="IN_PROGRESS">Выполняется</option>
         <option value="DONE">Готова</option>
