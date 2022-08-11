@@ -15,10 +15,10 @@
     </tr>
     <c:forEach var="employee" items="${requestScope.employees}">
         <tr>
-            <td>${employee.lastName}</td>
-            <td>${employee.firstName}</td>
-            <td>${employee.patronymic}</td>
-            <td>${employee.position}</td>
+            <td><c:out value="${employee.lastName}"/></td>
+            <td><c:out value="${employee.firstName}"/></td>
+            <td><c:out value="${employee.patronymic}"/></td>
+            <td><c:out value="${employee.position}"/></td>
             <td><button onclick="window.location.href='/controller?command=employeeEditPage&id=${employee.id}'">Изменить</button></td>
             <td><button onclick="window.location.href='/controller?command=deleteEmployee&id=${employee.id}'">Удалить</button></td>
         </tr>

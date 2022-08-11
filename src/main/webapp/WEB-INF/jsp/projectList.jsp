@@ -13,8 +13,8 @@
     </tr>
     <c:forEach var="project" items="${requestScope.projects}">
         <tr>
-            <td>${project.name}</td>
-            <td>${project.description}</td>
+            <td><c:out value="${project.name}"/></td>
+            <td><c:out value="${project.description}"/></td>
             <td><button onclick="window.location.href='/controller?command=projectEditPage&id=${project.id}'">Изменить</button></td>
             <td><button onclick="window.location.href='/controller?command=deleteProject&id=${project.id}'">Удалить</button></td>
         </tr>

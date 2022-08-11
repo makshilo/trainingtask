@@ -18,13 +18,13 @@
     </tr>
     <c:forEach var="task" items="${requestScope.tasks}">
         <tr>
-            <td>${requestScope.status.get(task.status)}</td>
-            <td>${task.name}</td>
-            <td>${requestScope.projects.get(task.projectId)}</td>
-            <td>${task.work}</td>
-            <td>${task.startDate}</td>
-            <td>${task.endDate}</td>
-            <td>${requestScope.employees.get(task.executorId)}</td>
+            <td><c:out value="${requestScope.status.get(task.status)}"/></td>
+            <td><c:out value="${task.name}"/></td>
+            <td><c:out value="${requestScope.projects.get(task.projectId)}"/></td>
+            <td><c:out value="${task.work}"/></td>
+            <td><c:out value="${task.startDate}"/></td>
+            <td><c:out value="${task.endDate}"/></td>
+            <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
             <td><button onclick="window.location.href='/controller?command=taskEditPage&id=${task.id}'">Изменить</button></td>
             <td><button onclick="window.location.href='/controller?command=deleteTask&id=${task.id}'">Удалить</button></td>
         </tr>
