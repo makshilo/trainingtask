@@ -12,7 +12,6 @@
     <label for="proj">Проект:</label>
     <select name="proj" id="proj">
         <option selected value="${requestScope.currentProject.id}"> *${fn:escapeXml(requestScope.currentProject.name)}</option>
-        <option value="">None</option>
         <c:forEach var="project" items="${requestScope.projects}">
             <option value="${project.id}">
                     ${fn:escapeXml(project.name)}
@@ -31,7 +30,6 @@
             *${fn:escapeXml(requestScope.currentExecutor.lastName)}
             ${fn:escapeXml(requestScope.currentExecutor.firstName)}
             ${fn:escapeXml(requestScope.currentExecutor.patronymic)}</option>
-        <option value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                     ${fn:escapeXml(employee.lastName)}

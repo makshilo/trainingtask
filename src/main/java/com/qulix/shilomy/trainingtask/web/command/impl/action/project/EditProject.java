@@ -5,11 +5,8 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.dao.ProjectDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 
 public class EditProject implements Command {
 
@@ -21,23 +18,44 @@ public class EditProject implements Command {
 
     private static final String COMMAND_PROJECTS_LIST = "command/projects_page";
 
+//    private static final String COMMAND_NAME_BUSY = "command/project_name_is_busy";
+
+
     private final ProjectService projectService;
-    private EditProject(RequestFactory requestFactory, PropertyContext propertyContext) {
+    private EditProject(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
         this.requestFactory = requestFactory;
         this.propertyContext = propertyContext;
-        ProjectDao projectDao = MethodProjectDao.getInstance();
-        projectService = ProjectServiceImpl.getInstance(projectDao);
+        this.projectService = projectService;
     }
 
-    public static synchronized EditProject getInstance(RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized EditProject getInstance(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
         if (instance == null) {
-            instance = new EditProject(requestFactory, propertyContext);
+            instance = new EditProject(projectService, requestFactory, propertyContext);
         }
         return instance;
     }
 
+    /*private boolean projectIsFound(List<ProjectEntity> projects, String name) {
+        for (ProjectEntity project: projects) {
+            if(project.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }*/
+
     @Override
     public CommandResponse execute(CommandRequest request) {
+        /*if(!projectIsFound(projectService.findAll(), request.getParameter("pname"))) {
+            projectService.update(new ProjectEntity(
+                    request.getParameter("pname"),
+                    request.getParameter("descr"),
+                    Long.parseLong(request.getParameter("id"))));
+            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_PROJECTS_LIST));
+        }
+        else {
+            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_NAME_BUSY));
+        }*/
         projectService.update(new ProjectEntity(
                 request.getParameter("pname"),
                 request.getParameter("descr"),

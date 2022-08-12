@@ -5,20 +5,11 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.dao.EmployeeDao;
-import com.qulix.shilomy.trainingtask.web.dao.ProjectDao;
-import com.qulix.shilomy.trainingtask.web.dao.TaskDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
-import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
-import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
-import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 public class ShowEditTaskPage implements Command {
     private static ShowEditTaskPage instance;
@@ -32,20 +23,20 @@ public class ShowEditTaskPage implements Command {
     private final EmployeeService employeeService;
     private final ProjectService projectService;
     private final TaskService taskService;
-    private ShowEditTaskPage(RequestFactory requestFactory, PropertyContext propertyContext) {
+    private ShowEditTaskPage(EmployeeService employeeService, TaskService taskService, ProjectService projectService,
+                             RequestFactory requestFactory, PropertyContext propertyContext) {
         this.requestFactory = requestFactory;
         this.propertyContext = propertyContext;
-        EmployeeDao employeeDao = MethodEmployeeDao.getInstance();
-        employeeService = EmployeeServiceImpl.getInstance(employeeDao);
-        ProjectDao projectDao = MethodProjectDao.getInstance();
-        projectService = ProjectServiceImpl.getInstance(projectDao);
-        TaskDao taskDao = MethodTaskDao.getInstance();
-        taskService = TaskServiceImpl.getInstance(taskDao);
+        this.employeeService = employeeService;
+        this.projectService = projectService;
+        this.taskService = taskService;
     }
 
-    public static synchronized ShowEditTaskPage getInstance(RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized ShowEditTaskPage getInstance(EmployeeService employeeService, TaskService taskService,
+                                                            ProjectService projectService,RequestFactory requestFactory,
+                                                            PropertyContext propertyContext) {
         if (instance == null) {
-            instance = new ShowEditTaskPage(requestFactory, propertyContext);
+            instance = new ShowEditTaskPage(employeeService, taskService, projectService, requestFactory, propertyContext);
         }
         return instance;
     }

@@ -5,12 +5,8 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.dao.ProjectDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 
 import java.util.List;
 
@@ -25,16 +21,15 @@ public class ShowProjectListPage implements Command {
 
     private final ProjectService projectService;
 
-    private ShowProjectListPage(RequestFactory requestFactory, PropertyContext propertyContext) {
+    private ShowProjectListPage(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
         this.requestFactory = requestFactory;
         this.propertyContext = propertyContext;
-        ProjectDao projectDao = MethodProjectDao.getInstance();
-        projectService = ProjectServiceImpl.getInstance(projectDao);
+        this.projectService = projectService;
     }
 
-    public static synchronized ShowProjectListPage getInstance(RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized ShowProjectListPage getInstance(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
         if (instance == null) {
-            instance = new ShowProjectListPage(requestFactory, propertyContext);
+            instance = new ShowProjectListPage(projectService, requestFactory, propertyContext);
         }
         return instance;
     }

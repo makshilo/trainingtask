@@ -5,11 +5,10 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.dao.ProjectDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
+
+import java.util.List;
 
 public class CreateProject implements Command {
     private static CreateProject instance;
@@ -24,25 +23,31 @@ public class CreateProject implements Command {
 
     private final ProjectService projectService;
 
-    private final ProjectDao projectDao;
-
-    private CreateProject(RequestFactory requestFactory, PropertyContext propertyContext) {
+    private CreateProject(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
         this.requestFactory = requestFactory;
         this.propertyContext = propertyContext;
-        projectDao = MethodProjectDao.getInstance();
-        projectService = ProjectServiceImpl.getInstance(projectDao);
+        this.projectService = projectService;
     }
 
-    public static synchronized CreateProject getInstance(RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized CreateProject getInstance(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
         if (instance == null) {
-            instance = new CreateProject(requestFactory, propertyContext);
+            instance = new CreateProject(projectService, requestFactory, propertyContext);
         }
         return instance;
     }
 
+    private boolean projectIsFound(List<ProjectEntity> projects, String name) {
+        for (ProjectEntity project: projects) {
+            if(project.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
-        if(projectDao.receiveProjectByName(request.getParameter("pname")).isEmpty()){
+        if(!projectIsFound(projectService.findAll(), request.getParameter("pname"))){
             projectService.add(new ProjectEntity(
                     request.getParameter("pname"),
                     request.getParameter("descr")));

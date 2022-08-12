@@ -5,12 +5,9 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.dao.TaskDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
-import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 import java.sql.Date;
 
@@ -24,16 +21,15 @@ public class EditTask implements Command {
     private static final String COMMAND_TASK_LIST = "command/tasks_page";
 
     private final TaskService taskService;
-    private EditTask(RequestFactory requestFactory, PropertyContext propertyContext) {
+    private EditTask(TaskService taskService, RequestFactory requestFactory, PropertyContext propertyContext) {
         this.requestFactory = requestFactory;
         this.propertyContext = propertyContext;
-        TaskDao taskDao = MethodTaskDao.getInstance();
-        taskService = TaskServiceImpl.getInstance(taskDao);
+        this.taskService = taskService;
     }
 
-    public static synchronized EditTask getInstance(RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized EditTask getInstance(TaskService taskService, RequestFactory requestFactory, PropertyContext propertyContext) {
         if (instance == null) {
-            instance = new EditTask(requestFactory, propertyContext);
+            instance = new EditTask(taskService, requestFactory, propertyContext);
         }
         return instance;
     }

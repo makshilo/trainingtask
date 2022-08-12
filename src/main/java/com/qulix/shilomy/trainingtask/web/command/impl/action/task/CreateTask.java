@@ -5,12 +5,9 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.dao.TaskDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
-import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 import java.sql.Date;
 
@@ -25,16 +22,15 @@ public class CreateTask implements Command {
 
     private final TaskService taskService;
 
-    private CreateTask(RequestFactory requestFactory, PropertyContext propertyContext) {
+    private CreateTask(TaskService taskService, RequestFactory requestFactory, PropertyContext propertyContext) {
         this.requestFactory = requestFactory;
         this.propertyContext = propertyContext;
-        TaskDao taskDao = MethodTaskDao.getInstance();
-        taskService = TaskServiceImpl.getInstance(taskDao);
+        this.taskService = taskService;
     }
 
-    public static synchronized CreateTask getInstance(RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized CreateTask getInstance(TaskService taskService, RequestFactory requestFactory, PropertyContext propertyContext) {
         if (instance == null) {
-            instance = new CreateTask(requestFactory, propertyContext);
+            instance = new CreateTask(taskService, requestFactory, propertyContext);
         }
         return instance;
     }
