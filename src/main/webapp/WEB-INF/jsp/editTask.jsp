@@ -20,10 +20,14 @@
     </select><br><br>
     <label for="work">Работа:</label>
     <input required type="number" id="work" name="work" value=${fn:escapeXml(requestScope.task.work)}><br><br>
-    <label for="start">Начало:</label>
-    <input type="date" id="start" name="start" value="${fn:escapeXml(requestScope.task.startDate)}"><br><br>
-    <label for="end">Конец:</label>
-    <input type="date" id="end" name="end" value="${fn:escapeXml(requestScope.task.endDate)}"><br><br>
+    <fieldset>
+        <legend>Дата</legend>
+        <label>Формат гггг-мм-дд</label><br><br>
+        <label for="start">Начало:</label>
+        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="start" name="start" value="${fn:escapeXml(requestScope.task.startDate)}"><br><br>
+        <label for="end">Конец:</label>
+        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="end" name="end" value="${fn:escapeXml(requestScope.task.endDate)}"><br><br>
+    </fieldset>
     <label for="exec">Исполнитель:</label>
     <select required name="exec" id="exec">
         <option selected value="${requestScope.currentExecutor.id}">

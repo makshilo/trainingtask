@@ -20,10 +20,14 @@
     </select><br><br>
     <label for="work">Работа:</label>
     <input required type="number" id="work" name="work" value="0"><br><br>
-    <label for="start">Начало:</label>
-    <input required type="date" id="start" name="start"><br><br>
-    <label for="end">Конец:</label>
-    <input required type="date" id="end" name="end"><br><br>
+    <fieldset>
+        <legend>Дата</legend>
+        <label>Формат гггг-мм-дд</label><br><br>
+        <label for="start">Начало:</label>
+        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="start" name="start"><br><br>
+        <label for="end">Конец:</label>
+        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="end" name="end"><br><br>
+    </fieldset>
     <label for="exec">Исполнитель:</label>
     <select name="exec" id="exec" required>
         <option selected value="">None</option>
