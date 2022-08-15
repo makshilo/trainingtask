@@ -35,27 +35,8 @@ public class EditProject implements Command {
         return instance;
     }
 
-    /*private boolean projectIsFound(List<ProjectEntity> projects, String name) {
-        for (ProjectEntity project: projects) {
-            if(project.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     @Override
     public CommandResponse execute(CommandRequest request) {
-        /*if(!projectIsFound(projectService.findAll(), request.getParameter("pname"))) {
-            projectService.update(new ProjectEntity(
-                    request.getParameter("pname"),
-                    request.getParameter("descr"),
-                    Long.parseLong(request.getParameter("id"))));
-            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_PROJECTS_LIST));
-        }
-        else {
-            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_NAME_BUSY));
-        }*/
         projectService.update(new ProjectEntity(
                 request.getParameter("pname"),
                 request.getParameter("descr"),

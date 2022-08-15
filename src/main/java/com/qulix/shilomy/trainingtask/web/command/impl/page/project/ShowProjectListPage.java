@@ -5,10 +5,7 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-
-import java.util.List;
 
 public class ShowProjectListPage implements Command {
     private static ShowProjectListPage instance;
@@ -36,8 +33,7 @@ public class ShowProjectListPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final List<ProjectEntity> projects = projectService.findAll();
-        request.addAttributeToJsp("projects", projects);
+        request.addAttributeToJsp("projects", projectService.findAll());
         return requestFactory.createForwardResponse(propertyContext.get(PROJECTS_PAGE));
     }
 }

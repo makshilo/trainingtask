@@ -5,10 +5,8 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
-import java.util.List;
 
 public class ShowEmployeeListPage implements Command {
 
@@ -42,8 +40,7 @@ public class ShowEmployeeListPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final List<EmployeeEntity> employees = employeeService.findAll();
-        request.addAttributeToJsp("employees", employees);
+        request.addAttributeToJsp("employees", employeeService.findAll());
         return requestFactory.createForwardResponse(propertyContext.get(EMPLOYEES_PAGE));
     }
 }

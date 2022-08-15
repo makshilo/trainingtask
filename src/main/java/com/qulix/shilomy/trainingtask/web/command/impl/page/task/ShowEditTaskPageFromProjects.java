@@ -18,7 +18,7 @@ public class ShowEditTaskPageFromProjects implements Command {
 
     private final PropertyContext propertyContext;
 
-    private static final String TASK_EDIT_PAGE = "page.editTaskLock";
+    private static final String TASK_EDIT_PAGE = "page.editTaskProjectLock";
 
     private final EmployeeService employeeService;
     private final ProjectService projectService;

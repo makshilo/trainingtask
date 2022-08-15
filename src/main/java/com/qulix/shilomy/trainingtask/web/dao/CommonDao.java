@@ -69,7 +69,7 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
     /**
      * Перед тем как добавить сущность, метод проверяет нет ли таковой в базе.
      * Если есть, то он сразу вернёт данную сущность. А если нет, то сначала метод
-     * добавит её в базу, а затем сразу вернйт по уникальному полю
+     * добавит её в базу, а затем сразу вернёт по уникальному полю
      */
     @Override
     public T create(T t) throws InterruptedException {
