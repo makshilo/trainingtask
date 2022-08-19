@@ -11,7 +11,7 @@
     <input maxlength="50" required type="text" id="tname" name="tname"><br><br>
     <label for="proj">Проект:</label>
     <select name="proj" id="proj" required>
-        <option selected value="">None</option>
+        <option selected value="">Не выбрано</option>
         <c:forEach var="project" items="${requestScope.projects}">
             <option value="${project.id}">
                     ${project.name}
@@ -24,13 +24,13 @@
         <legend>Дата</legend>
         <label>Формат гггг-мм-дд</label><br><br>
         <label for="start">Начало:</label>
-        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="start" name="start"><br><br>
+        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="start" name="start"><br><br>
         <label for="end">Конец:</label>
-        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="end" name="end"><br><br>
+        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="end" name="end"><br><br>
     </fieldset>
     <label for="exec">Исполнитель:</label>
     <select name="exec" id="exec" required>
-        <option selected value="">None</option>
+        <option selected value="">Не выбрано</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                 ${employee.lastName}

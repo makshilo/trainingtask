@@ -21,16 +21,17 @@
         <legend>Дата</legend>
         <label>Формат гггг-мм-дд</label><br><br>
         <label for="start">Начало:</label>
-        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="start" name="start" value="${fn:escapeXml(requestScope.task.startDate)}"><br><br>
+        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="start" name="start"
+               value="${fn:escapeXml(requestScope.task.startDate)}"><br><br>
         <label for="end">Конец:</label>
-        <input required pattern="\d{4}-\d{2}-\d{2}" type="text" id="end" name="end" value="${fn:escapeXml(requestScope.task.endDate)}"><br><br>
+        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="end" name="end"
+               value="${fn:escapeXml(requestScope.task.endDate)}"><br><br>
     </fieldset>
     <label for="exec">Исполнитель:</label>
     <select required name="exec" id="exec">
         <option selected value="${requestScope.currentExecutor.id}">
             *${fn:escapeXml(requestScope.currentExecutor.firstName)}
             ${fn:escapeXml(requestScope.currentExecutor.lastName)}</option>
-        <option value="">None</option>
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}">
                     ${fn:escapeXml(employee.lastName)}
