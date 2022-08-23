@@ -5,15 +5,14 @@
     <title>Изменить задачу</title>
 </head>
 <body>
-<button onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br>
+<button onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br><br>
 <form action="<c:url value="/controller?command=editTask&id=${requestScope.task.id}"/>" method="post">
     <label for="tname">Имя:</label>
     <input maxlength="50" type="text" id="tname" name="tname" value=${fn:escapeXml(requestScope.task.name)}><br><br>
     <label for="proj">Проект:</label>
     <select name="proj" id="proj">
-        <option selected value="${requestScope.currentProject.id}"> *${fn:escapeXml(requestScope.currentProject.name)}</option>
         <c:forEach var="project" items="${requestScope.projects}">
-            <option value="${project.id}">
+            <option value="${project.id}" <c:if test="${project.id} == ${requestScope.currentProject.id}">selected</c:if>>
                     ${fn:escapeXml(project.name)}
             </option>
         </c:forEach>
@@ -21,23 +20,53 @@
     <label for="work">Работа:</label>
     <input required type="number" id="work" name="work" value=${fn:escapeXml(requestScope.task.work)}><br><br>
     <fieldset>
-        <legend>Дата</legend>
-        <label>Формат гггг-мм-дд</label><br><br>
-        <label for="start">Начало:</label>
-        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="start" name="start"
-               value="${fn:escapeXml(requestScope.task.startDate)}"><br><br>
-        <label for="end">Конец:</label>
-        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="end" name="end"
-               value="${fn:escapeXml(requestScope.task.endDate)}"><br><br>
+        <legend>Дата начала</legend>
+        <label for="startYear">Год:</label>
+        <input required value="${requestScope.task.startDate.toString().substring(0,4)}" type="number" id="startYear" name="startYear">
+        <label for="startMonth">Месяц:</label>
+        <select id="startMonth" name="startMonth">
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '01'}">selected</c:if> value="01">Январь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '02'}">selected</c:if> value="02">Февраль</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '03'}">selected</c:if> value="03">Март</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '04'}">selected</c:if> value="04">Апрель</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '05'}">selected</c:if> value="05">Май</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '06'}">selected</c:if> value="06">Июнь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '07'}">selected</c:if> value="07">Июль</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '08'}">selected</c:if> value="08">Август</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '09'}">selected</c:if> value="09">Сентябрь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '10'}">selected</c:if> value="10">Октябрь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '11'}">selected</c:if> value="11">Ноябрь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '12'}">selected</c:if> value="12">Декабрь</option>
+        </select>
+        <label for="startDay">День:</label>
+        <input required value="${requestScope.task.startDate.toString().substring(8,10)}" type="number" id="startDay" name="startDay" min="1" max="31">
     </fieldset>
+    <fieldset>
+        <legend>Дата окончания</legend>
+        <label for="endYear">Год:</label>
+        <input required value="${requestScope.task.endDate.toString().substring(0,4)}" type="number" id="endYear" name="endYear">
+        <label for="endMonth">Месяц:</label>
+        <select id="endMonth" name="endMonth">
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '01'}">selected</c:if> value="01">Январь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '02'}">selected</c:if> value="02">Февраль</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '03'}">selected</c:if> value="03">Март</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '04'}">selected</c:if> value="04">Апрель</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '05'}">selected</c:if> value="05">Май</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '06'}">selected</c:if> value="06">Июнь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '07'}">selected</c:if> value="07">Июль</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '08'}">selected</c:if> value="08">Август</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '09'}">selected</c:if> value="09">Сентябрь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '10'}">selected</c:if> value="10">Октябрь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '11'}">selected</c:if> value="11">Ноябрь</option>
+            <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '12'}">selected</c:if> value="12">Декабрь</option>
+        </select>
+        <label for="endDay">День:</label>
+        <input required value="${requestScope.task.endDate.toString().substring(8,10)}" type="number" id="endDay" name="endDay" min="1" max="31">
+    </fieldset><br>
     <label for="exec">Исполнитель:</label>
     <select required name="exec" id="exec">
-        <option selected value="${requestScope.currentExecutor.id}">
-            *${fn:escapeXml(requestScope.currentExecutor.lastName)}
-            ${fn:escapeXml(requestScope.currentExecutor.firstName)}
-            ${fn:escapeXml(requestScope.currentExecutor.patronymic)}</option>
         <c:forEach var="employee" items="${requestScope.employees}">
-            <option value="${employee.id}">
+        <option value="${employee.id}" <c:if test="${employee.id} == ${requestScope.currentExecutor.id}">selected</c:if>>
                     ${fn:escapeXml(employee.lastName)}
                     ${fn:escapeXml(employee.firstName)}
                     ${fn:escapeXml(employee.patronymic)}
@@ -46,12 +75,10 @@
     </select><br><br>
     <label for="stat">Статус:</label>
     <select name="stat" id="stat">
-        <option selected value="${requestScope.task.status}">
-            *${requestScope.status.get(task.status)}</option>
-        <option value="NOT_STARTED">Не начата</option>
-        <option value="IN_PROGRESS">Выполняется</option>
-        <option value="DONE">Готова</option>
-        <option value="PAUSED">Приостановлена</option>
+        <option <c:if test="${requestScope.task.status} == 'NOT_STARTED'">selected</c:if> value="NOT_STARTED">Не начата</option>
+        <option <c:if test="${requestScope.task.status} == 'IN_PROGRESS'">selected</c:if> value="IN_PROGRESS">Выполняется</option>
+        <option <c:if test="${requestScope.task.status} == 'DONE'">selected</c:if> value="DONE">Готова</option>
+        <option <c:if test="${requestScope.task.status} == 'PAUSED'">selected</c:if> value="PAUSED">Приостановлена</option>
     </select><br><br>
     <input type="submit" value="Сохранить">
 </form>

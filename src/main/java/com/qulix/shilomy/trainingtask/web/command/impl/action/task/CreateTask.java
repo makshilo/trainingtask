@@ -42,9 +42,19 @@ public class CreateTask implements Command {
                 request.getParameter("tname"),
                 Long.parseLong(request.getParameter("proj")),
                 request.getParameter("work"),
-                Date.valueOf(request.getParameter("start")),
-                Date.valueOf(request.getParameter("end")),
+                Date.valueOf(prepareDate(request.getParameter("startYear") , request.getParameter("startMonth"), request.getParameter("startDay"))),
+                Date.valueOf(prepareDate(request.getParameter("endYear") , request.getParameter("endMonth"), request.getParameter("endDay"))),
                 Long.parseLong(request.getParameter("exec"))));
         return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
+    }
+
+    private String prepareDate(String year, String month, String day){
+        if(year.length() < 4){
+            year = ("0000" + year).substring(year.length());
+        }
+        if (day.length() < 2){
+            day = ("00" + day).substring(day.length());
+        }
+        return year+'-'+month+'-'+day;
     }
 }

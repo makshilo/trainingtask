@@ -5,7 +5,7 @@
     <title>Добавить задачу</title>
 </head>
 <body>
-<button onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br>
+<button onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
     <label for="tname">Имя:</label>
     <input maxlength="50" required type="text" id="tname" name="tname"><br><br>
@@ -21,13 +21,49 @@
     <label for="work">Работа:</label>
     <input required type="number" id="work" name="work" value="0"><br><br>
     <fieldset>
-        <legend>Дата</legend>
-        <label>Формат гггг-мм-дд</label><br><br>
-        <label for="start">Начало:</label>
-        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="start" name="start"><br><br>
-        <label for="end">Конец:</label>
-        <input required pattern="^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" type="text" id="end" name="end"><br><br>
+        <legend>Дата начала</legend>
+        <label for="startYear">Год:</label>
+        <input required value="1" type="number" id="startYear" name="startYear">
+        <label for="startMonth">Месяц:</label>
+        <select id="startMonth" name="startMonth">
+            <option selected value="01">Январь</option>
+            <option value="02">Февраль</option>
+            <option value="03">Март</option>
+            <option value="04">Апрель</option>
+            <option value="05">Май</option>
+            <option value="06">Июнь</option>
+            <option value="07">Июль</option>
+            <option value="08">Август</option>
+            <option value="09">Сентябрь</option>
+            <option value="10">Октябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+        <label for="startDay">День:</label>
+        <input required value="1" type="number" id="startDay" name="startDay" min="1" max="31">
     </fieldset>
+    <fieldset>
+        <legend>Дата окончания</legend>
+        <label for="endYear">Год:</label>
+        <input required value="1" type="number" id="endYear" name="endYear">
+        <label for="endMonth">Месяц:</label>
+        <select id="endMonth" name="endMonth">
+            <option selected value="01">Январь</option>
+            <option value="02">Февраль</option>
+            <option value="03">Март</option>
+            <option value="04">Апрель</option>
+            <option value="05">Май</option>
+            <option value="06">Июнь</option>
+            <option value="07">Июль</option>
+            <option value="08">Август</option>
+            <option value="09">Сентябрь</option>
+            <option value="10">Октябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+        <label for="endDay">День:</label>
+        <input required value="1" type="number" id="endDay" name="endDay" min="1" max="31">
+    </fieldset><br>
     <label for="exec">Исполнитель:</label>
     <select name="exec" id="exec" required>
         <option selected value="">Не выбрано</option>
