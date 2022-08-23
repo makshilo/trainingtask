@@ -17,7 +17,7 @@ To get a local copy up and running follow these simple example steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/makshilo/trainingtask.git
+   git clone https://git.qulix.com/ShiloMY/trainingtask.git
    ```
 
 
