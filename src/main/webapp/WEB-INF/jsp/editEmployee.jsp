@@ -9,7 +9,8 @@
 <h1>Страница изменения сотрудника</h1>
 <form action="<c:url value="/controller?command=editEmployee&id=${requestScope.employee.id}"/>" method="post">
     <label for="fname">Имя:</label>
-    <input maxlength="50" type="text" id="fname" name="fname" value=${fn:escapeXml(requestScope.employee.firstName)}><br><br>
+    <input required maxlength="50" type="text" id="fname" name="fname" oninvalid="this.setCustomValidity('Заполните поле')"
+           oninput="setCustomValidity('')" value=${fn:escapeXml(requestScope.employee.firstName)}><br><br>
     <label for="lname">Фамилия:</label>
     <input maxlength="50" type="text" id="lname" name="lname" value=${fn:escapeXml(requestScope.employee.lastName)}><br><br>
     <label for="patro">Отчество:</label>

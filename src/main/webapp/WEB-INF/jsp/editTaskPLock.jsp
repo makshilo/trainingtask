@@ -16,11 +16,13 @@
     </select>
     <input type="hidden" name="proj" value="${fn:escapeXml(requestScope.currentProject.id)}"><br><br>
     <label for="work">Работа:</label>
-    <input required type="number" id="work" name="work" value=${fn:escapeXml(requestScope.task.work)}><br><br>
+    <input required type="number" id="work" name="work" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"
+           value=${fn:escapeXml(requestScope.task.work)}><br><br>
     <fieldset>
         <legend>Дата начала</legend>
         <label for="startYear">Год:</label>
-        <input required value="${requestScope.task.startDate.toString().substring(0,4)}" type="number" id="startYear" name="startYear">
+        <input required value="${requestScope.task.startDate.toString().substring(0,4)}" type="number" id="startYear"
+               name="startYear" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
         <label for="startMonth">Месяц:</label>
         <select id="startMonth" name="startMonth">
             <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '01'}">selected</c:if> value="01">Январь</option>
@@ -37,12 +39,14 @@
             <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '12'}">selected</c:if> value="12">Декабрь</option>
         </select>
         <label for="startDay">День:</label>
-        <input required value="${requestScope.task.startDate.toString().substring(8,10)}" type="number" id="startDay" name="startDay" min="1" max="31">
+        <input required value="${requestScope.task.startDate.toString().substring(8,10)}" type="number" id="startDay"
+               name="startDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
     </fieldset>
     <fieldset>
         <legend>Дата окончания</legend>
         <label for="endYear">Год:</label>
-        <input required value="${requestScope.task.endDate.toString().substring(0,4)}" type="number" id="endYear" name="endYear">
+        <input required value="${requestScope.task.endDate.toString().substring(0,4)}" type="number" id="endYear"
+               name="endYear" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
         <label for="endMonth">Месяц:</label>
         <select id="endMonth" name="endMonth">
             <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '01'}">selected</c:if> value="01">Январь</option>
@@ -59,10 +63,11 @@
             <option <c:if test="${requestScope.task.startDate.toString().substring(5,7) == '12'}">selected</c:if> value="12">Декабрь</option>
         </select>
         <label for="endDay">День:</label>
-        <input required value="${requestScope.task.endDate.toString().substring(8,10)}" type="number" id="endDay" name="endDay" min="1" max="31">
+        <input required value="${requestScope.task.endDate.toString().substring(8,10)}" type="number" id="endDay"
+               name="endDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
     </fieldset><br>
     <label for="exec">Исполнитель:</label>
-    <select required name="exec" id="exec">
+    <select name="exec" id="exec">
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}" <c:if test="${employee.id} == ${requestScope.currentExecutor.id}">selected</c:if>>
                     ${fn:escapeXml(employee.lastName)}

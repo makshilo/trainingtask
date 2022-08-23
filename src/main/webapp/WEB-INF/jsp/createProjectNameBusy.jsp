@@ -7,7 +7,7 @@
 <button onclick="window.location.href='/controller?command=projectsPage'">Назад</button><br>
 <form action="<c:url value="/controller?command=createProject"/>" method="post">
   <label for="pname">Имя проекта:</label>
-  <input maxlength="100" required type="text" id="pname" name="pname">
+  <input maxlength="100" required type="text" id="pname" name="pname" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
   <label>Имя проекта занято</label><br><br>
   <label for="descr">Описание:</label>
   <textarea maxlength="1000" id="descr" name="descr" rows="4" cols="50"></textarea><br><br>
