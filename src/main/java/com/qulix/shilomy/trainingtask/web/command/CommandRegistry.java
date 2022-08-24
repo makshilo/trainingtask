@@ -5,7 +5,6 @@ public enum CommandRegistry {
     PROJECTS_PAGE( "projectsPage"),
     CREATE_PROJECT_PAGE( "projectCreatePage"),
     CREATE_PROJECT("createProject"),
-    PROJECT_NAME_IS_BUSY("projectNameBusy"),
     EDIT_PROJECT_PAGE( "projectEditPage"),
     EDIT_PROJECT("editProject"),
     DELETE_PROJECT("deleteProject"),
