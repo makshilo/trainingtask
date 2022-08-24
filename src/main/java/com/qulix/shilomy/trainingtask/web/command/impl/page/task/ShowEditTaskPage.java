@@ -50,6 +50,9 @@ public class ShowEditTaskPage implements Command {
         request.addAttributeToJsp("currentExecutor", employeeService.get(task.getExecutorId()));
         request.addAttributeToJsp("employees", employeeService.findAll());
         request.addAttributeToJsp("projects", projectService.findAll());
+        if (request.getParameter("projectLock") != null) {
+            request.addAttributeToJsp("projectLock", true);
+        }
         return requestFactory.createForwardResponse(propertyContext.get(TASK_EDIT_PAGE));
     }
 }

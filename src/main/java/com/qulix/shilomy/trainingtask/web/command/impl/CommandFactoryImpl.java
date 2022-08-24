@@ -20,7 +20,6 @@ import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowEditProj
 import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowProjectListPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowCreateTaskPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPage;
-import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPageFromProjects;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowTaskListPage;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
@@ -114,14 +113,6 @@ public class CommandFactoryImpl implements CommandFactory {
                         requestFactory,
                         propertyContext
                 );
-            case "taskEditFromProjectPage":
-                return ShowEditTaskPageFromProjects.getInstance(
-                        (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        (TaskService) serviceFactory.serviceFor(TaskEntity.class),
-                        requestFactory,
-                        propertyContext
-            );
             case "editTask":
                 return EditTask.getInstance(
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
