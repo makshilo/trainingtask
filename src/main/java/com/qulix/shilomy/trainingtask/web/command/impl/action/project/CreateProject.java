@@ -19,8 +19,6 @@ public class CreateProject implements Command {
 
     private static final String COMMAND_PROJECT_LIST = "command/projects_page";
 
-    private static final String COMMAND_NAME_BUSY = "command/project_name_is_busy";
-
     private final ProjectService projectService;
 
     private CreateProject(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
@@ -36,15 +34,6 @@ public class CreateProject implements Command {
         return instance;
     }
 
-    private boolean projectIsFound(List<ProjectEntity> projects, String name) {
-        for (ProjectEntity project: projects) {
-            if(project.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public CommandResponse execute(CommandRequest request) {
         if(!projectIsFound(projectService.findAll(), request.getParameter("pname"))){
@@ -53,7 +42,17 @@ public class CreateProject implements Command {
                     request.getParameter("descr")));
             return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_PROJECT_LIST));
         } else {
-            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_NAME_BUSY));
+            request.addAttributeToJsp("projectNameBusy", true);
+            return requestFactory.createForwardResponse(propertyContext.get("page.createProject"));
         }
+    }
+
+    private boolean projectIsFound(List<ProjectEntity> projects, String name) {
+        for (ProjectEntity project: projects) {
+            if(project.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

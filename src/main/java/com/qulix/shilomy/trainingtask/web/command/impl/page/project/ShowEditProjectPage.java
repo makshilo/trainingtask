@@ -45,6 +45,20 @@ public class ShowEditProjectPage implements Command {
         return instance;
     }
 
+    @Override
+    public CommandResponse execute(CommandRequest request) {
+        ProjectEntity project = projectService.get(Long.parseLong(request.getParameter("id")));
+        request.addAttributeToJsp("project", project);
+        request.addAttributeToJsp("tasks", taskService.findByProject(project));
+        request.addAttributeToJsp("status", TaskStatus.status);
+        request.addAttributeToJsp("employees", getEmployeeNames());
+        request.addAttributeToJsp("projects", getProjectNames());
+        if (request.getParameter("projectNameBusy") != null) {
+            request.addAttributeToJsp("projectNameBusy", true);
+        }
+        return requestFactory.createForwardResponse(propertyContext.get(PROJECT_EDIT_PAGE));
+    }
+
     private HashMap<Long, String> getProjectNames() {
         final HashMap<Long, String> projectNames = new HashMap<>();
         for (ProjectEntity projectForName : projectService.findAll()) {
@@ -59,16 +73,5 @@ public class ShowEditProjectPage implements Command {
             employeeNames.put(employee.getId(), employee.getLastName() + " " + employee.getFirstName());
         }
         return employeeNames;
-    }
-
-    @Override
-    public CommandResponse execute(CommandRequest request) {
-        ProjectEntity project = projectService.get(Long.parseLong(request.getParameter("id")));
-        request.addAttributeToJsp("project", project);
-        request.addAttributeToJsp("tasks", taskService.findByProject(project));
-        request.addAttributeToJsp("status", TaskStatus.status);
-        request.addAttributeToJsp("employees", getEmployeeNames());
-        request.addAttributeToJsp("projects", getProjectNames());
-        return requestFactory.createForwardResponse(propertyContext.get(PROJECT_EDIT_PAGE));
     }
 }

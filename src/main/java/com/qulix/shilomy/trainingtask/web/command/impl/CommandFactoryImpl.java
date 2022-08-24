@@ -18,7 +18,6 @@ import com.qulix.shilomy.trainingtask.web.command.impl.page.employee.ShowEmploye
 import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowCreateProjectPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowEditProjectPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowProjectListPage;
-import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowProjectNameBusyPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowCreateTaskPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPageFromProjects;
@@ -63,11 +62,6 @@ public class CommandFactoryImpl implements CommandFactory {
             case "createProject":
                 return CreateProject.getInstance(
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
-                );
-            case "projectNameBusy":
-                return ShowProjectNameBusyPage.getInstance(
                         requestFactory,
                         propertyContext
                 );
