@@ -91,10 +91,10 @@
     </select><br><br>
     <label for="stat">Статус:</label>
     <select name="stat" id="stat">
-        <option <c:if test="${requestScope.task.status} == 'NOT_STARTED'">selected</c:if> value="NOT_STARTED">Не начата</option>
-        <option <c:if test="${requestScope.task.status} == 'IN_PROGRESS'">selected</c:if> value="IN_PROGRESS">Выполняется</option>
-        <option <c:if test="${requestScope.task.status} == 'DONE'">selected</c:if> value="DONE">Готова</option>
-        <option <c:if test="${requestScope.task.status} == 'PAUSED'">selected</c:if> value="PAUSED">Приостановлена</option>
+        <option <c:if test="${requestScope.task.status == 'NOT_STARTED'}">selected</c:if> value="NOT_STARTED">Не начата</option>
+        <option <c:if test="${requestScope.task.status == 'IN_PROGRESS'}">selected</c:if> value="IN_PROGRESS">Выполняется</option>
+        <option <c:if test="${requestScope.task.status == 'DONE'}">selected</c:if> value="DONE">Готова</option>
+        <option <c:if test="${requestScope.task.status == 'PAUSED'}">selected</c:if> value="PAUSED">Приостановлена</option>
     </select><br><br>
     <input type="submit" value="Сохранить">
 </form>

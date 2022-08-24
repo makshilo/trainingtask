@@ -6,7 +6,6 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -45,7 +44,6 @@ public class ShowEditTaskPage implements Command {
     public CommandResponse execute(CommandRequest request) {
         final TaskEntity task = taskService.get(Long.parseLong(request.getParameter("id")));
         request.addAttributeToJsp("task", task);
-        request.addAttributeToJsp("status", TaskStatus.status);
         request.addAttributeToJsp("currentProject",projectService.get(task.getProjectId()));
         request.addAttributeToJsp("currentExecutor", employeeService.get(task.getExecutorId()));
         request.addAttributeToJsp("employees", employeeService.findAll());

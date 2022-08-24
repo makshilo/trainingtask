@@ -7,7 +7,6 @@ import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -50,7 +49,6 @@ public class ShowEditProjectPage implements Command {
         ProjectEntity project = projectService.get(Long.parseLong(request.getParameter("id")));
         request.addAttributeToJsp("project", project);
         request.addAttributeToJsp("tasks", taskService.findByProject(project));
-        request.addAttributeToJsp("status", TaskStatus.status);
         request.addAttributeToJsp("employees", getEmployeeNames());
         request.addAttributeToJsp("projects", getProjectNames());
         if (request.getParameter("projectNameBusy") != null) {
