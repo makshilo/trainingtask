@@ -10,13 +10,24 @@
     <label for="tname">Имя:</label>
     <input maxlength="50" type="text" id="tname" name="tname" value=${fn:escapeXml(requestScope.task.name)}><br><br>
     <label for="proj">Проект:</label>
-    <select name="proj" id="proj">
-        <c:forEach var="project" items="${requestScope.projects}">
-            <option value="${project.id}" <c:if test="${project.id} == ${requestScope.currentProject.id}">selected</c:if>>
-                    ${fn:escapeXml(project.name)}
-            </option>
-        </c:forEach>
-    </select><br><br>
+    <c:choose>
+        <c:when test="${requestScope.projectLock == true}">
+            <select disabled name="proj" id="proj">
+                <option selected
+                        value="${requestScope.currentProject.id}"> ${fn:escapeXml(requestScope.currentProject.name)}</option>
+            </select><br><br>
+            <input type="hidden" name="proj" value="${fn:escapeXml(requestScope.currentProject.id)}"></c:when>
+        <c:otherwise>
+            <select name="proj" id="proj">
+                <c:forEach var="project" items="${requestScope.projects}">
+                    <option value="${project.id}"
+                            <c:if test="${project.id} == ${requestScope.currentProject.id}">selected</c:if>>
+                            ${fn:escapeXml(project.name)}
+                    </option>
+                </c:forEach>
+            </select><br><br>
+        </c:otherwise>
+    </c:choose>
     <label for="work">Работа:</label>
     <input required type="number" id="work" name="work" oninvalid="this.setCustomValidity('Заполните поле')"
            oninput="setCustomValidity('')" value=${fn:escapeXml(requestScope.task.work)}><br><br>

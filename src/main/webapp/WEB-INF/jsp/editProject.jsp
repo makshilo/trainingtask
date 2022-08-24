@@ -34,7 +34,7 @@
             <td><c:out value="${task.startDate}"/></td>
             <td><c:out value="${task.endDate}"/></td>
             <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-            <td><button onclick="window.location.href='/controller?command=taskEditFromProjectPage&id=${task.id}'">Изменить</button></td>
+            <td><button onclick="window.location.href='/controller?command=taskEditPage&id=${task.id}&projectLock'">Изменить</button></td>
             <td><button onclick="window.location.href='/controller?command=deleteTask&id=${task.id}'">Удалить</button></td>
         </tr>
     </c:forEach>

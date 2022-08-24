@@ -13,7 +13,6 @@ public enum CommandRegistry {
     CREATE_TASK("createTask"),
     EDIT_TASK_PAGE( "taskEditPage"),
     EDIT_TASK("editTask"),
-    EDIT_TASK_FP("taskEditFromProjectPage"),
     DELETE_TASK("deleteTask"),
     EMPLOYEES_PAGE( "employeesPage"),
     CREATE_EMPLOYEE_PAGE("employeeCreatePage"),
