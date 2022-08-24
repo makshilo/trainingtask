@@ -7,7 +7,6 @@ import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -67,7 +66,6 @@ public class ShowTaskListPage implements Command {
         request.addAttributeToJsp("tasks", taskService.findAll());
         request.addAttributeToJsp("employees", getEmployeeNames());
         request.addAttributeToJsp("projects", getProjectNames());
-        request.addAttributeToJsp("status", TaskStatus.status);
         return requestFactory.createForwardResponse(propertyContext.get(TASKS_PAGE));
     }
 }

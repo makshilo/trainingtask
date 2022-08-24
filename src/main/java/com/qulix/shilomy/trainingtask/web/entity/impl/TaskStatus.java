@@ -1,18 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.entity.impl;
 
-import java.util.Map;
-
 public enum TaskStatus {
     NOT_STARTED,
     IN_PROGRESS,
     DONE,
     PAUSED;
-
-    public static final Map<TaskStatus, String> status = Map.of(
-            TaskStatus.NOT_STARTED, "Не начата",
-            TaskStatus.IN_PROGRESS, "Выполняется",
-            TaskStatus.DONE, "Готова",
-            TaskStatus.PAUSED, "Приостановлена");
 
     public static TaskStatus of(String name) {
         switch (name) {
