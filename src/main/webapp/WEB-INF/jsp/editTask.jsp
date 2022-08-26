@@ -36,11 +36,11 @@
         </c:otherwise>
     </c:choose>
     <label for="work">Работа:</label><br>
-    <input required type="number" id="work" name="work" oninvalid="this.setCustomValidity('Заполните поле')"
+    <input required type="number" min="0" id="work" name="work" oninvalid="this.setCustomValidity('Заполните поле')"
            oninput="setCustomValidity('')" value=${fn:escapeXml(requestScope.task.work)}><br><br>
     <label>Дата начала</label><br>
     <label for="startYear">Год:</label>
-    <input required value="${requestScope.task.startDate.toString().substring(0,4)}" type="number" id="startYear" name="startYear"
+    <input required value="${requestScope.task.startDate.toString().substring(0,4)}" type="number" min="1" max="9999" id="startYear" name="startYear"
            oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
     <label for="startMonth">Месяц:</label>
     <select class="month-select" id="startMonth" name="startMonth">
@@ -62,7 +62,7 @@
            name="startDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
     <label>Дата окончания</label><br>
     <label for="endYear">Год:</label>
-    <input required value="${requestScope.task.endDate.toString().substring(0,4)}" type="number" id="endYear" name="endYear"
+    <input required value="${requestScope.task.endDate.toString().substring(0,4)}" type="number" min="1" max="9999" id="endYear" name="endYear"
            oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
     <label for="endMonth">Месяц:</label>
     <select class="month-select" id="endMonth" name="endMonth">
