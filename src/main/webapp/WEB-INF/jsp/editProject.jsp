@@ -2,16 +2,22 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
+    <link rel="stylesheet" href="../../css/general.css">
+    <link rel="stylesheet" href="../../css/buttons.css">
+    <link rel="stylesheet" href="../../css/inputs.css">
     <title>Изменить проект</title>
 </head>
 <body>
-<button onclick="window.location.href='/controller?command=projectsPage'">Назад</button><br>
+<header>
+        <button class="home-button" onclick="window.location.href='/'"></button>
+</header>
+<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Назад</button><br>
 <form action="<c:url value="/controller?command=editProject&id=${requestScope.project.id}"/>" method="post">
-    <label for="pname">Имя проекта:</label>
+    <label for="pname">Имя проекта:</label><br>
     <input maxlength="100" required type="text" id="pname" name="pname" oninvalid="this.setCustomValidity('Заполните поле')"
            oninput="setCustomValidity('')" value=${fn:escapeXml(requestScope.project.name)}>
     <c:if test="${requestScope.projectNameBusy}">Имя проекта занято</c:if><br><br>
-    <label for="descr">Описание:</label>
+    <label for="descr">Описание:</label><br>
     <textarea maxlength="1000" id="descr" name="descr" rows="4" cols="50">${fn:escapeXml(requestScope.project.description)}</textarea><br><br>
     <input type="submit" value="Сохранить">
 </form>
