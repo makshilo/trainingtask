@@ -29,7 +29,7 @@
             <select name="proj" id="proj">
                 <c:forEach var="project" items="${requestScope.projects}">
                     <option value="${project.id}"
-                            <c:if test="${project.id} == ${requestScope.currentProject.id}">selected</c:if>>
+                            <c:if test="${project.id == requestScope.currentProject.id}">selected</c:if>>
                             ${fn:escapeXml(project.name)}
                     </option>
                 </c:forEach>
@@ -86,7 +86,7 @@
     <label for="exec">Исполнитель:</label><br>
     <select name="exec" id="exec">
         <c:forEach var="employee" items="${requestScope.employees}">
-        <option value="${employee.id}" <c:if test="${employee.id} == ${requestScope.currentExecutor.id}">selected</c:if>>
+        <option value="${employee.id}" <c:if test="${employee.id == requestScope.currentExecutor.id}">selected</c:if>>
                     ${fn:escapeXml(employee.lastName)}
                     ${fn:escapeXml(employee.firstName)}
                     ${fn:escapeXml(employee.patronymic)}
