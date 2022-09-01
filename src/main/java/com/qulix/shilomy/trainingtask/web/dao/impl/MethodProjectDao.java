@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import static java.sql.Types.INTEGER;
@@ -21,12 +20,15 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
     private static final String PROJECT_DESCRIPTION = "project_description";
     private static final String PROJECT_ID_COLUMN = "project_id";
 
+    private static final String PROJECT_UNIQUE_HASH = "project_unique_hash";
+
     private static final Logger LOGGER = Logger.getLogger(MethodProjectDao.class.getName());
 
     private static final List<String> FIELDS = Arrays.asList(
             PROJECT_ID_COLUMN,
             PROJECT_NAME_COLUMN,
-            PROJECT_DESCRIPTION);
+            PROJECT_DESCRIPTION,
+            PROJECT_UNIQUE_HASH);
 
     private static MethodProjectDao instance;
 
@@ -53,7 +55,7 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
 
     @Override
     protected String getUniqueFieldName() {
-        return PROJECT_NAME_COLUMN;
+        return PROJECT_UNIQUE_HASH;
     }
 
     @Override
@@ -70,12 +72,12 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
     protected void updateEntity(PreparedStatement statement, ProjectEntity entity) throws SQLException {
         fillFields(statement, entity);
         statement.setLong(1, entity.getId());
-        statement.setLong(4, entity.getId());
+        statement.setLong(5, entity.getId());
     }
 
     @Override
     protected void fillUniqueField(PreparedStatement statement, ProjectEntity entity) throws SQLException {
-        statement.setString(1, entity.getName());
+        statement.setString(1, composeHashCode(entity));
     }
 
     @Override
@@ -95,5 +97,8 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
         statement.setNull(1, INTEGER);
         statement.setString(2, entity.getName());
         statement.setString(3, entity.getDescription());
+        statement.setString(4, composeHashCode(entity));
     }
+
+    private String composeHashCode(ProjectEntity projectEntity){return projectEntity.getName() + projectEntity.getDescription();}
 }

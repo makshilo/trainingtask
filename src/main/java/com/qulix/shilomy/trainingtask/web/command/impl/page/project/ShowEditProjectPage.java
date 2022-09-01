@@ -51,9 +51,6 @@ public class ShowEditProjectPage implements Command {
         request.addAttributeToJsp("tasks", taskService.findByProject(project));
         request.addAttributeToJsp("employees", getEmployeeNames());
         request.addAttributeToJsp("projects", getProjectNames());
-        if (request.getParameter("projectNameBusy") != null) {
-            request.addAttributeToJsp("projectNameBusy", true);
-        }
         return requestFactory.createForwardResponse(propertyContext.get(PROJECT_EDIT_PAGE));
     }
 

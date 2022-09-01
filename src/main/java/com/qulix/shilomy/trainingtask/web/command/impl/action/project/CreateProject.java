@@ -36,20 +36,20 @@ public class CreateProject implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        if(!projectIsFound(projectService.findAll(), request.getParameter("pname"))){
-            projectService.add(new ProjectEntity(
-                    request.getParameter("pname"),
-                    request.getParameter("descr")));
+        ProjectEntity newProject = new ProjectEntity(request.getParameter("pname"), request.getParameter("descr"));
+        if(!projectIsFound(projectService.findAll(), newProject)){
+            projectService.add(newProject);
             return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_PROJECT_LIST));
         } else {
-            request.addAttributeToJsp("projectNameBusy", true);
+            request.addAttributeToJsp("projectIsFound", true);
+            request.addAttributeToJsp("filledProject", newProject);
             return requestFactory.createForwardResponse(propertyContext.get("page.createProject"));
         }
     }
 
-    private boolean projectIsFound(List<ProjectEntity> projects, String name) {
+    private boolean projectIsFound(List<ProjectEntity> projects, ProjectEntity newProject) {
         for (ProjectEntity project: projects) {
-            if(project.getName().equals(name)) {
+            if(project.getName().equals(newProject.getName()) && project.getDescription().equals(newProject.getDescription())) {
                 return true;
             }
         }

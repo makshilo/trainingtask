@@ -23,7 +23,8 @@
                 <option selected
                         value="${requestScope.currentProject.id}"> ${fn:escapeXml(requestScope.currentProject.name)}</option>
             </select><br><br>
-            <input type="hidden" name="proj" value="${fn:escapeXml(requestScope.currentProject.id)}"></c:when>
+            <input type="hidden" name="proj" value="${fn:escapeXml(requestScope.currentProject.id)}">
+        </c:when>
         <c:otherwise>
             <select name="proj" id="proj">
                 <c:forEach var="project" items="${requestScope.projects}">

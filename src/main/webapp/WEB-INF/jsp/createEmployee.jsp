@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="../../css/general.css">
     <link rel="stylesheet" href="../../css/buttons.css">
     <link rel="stylesheet" href="../../css/inputs.css">
+    <link rel="stylesheet" href="../../css/labels.css">
+
     <title>Добавить сотрудника</title>
 </head>
 <body>
