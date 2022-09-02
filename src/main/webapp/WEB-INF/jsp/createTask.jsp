@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <link rel="stylesheet" href="../../css/general.css">
@@ -18,14 +19,25 @@
     <input maxlength="50" required type="text" id="tname" name="tname"
            oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
     <label for="proj">Проект:</label><br>
-    <select name="proj" id="proj" required oninvalid="this.setCustomValidity('Выберите проект')" oninput="setCustomValidity('')">
-        <option selected value="">Не выбрано</option>
-        <c:forEach var="project" items="${requestScope.projects}">
-            <option value="${project.id}">
-                    ${project.name}
-            </option>
-        </c:forEach>
-    </select><br><br>
+    <c:choose>
+        <c:when test="${requestScope.projectLock == true}">
+            <select disabled name="proj" id="proj">
+                <option selected
+                        value="${requestScope.currentProject.id}"> ${fn:escapeXml(requestScope.currentProject.name)}</option>
+            </select><br><br>
+            <input type="hidden" name="proj" value="${fn:escapeXml(requestScope.currentProject.id)}">
+        </c:when>
+        <c:otherwise>
+            <select name="proj" id="proj">
+                <c:forEach var="project" items="${requestScope.projects}">
+                    <option value="${project.id}"
+                            <c:if test="${project.id == requestScope.currentProject.id}">selected</c:if>>
+                            ${fn:escapeXml(project.name)}
+                    </option>
+                </c:forEach>
+            </select><br><br>
+        </c:otherwise>
+    </c:choose>
     <label for="work">Работа:</label><br>
     <input required type="number" id="work" name="work" value="0" min="0"
            oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
