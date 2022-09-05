@@ -10,6 +10,8 @@ import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class CreateTask implements Command {
     private static CreateTask instance;
@@ -38,23 +40,22 @@ public class CreateTask implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
         taskService.add(new TaskEntity(
-                TaskStatus.of(request.getParameter("stat")),
-                request.getParameter("tname"),
-                Long.parseLong(request.getParameter("proj")),
-                request.getParameter("work"),
-                Date.valueOf(prepareDate(request.getParameter("startYear") , request.getParameter("startMonth"), request.getParameter("startDay"))),
-                Date.valueOf(prepareDate(request.getParameter("endYear") , request.getParameter("endMonth"), request.getParameter("endDay"))),
-                Long.parseLong(request.getParameter("exec"))));
+            TaskStatus.of(request.getParameter("stat")),
+            request.getParameter("tname"),
+            Long.parseLong(request.getParameter("proj")),
+            request.getParameter("work"),
+            new Date(prepareDate(request.getParameter("startYear"), request.getParameter("startMonth"), request.getParameter("startDay"))),
+            new Date(prepareDate(request.getParameter("endYear"), request.getParameter("endMonth"), request.getParameter("endDay"))),
+            Long.parseLong(request.getParameter("exec"))));
         return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
     }
 
-    private String prepareDate(String year, String month, String day){
-        if(year.length() < 4){
-            year = ("0000" + year).substring(year.length());
+    private long prepareDate(String year, String month, String day) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return dateFormatter.parse(year + "-" + month + "-" + day).getTime();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
-        if (day.length() < 2){
-            day = ("00" + day).substring(day.length());
-        }
-        return year+'-'+month+'-'+day;
     }
 }
