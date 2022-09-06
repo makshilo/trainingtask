@@ -13,7 +13,7 @@
 <h3>Проекты</h3>
 <table>
     <tr>
-        <th>Имя проекта</th>
+        <th>Наименование</th>
         <th>Описание</th>
     </tr>
     <c:forEach var="project" items="${requestScope.projects}">

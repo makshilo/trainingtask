@@ -14,11 +14,11 @@
 <table>
     <tr>
         <th>Статус</th>
-        <th>Имя</th>
-        <th>Проект</th>
+        <th>Наименование</th>
+        <th>Наименование проекта</th>
         <th>Работа</th>
-        <th>Начало</th>
-        <th>Конец</th>
+        <th>Дата начала</th>
+        <th>Дата окончания</th>
         <th>Исполнитель</th>
     </tr>
     <c:forEach var="task" items="${requestScope.tasks}">

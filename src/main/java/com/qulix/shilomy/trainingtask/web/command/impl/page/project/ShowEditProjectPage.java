@@ -50,16 +50,7 @@ public class ShowEditProjectPage implements Command {
         request.addAttributeToJsp("project", project);
         request.addAttributeToJsp("tasks", taskService.findByProject(project));
         request.addAttributeToJsp("employees", getEmployeeNames());
-        request.addAttributeToJsp("projects", getProjectNames());
         return requestFactory.createForwardResponse(propertyContext.get(PROJECT_EDIT_PAGE));
-    }
-
-    private HashMap<Long, String> getProjectNames() {
-        final HashMap<Long, String> projectNames = new HashMap<>();
-        for (ProjectEntity projectForName : projectService.findAll()) {
-            projectNames.put(projectForName.getId(), projectForName.getName());
-        }
-        return projectNames;
     }
 
     private HashMap<Long, String> getEmployeeNames() {

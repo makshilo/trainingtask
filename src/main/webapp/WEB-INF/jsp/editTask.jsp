@@ -12,11 +12,11 @@
 <header>
         <button class="home-button" onclick="window.location.href='/'"></button>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br><br>
+<button class="back-button" onclick="window.location.href='/controller?command=tasksPage'">Отмена</button><br><br>
 <form action="<c:url value="/controller?command=editTask&id=${requestScope.task.id}"/>" method="post">
-    <label for="tname">Имя:</label><br>
+    <label for="tname">Наименование:</label><br>
     <input maxlength="50" type="text" id="tname" name="tname" value="${fn:escapeXml(requestScope.task.name)}"><br><br>
-    <label for="proj">Проект:</label><br>
+    <label for="proj">Наименование проекта:</label><br>
     <c:choose>
         <c:when test="${requestScope.projectLock == true}">
             <select disabled name="proj" id="proj">
@@ -84,22 +84,23 @@
     <label for="endDay">День:</label>
     <input required value="${requestScope.task.endDate.toString().substring(8,10)}" type="number" id="endDay"
            name="endDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
+    <label for="stat">Статус:</label><br>
+    <select name="stat" id="stat">
+        <option <c:if test="${requestScope.task.status == 'NOT_STARTED'}">selected</c:if> value="NOT_STARTED">Не начата</option>
+        <option <c:if test="${requestScope.task.status == 'IN_PROGRESS'}">selected</c:if> value="IN_PROGRESS">В процессе</option>
+        <option <c:if test="${requestScope.task.status == 'DONE'}">selected</c:if> value="DONE">Завершена</option>
+        <option <c:if test="${requestScope.task.status == 'PAUSED'}">selected</c:if> value="PAUSED">Отложена</option>
+    </select><br><br>
     <label for="exec">Исполнитель:</label><br>
     <select name="exec" id="exec">
         <c:forEach var="employee" items="${requestScope.employees}">
-        <option value="${employee.id}" <c:if test="${employee.id == requestScope.task.executorId}">selected</c:if>>
+            <option value="${employee.id}"
+                    <c:if test="${employee.id == requestScope.task.executorId}">selected</c:if>>
                     ${fn:escapeXml(employee.lastName)}
                     ${fn:escapeXml(employee.firstName)}
                     ${fn:escapeXml(employee.patronymic)}
             </option>
         </c:forEach>
-    </select><br><br>
-    <label for="stat">Статус:</label><br>
-    <select name="stat" id="stat">
-        <option <c:if test="${requestScope.task.status == 'NOT_STARTED'}">selected</c:if> value="NOT_STARTED">Не начата</option>
-        <option <c:if test="${requestScope.task.status == 'IN_PROGRESS'}">selected</c:if> value="IN_PROGRESS">Выполняется</option>
-        <option <c:if test="${requestScope.task.status == 'DONE'}">selected</c:if> value="DONE">Готова</option>
-        <option <c:if test="${requestScope.task.status == 'PAUSED'}">selected</c:if> value="PAUSED">Приостановлена</option>
     </select><br><br>
     <input type="submit" value="Сохранить">
 </form>

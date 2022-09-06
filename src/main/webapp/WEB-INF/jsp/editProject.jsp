@@ -13,9 +13,9 @@
 <header>
         <button class="home-button" onclick="window.location.href='/'"></button>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Назад</button><br>
+<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Отмена</button><br>
 <form action="<c:url value="/controller?command=editProject&id=${requestScope.project.id}"/>" method="post">
-    <label for="pname">Имя проекта:</label><br>
+    <label for="pname">Наименование:</label><br>
     <input maxlength="100" required type="text" id="pname" name="pname" oninvalid="this.setCustomValidity('Заполните поле')"
            oninput="setCustomValidity('')" value="${fn:escapeXml(requestScope.project.name)}"><br>
     <label for="descr">Описание:</label><br>
@@ -25,11 +25,10 @@
 <table>
     <tr>
         <th>Статус</th>
-        <th>Имя</th>
-        <th>Проект</th>
+        <th>Наименование</th>
         <th>Работа</th>
-        <th>Начало</th>
-        <th>Конец</th>
+        <th>Дата начала</th>
+        <th>Дата окончания</th>
         <th>Исполнитель</th>
     </tr>
     <c:forEach var="task" items="${requestScope.tasks}">
@@ -43,7 +42,6 @@
                 </c:choose>
             </td>
             <td><c:out value="${task.name}"/></td>
-            <td><c:out value="${requestScope.projects.get(task.projectId)}"/></td>
             <td><c:out value="${task.work}"/></td>
             <td><c:out value="${task.startDate}"/></td>
             <td><c:out value="${task.endDate}"/></td>

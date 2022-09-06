@@ -12,9 +12,9 @@
 <header>
         <button class="home-button" onclick="window.location.href='/'"></button>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Назад</button><br>
+<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Отмена</button><br>
 <form action="<c:url value="/controller?command=createProject"/>" method="post">
-    <label for="pname">Имя проекта:</label><br>
+    <label for="pname">Наименование:</label><br>
     <input value="${fn:escapeXml(requestScope.filledProject.getName())}" maxlength="100" required type="text"
            id="pname" name="pname" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
     <c:if test="${requestScope.projectIsFound}">Такой проект уже существует</c:if><br><br>
