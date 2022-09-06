@@ -19,6 +19,8 @@ public class CreateProject implements Command {
 
     private static final String COMMAND_PROJECT_LIST = "command/projects_page";
 
+    public static final String CREATE_PROJECT_PAGE = "page.createProject";
+
     private final ProjectService projectService;
 
     private CreateProject(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
@@ -43,7 +45,7 @@ public class CreateProject implements Command {
         } else {
             request.addAttributeToJsp("projectIsFound", true);
             request.addAttributeToJsp("filledProject", newProject);
-            return requestFactory.createForwardResponse(propertyContext.get("page.createProject"));
+            return requestFactory.createForwardResponse(propertyContext.get(CREATE_PROJECT_PAGE));
         }
     }
 

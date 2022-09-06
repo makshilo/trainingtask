@@ -102,6 +102,8 @@ public class CommandFactoryImpl implements CommandFactory {
             case "createTask":
                 return CreateTask.getInstance(
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
+                        (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
+                        (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
                         requestFactory,
                         propertyContext
                 );
@@ -116,6 +118,8 @@ public class CommandFactoryImpl implements CommandFactory {
             case "editTask":
                 return EditTask.getInstance(
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
+                        (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
+                        (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
                         requestFactory,
                         propertyContext
                 );
