@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="../../css/general.css">
     <link rel="stylesheet" href="../../css/buttons.css">
+    <link rel="stylesheet" href="../../css/tables.css">
     <title>Список сотрудников</title>
 </head>
 <body>

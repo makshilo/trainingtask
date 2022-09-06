@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="../../css/general.css">
     <link rel="stylesheet" href="../../css/buttons.css">
+    <link rel="stylesheet" href="../../css/tables.css">
     <title>Список проектов</title>
 </head>
 <body>
