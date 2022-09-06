@@ -15,7 +15,7 @@
 <button class="back-button" onclick="window.location.href='/controller?command=tasksPage'">Назад</button><br><br>
 <form action="<c:url value="/controller?command=editTask&id=${requestScope.task.id}"/>" method="post">
     <label for="tname">Имя:</label><br>
-    <input maxlength="50" type="text" id="tname" name="tname" value=${fn:escapeXml(requestScope.task.name)}><br><br>
+    <input maxlength="50" type="text" id="tname" name="tname" value="${fn:escapeXml(requestScope.task.name)}"><br><br>
     <label for="proj">Проект:</label><br>
     <c:choose>
         <c:when test="${requestScope.projectLock == true}">
