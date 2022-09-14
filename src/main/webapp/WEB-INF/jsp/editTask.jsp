@@ -61,7 +61,7 @@
     <label for="startDay">День:</label>
     <input required value="${requestScope.task.startDate.toString().substring(8,10)}" type="number" id="startDay"
            name="startDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
-    <c:if test="${requestScope.dateCollision}">Неверная дата</c:if>
+    <c:if test="${requestScope.dateCollision}">Дата начала больше даты окончания</c:if>
     <c:if test="${requestScope.wrongStartDate}">Неверная дата начала</c:if><br><br>
     <br><br>
     <label>Дата окончания</label><br>
