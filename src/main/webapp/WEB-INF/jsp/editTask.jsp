@@ -61,7 +61,9 @@
     <label for="startDay">День:</label>
     <input required value="${requestScope.task.startDate.toString().substring(8,10)}" type="number" id="startDay"
            name="startDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
-    <c:if test="${requestScope.dateCollision}">Неверная дата</c:if><br><br>
+    <c:if test="${requestScope.dateCollision}">Неверная дата</c:if>
+    <c:if test="${requestScope.wrongStartDate}">Неверная дата начала</c:if><br><br>
+    <br><br>
     <label>Дата окончания</label><br>
     <label for="endYear">Год:</label>
     <input required value="${requestScope.task.endDate.toString().substring(0,4)}" type="number" min="1" max="9999" id="endYear" name="endYear"
@@ -83,7 +85,8 @@
     </select>
     <label for="endDay">День:</label>
     <input required value="${requestScope.task.endDate.toString().substring(8,10)}" type="number" id="endDay"
-           name="endDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
+           name="endDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
+    <c:if test="${requestScope.wrongEndDate}">Неверная дата окончания</c:if><br><br>
     <label for="stat">Статус:</label><br>
     <select name="stat" id="stat">
         <option <c:if test="${requestScope.task.status == 'NOT_STARTED'}">selected</c:if> value="NOT_STARTED">Не начата</option>
