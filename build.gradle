@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'org.hsqldb', name: 'hsqldb', version: gradle.hsqldbVersion
+        classpath group: 'org.hsqldb', name: 'hsqldb', version: hsqldbVersion
     }
 }
 
@@ -11,10 +11,7 @@ plugins {
     id 'java'
 }
 
-apply from: 'HSQLDB.gradle'
-
 group 'com.qulix.shilomy'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -24,14 +21,48 @@ repositories {
 dependencies {
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
     implementation group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
-    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-    compileOnly group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.1'
     runtimeOnly group: 'org.glassfish.web', name: 'jstl-impl', version: '1.2'
     def tomcatVersion = '9.0.64'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcatVersion
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: tomcatVersion
     implementation group: 'org.apache.tomcat', name: 'tomcat-el-api', version: '9.0.64'
-    implementation group: 'org.apache.tomcat', name: 'tomcat-jasper-el', version: '9.0.64'
+}
+
+task startDatabase() {
+    group = 'database'
+    doLast {
+        def className = "org.hsqldb.server.Server"
+        def filePath = "file:${projectDir}/${dbFile};user=${dbUser};password=${dbPassword}"
+
+        def process = buildProcess(className, filePath)
+    }
+}
+
+def buildProcess(className, filePath) {
+    def javaHome = System.getProperty("java.home")
+    def javaBin = javaHome + File.separator + "bin" + File.separator + "java"
+    def classpath = project.buildscript.configurations.classpath.asPath
+
+    def builder = new ProcessBuilder(javaBin, "-cp", classpath, className, "-database.0", filePath, "-dbname.0", dbName)
+    builder.redirectErrorStream(true)
+    builder.directory(projectDir)
+    def process = builder.start()
+    process
+}
+
+import groovy.sql.Sql
+
+task stopDatabase() {
+    group = 'database'
+    doLast {
+        ClassLoader loader = Sql.class.classLoader
+        project.buildscript.configurations.classpath.each { File file ->
+            loader.addURL(file.toURI().toURL())
+        }
+        Sql sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDrive) as Sql
+        sql.execute('SHUTDOWN;')
+        sql.close()
+    }
 }
 
 task startServer(type: JavaExec) {
