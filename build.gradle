@@ -9,6 +9,8 @@ buildscript {
 
 plugins {
     id 'java'
+    id 'war'
+    id 'com.github.sahara3.tomcat-runner' version '0.2.1'
 }
 
 group 'com.qulix.shilomy'
@@ -22,10 +24,7 @@ dependencies {
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
     implementation group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
     runtimeOnly group: 'org.glassfish.web', name: 'jstl-impl', version: '1.2'
-    def tomcatVersion = '9.0.64'
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcatVersion
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: tomcatVersion
-    implementation group: 'org.apache.tomcat', name: 'tomcat-el-api', version: '9.0.64'
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
 }
 
 task startDatabase() {
@@ -52,6 +51,7 @@ def buildProcess(className, filePath) {
 
 import groovy.sql.Sql
 
+
 task stopDatabase() {
     group = 'database'
     doLast {
@@ -65,9 +65,18 @@ task stopDatabase() {
     }
 }
 
-task startServer(type: JavaExec) {
-    group = "Execution"
+tomcat {
+    version = 9.0
+    port = serverPort as int
+
+    webapp("build/libs/${rootDir.name}.war") {
+        contextPath = ''
+    }
+}
+
+task startServer {
+    group = 'execution'
     description = "Start tomcat embedded server"
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.qulix.shilomy.trainingtask.web.EmbeddedTomcatRun'
+    dependsOn(war)
+    finalizedBy tomcatRun
 }
