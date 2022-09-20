@@ -1,45 +1,24 @@
-# trainingtask
+# Тренировочный проект: Управление задачами
 
-<!-- GETTING STARTED -->
-## Getting Started
-
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
+## Требования
+Минимально необходимые инструменты для сборки и запуска приложения:
 
 * jdk-11
-  ```sh
-  install openjdk-11-jdk
-  ```
-* any internet browser installed
-
-### Installation
-
-1. Clone the repo
-   ```sh
-   git clone https://git.qulix.com/ShiloMY/trainingtask.git
-   ```
-
+* gradle 7.4
 
 <!-- Startup -->
-## Startup
-Go to repo folder and execute following in terminal / cmd
-* Linux
-  ```sh
-  ./gradlew startDatabase
-  ```
-  ```sh
-  ./gradlew startServer
-  ```
-* Windows
-  ```sh
-  gradlew.bat startDatabase
-  ```
-  ```sh
-  gradlew.bat startServer
-  ```
-### Usage
-After startup launch any internet browser and go to page
+## Запуск
+Внутри корневой папки проекта в терминале или командной строке, необходимо выполнить следующие команды:
 
-**localhost:8089**
+  ```sh
+  gradle startDatabase
+  ```
+  ```sh
+  gradle startServer
+  ```
+  
+## Использование
+Для использования, необходимо открыть веб-браузер и перейти на страницу
+
+<localhost:8089>
 
