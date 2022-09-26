@@ -1,3 +1,5 @@
+import groovy.sql.Sql
+
 buildscript {
     repositories {
         mavenCentral()
@@ -30,27 +32,18 @@ dependencies {
 task startDatabase() {
     group = 'database'
     doLast {
+        def javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"
+        def classpath = project.buildscript.configurations.classpath.asPath
+
         def className = "org.hsqldb.server.Server"
         def filePath = "file:${projectDir}/${dbFile};user=${dbUser};password=${dbPassword}"
 
-        def process = buildProcess(className, filePath)
+        def builder = new ProcessBuilder(javaBin, "-cp", classpath, className, "-database.0", filePath, "-dbname.0", dbName)
+        builder.redirectErrorStream(true)
+        builder.directory(projectDir)
+        builder.start()
     }
 }
-
-def buildProcess(className, filePath) {
-    def javaHome = System.getProperty("java.home")
-    def javaBin = javaHome + File.separator + "bin" + File.separator + "java"
-    def classpath = project.buildscript.configurations.classpath.asPath
-
-    def builder = new ProcessBuilder(javaBin, "-cp", classpath, className, "-database.0", filePath, "-dbname.0", dbName)
-    builder.redirectErrorStream(true)
-    builder.directory(projectDir)
-    def process = builder.start()
-    process
-}
-
-import groovy.sql.Sql
-
 
 task stopDatabase() {
     group = 'database'
