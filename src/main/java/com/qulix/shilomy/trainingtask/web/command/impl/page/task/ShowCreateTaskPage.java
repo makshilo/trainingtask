@@ -38,12 +38,16 @@ public class ShowCreateTaskPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
+        fillPage(request, employeeService, projectService);
+        return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
+    }
+
+    public static void fillPage(CommandRequest request, EmployeeService employeeService, ProjectService projectService) {
         request.addAttributeToJsp("employees", employeeService.findAll());
         request.addAttributeToJsp("projects", projectService.findAll());
         if (request.getParameter("projectLock") != null) {
             request.addAttributeToJsp("projectLock", true);
             request.addAttributeToJsp("currentProject", projectService.get(Long.parseLong(request.getParameter("currentProject"))));
         }
-        return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
     }
 }

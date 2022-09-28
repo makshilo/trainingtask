@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.command.impl.action.task;
 
 import com.qulix.shilomy.trainingtask.web.command.Command;
+import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPage;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
@@ -14,8 +15,9 @@ import com.qulix.shilomy.trainingtask.web.validator.DateValidator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.DateValidatorImpl;
 
 import java.sql.Date;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
+
+import static com.qulix.shilomy.trainingtask.web.command.impl.action.task.CreateTask.checkDate;
+import static com.qulix.shilomy.trainingtask.web.command.impl.action.task.CreateTask.isDateValid;
 
 public class EditTask implements Command {
     private static EditTask instance;
@@ -27,8 +29,6 @@ public class EditTask implements Command {
     private static final String COMMAND_TASK_LIST = "command/tasks_page";
 
     public static final String EDIT_TASK_PAGE = "page.editTask";
-
-    public static final String DATE_FORMAT = "uuuu-MM-dd";
 
     private final TaskService taskService;
 
@@ -60,54 +60,32 @@ public class EditTask implements Command {
         String endDate = request.getParameter("endYear") +
                 "-" + request.getParameter("endMonth") +
                 "-" + request.getParameter("endDay");
-        if (checkDate(startDate)) {
-            if (checkDate(endDate)) {
-                if (!Date.valueOf(startDate).after(Date.valueOf(endDate))) {
-                    taskService.update(fillTask(request, startDate, endDate));
-                    return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
-                } else {
-                    request.addAttributeToJsp("dateCollision", true);
-                    request.addAttributeToJsp("task", fillTask(request, startDate, endDate));
-                    returnToPage(request);
-                    return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
-                }
-            } else {
-                request.addAttributeToJsp("wrongEndDate", true);
-                request.addAttributeToJsp("task", taskService.get(Long.parseLong(request.getParameter("id"))));
-                returnToPage(request);
-                return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
-            }
-        } else {
-            request.addAttributeToJsp("wrongStartDate", true);
-            request.addAttributeToJsp("task", taskService.get(Long.parseLong(request.getParameter("id"))));
-            returnToPage(request);
+
+        DateValidator dateValidator = new DateValidatorImpl();
+
+        if (!isDateValid(request, dateValidator)) {
+            checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
+                    "invalidStartYear", "invalidStartDay", "wrongStartDate");
+            checkDate(dateValidator, request,
+                    "endYear", "endMonth", "endDay",
+                    "invalidEndYear", "invalidEndDay", "wrongEndDate");
+            ShowEditTaskPage.fillPage(request, projectService, employeeService);
             return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
-        }
-    }
-
-    private boolean checkDate(String date) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT).withResolverStyle(ResolverStyle.STRICT);
-        DateValidator dateValidator = new DateValidatorImpl(dateTimeFormatter);
-        return dateValidator.isValid(date);
-    }
-
-    private static TaskEntity fillTask(CommandRequest request, String startDate, String endDate) {
-        return new TaskEntity(
-                TaskStatus.of(request.getParameter("stat")),
-                request.getParameter("tname"),
-                Long.parseLong(request.getParameter("proj")),
-                request.getParameter("work"),
-                Date.valueOf(startDate),
-                Date.valueOf(endDate),
-                Long.parseLong(request.getParameter("exec")));
-    }
-
-    private void returnToPage(CommandRequest request) {
-        request.addAttributeToJsp("employees", employeeService.findAll());
-        request.addAttributeToJsp("projects", projectService.findAll());
-        if (request.getParameter("projectLock") != null) {
-            request.addAttributeToJsp("projectLock", true);
-            request.addAttributeToJsp("currentProject", projectService.get(Long.parseLong(request.getParameter("currentProject"))));
+        } else if (!Date.valueOf(endDate).after(Date.valueOf(startDate))) {
+            request.addAttributeToJsp("dateCollision", true);
+            ShowEditTaskPage.fillPage(request, projectService, employeeService);
+            return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
+        } else {
+            taskService.update(new TaskEntity(
+                    TaskStatus.of(request.getParameter("stat")),
+                    request.getParameter("tname"),
+                    Long.parseLong(request.getParameter("proj")),
+                    request.getParameter("work"),
+                    Date.valueOf(startDate),
+                    Date.valueOf(endDate),
+                    Long.parseLong(request.getParameter("exec")),
+                    Long.parseLong(request.getParameter("id"))));
+            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
         }
     }
 }
