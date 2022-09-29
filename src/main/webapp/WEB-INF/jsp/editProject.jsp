@@ -14,12 +14,32 @@
         <button class="home-button" onclick="window.location.href='/'"></button>
 </header>
 <button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Отмена</button><br>
-<form action="<c:url value="/controller?command=editProject&id=${requestScope.project.id}"/>" method="post">
-    <label for="pname">Наименование:</label><br>
-    <input maxlength="100" required type="text" id="pname" name="pname" oninvalid="this.setCustomValidity('Заполните поле')"
-           oninput="setCustomValidity('')" value="${fn:escapeXml(requestScope.project.name)}"><br>
-    <label for="descr">Описание:</label><br>
-    <textarea maxlength="1000" id="descr" name="descr" rows="4" cols="50">${fn:escapeXml(requestScope.project.description)}</textarea><br><br>
+
+<c:set scope="request" var="id" value="${requestScope.project.id}"/>
+
+<form action="<c:url value="/controller?command=editProject&id=${param.id}"/>" method="post">
+    <label for="projectName">Наименование:</label><br>
+    <c:choose>
+        <c:when test="${requestScope.project.name != null}">
+            <c:set var="projectName" value="${requestScope.project.name}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="projectName" value="${fn:escapeXml(param.projectName)}"/>
+        </c:otherwise>
+    </c:choose>
+    <input maxlength="100" type="text" id="projectName" name="projectName" value="projectName">
+    <c:if test="${requestScope.projectNameNull}">Заполните поле</c:if><br><br>
+    <label for="description">Описание:</label><br>
+    <c:choose>
+        <c:when test="${requestScope.project.description != null}">
+            <c:set var="description" value="${requestScope.project.description}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="description" value="${fn:escapeXml(param.description)}"/>
+        </c:otherwise>
+    </c:choose>
+    <textarea maxlength="1000" id="description" name="description" rows="4" cols="50">${description}</textarea>
+    <c:if test="${requestScope.projectDescriptionNull}">Заполните поле</c:if><br><br>
     <input type="submit" value="Сохранить">
 </form>
 <table>

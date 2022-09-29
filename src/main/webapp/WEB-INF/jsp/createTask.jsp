@@ -15,23 +15,23 @@
 </header>
 <button class="back-button" onclick="window.location.href='/controller?command=tasksPage'">Отмена</button><br><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
-    <label for="tname">Наименование:</label><br>
-    <input maxlength="50" value="<c:out value="${param.tname}"/>" required type="text" id="tname" name="tname"
-           oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
-    <label for="proj">Наименование проекта:</label><br>
+    <label for="taskName">Наименование:</label><br>
+    <input maxlength="50" value="${fn:escapeXml(param.taskName)}" type="text" id="taskName" name="taskName">
+    <c:if test="${requestScope.taskNameNull}">Заполните поле</c:if><br><br>
+    <label for="project">Наименование проекта:</label><br>
     <c:choose>
         <c:when test="${requestScope.projectLock == true}">
-            <select disabled name="proj" id="proj">
+            <select disabled name="project" id="project">
                 <option selected
                         value="${requestScope.currentProject.id}"> ${fn:escapeXml(requestScope.currentProject.name)}</option>
             </select><br><br>
-            <input type="hidden" name="proj" value="${fn:escapeXml(requestScope.currentProject.id)}">
+            <input type="hidden" name="project" value="${fn:escapeXml(requestScope.currentProject.id)}">
         </c:when>
         <c:otherwise>
-            <select name="proj" id="proj">
+            <select name="project" id="project">
                 <c:forEach var="project" items="${requestScope.projects}">
                     <option value="${project.id}"
-                            <c:if test="${project.id == param.proj}">selected</c:if>>
+                            <c:if test="${project.id == param.project}">selected</c:if>>
                             ${fn:escapeXml(project.name)}
                     </option>
                 </c:forEach>
@@ -39,13 +39,12 @@
         </c:otherwise>
     </c:choose>
     <label for="work">Работа:</label><br>
-    <input required type="number" id="work" name="work" value="${fn:escapeXml(param.work)}" min="0"
-           oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')"><br><br>
+    <input type="number" id="work" name="work" value="${fn:escapeXml(param.work)}" min="0">
+    <c:if test="${requestScope.workNull}">Заполните поле</c:if><br><br>
     <label>Дата начала</label><br>
     <label for="startYear">Год:</label>
-    <input required value="${param.startYear}"
-           type="number" min="1" max="9999" id="startYear" name="startYear"
-           oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
+    <input value="${fn:escapeXml(param.startYear)}" type="number" min="1" max="9999" id="startYear" name="startYear">
+    <c:if test="${requestScope.startYearNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidStartYear}">Неверный год</c:if>
     <label for="startMonth">Месяц:</label>
     <select class="month-select" id="startMonth" name="startMonth">
@@ -63,14 +62,14 @@
         <option <c:if test="${param.startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
     <label for="startDay">День:</label>
-    <input required value="${param.startDay}" type="number" id="startDay"
-           name="startDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
+    <input value="${fn:escapeXml(param.startDay)}" type="number" id="startDay" name="startDay" min="1" max="31">
+    <c:if test="${requestScope.startDayNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidStartDay}">Неверный день</c:if>
     <c:if test="${requestScope.wrongStartDate}">Неверная дата начала</c:if><br><br>
     <label>Дата окончания</label><br>
     <label for="endYear">Год:</label>
-    <input required value="${param.endYear}" type="number" min="1" max="9999" id="endYear" name="endYear"
-           oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
+    <input value="${fn:escapeXml(param.endYear)}" type="number" min="1" max="9999" id="endYear" name="endYear">
+    <c:if test="${requestScope.endYearNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidEndYear}">Неверный год</c:if>
     <label for="endMonth">Месяц:</label>
     <select class="month-select" id="endMonth" name="endMonth">
@@ -88,23 +87,23 @@
         <option <c:if test="${param.endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
     <label for="endDay">День:</label>
-    <input required value="${param.endDay}" type="number" id="endDay"
-           name="endDay" min="1" max="31" oninvalid="this.setCustomValidity('Заполните поле')" oninput="setCustomValidity('')">
+    <input value="${fn:escapeXml(param.endDay)}" type="number" id="endDay" name="endDay" min="1" max="31">
+    <c:if test="${requestScope.endDayNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidEndDay}">Неверный день</c:if>
     <c:if test="${requestScope.wrongEndDate}">Неверная дата окончания</c:if><br><br>
     <c:if test="${requestScope.dateCollision}">Дата начала больше даты окончания<br><br></c:if>
-    <label for="stat">Статус:</label><br>
-    <select name="stat" id="stat">
-        <option <c:if test="${param.stat == 'NOT_STARTED'}">selected</c:if> value="NOT_STARTED">Не начата</option>
-        <option <c:if test="${param.stat == 'IN_PROGRESS'}">selected</c:if> value="IN_PROGRESS">В процессе</option>
-        <option <c:if test="${param.stat == 'DONE'}">selected</c:if> value="DONE">Завершена</option>
-        <option <c:if test="${param.stat == 'PAUSED'}">selected</c:if> value="PAUSED">Отложена</option>
+    <label for="status">Статус:</label><br>
+    <select name="status" id="status">
+        <option <c:if test="${param.status == 'NOT_STARTED'}">selected</c:if> value="NOT_STARTED">Не начата</option>
+        <option <c:if test="${param.status == 'IN_PROGRESS'}">selected</c:if> value="IN_PROGRESS">В процессе</option>
+        <option <c:if test="${param.status == 'DONE'}">selected</c:if> value="DONE">Завершена</option>
+        <option <c:if test="${param.status == 'PAUSED'}">selected</c:if> value="PAUSED">Отложена</option>
     </select><br><br>
-    <label for="exec">Исполнитель:</label><br>
-    <select name="exec" id="exec" required oninvalid="this.setCustomValidity('Выберите исполнителя')" oninput="setCustomValidity('')">
+    <label for="executor">Исполнитель:</label><br>
+    <select name="executor" id="executor">
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}"
-                    <c:if test="${employee.id == param.exec}">selected</c:if>>
+                    <c:if test="${employee.id == param.executor}">selected</c:if>>
                     ${employee.lastName}
                     ${employee.firstName}
                     ${employee.patronymic}

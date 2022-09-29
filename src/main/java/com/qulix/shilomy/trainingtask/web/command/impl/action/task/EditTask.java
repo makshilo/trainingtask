@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.command.impl.action.task;
 
 import com.qulix.shilomy.trainingtask.web.command.Command;
+import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowCreateTaskPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPage;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
@@ -8,6 +9,7 @@ import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
+import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -15,9 +17,6 @@ import com.qulix.shilomy.trainingtask.web.validator.DateValidator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.DateValidatorImpl;
 
 import java.sql.Date;
-
-import static com.qulix.shilomy.trainingtask.web.command.impl.action.task.CreateTask.checkDate;
-import static com.qulix.shilomy.trainingtask.web.command.impl.action.task.CreateTask.isDateValid;
 
 public class EditTask implements Command {
     private static EditTask instance;
@@ -54,37 +53,45 @@ public class EditTask implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        String startDate = request.getParameter("startYear") +
+        TaskStatus status = TaskStatus.of(request.getParameter("status"));
+        String taskName = request.getParameter("taskName");
+        Long projectId = Long.parseLong(request.getParameter("project"));
+        String work = request.getParameter("work");
+        Long executorId = Long.parseLong(request.getParameter("executor"));
+        Long id = Long.parseLong(request.getParameter("id"));
+
+        try {
+            CreateTask.validateFields(request, taskName, work,
+                    request.getParameter("startYear"), request.getParameter("startDay"),
+                    request.getParameter("endYear"), request.getParameter("endDay"));
+        } catch (NullFieldException e) {
+            ShowCreateTaskPage.fillPage(request, employeeService, projectService);
+            return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
+        }
+
+        Date startDate = Date.valueOf(request.getParameter("startYear") +
                 "-" + request.getParameter("startMonth") +
-                "-" + request.getParameter("startDay");
-        String endDate = request.getParameter("endYear") +
+                "-" + request.getParameter("startDay"));
+        Date endDate = Date.valueOf(request.getParameter("endYear") +
                 "-" + request.getParameter("endMonth") +
-                "-" + request.getParameter("endDay");
+                "-" + request.getParameter("endDay"));
 
         DateValidator dateValidator = new DateValidatorImpl();
 
-        if (!isDateValid(request, dateValidator)) {
-            checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
+        if (!CreateTask.isDateValid(request, dateValidator)) {
+            CreateTask.checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
                     "invalidStartYear", "invalidStartDay", "wrongStartDate");
-            checkDate(dateValidator, request,
+            CreateTask.checkDate(dateValidator, request,
                     "endYear", "endMonth", "endDay",
                     "invalidEndYear", "invalidEndDay", "wrongEndDate");
             ShowEditTaskPage.fillPage(request, projectService, employeeService);
             return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
-        } else if (!Date.valueOf(endDate).after(Date.valueOf(startDate))) {
+        } else if (!endDate.after(startDate)) {
             request.addAttributeToJsp("dateCollision", true);
             ShowEditTaskPage.fillPage(request, projectService, employeeService);
             return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
         } else {
-            taskService.update(new TaskEntity(
-                    TaskStatus.of(request.getParameter("stat")),
-                    request.getParameter("tname"),
-                    Long.parseLong(request.getParameter("proj")),
-                    request.getParameter("work"),
-                    Date.valueOf(startDate),
-                    Date.valueOf(endDate),
-                    Long.parseLong(request.getParameter("exec")),
-                    Long.parseLong(request.getParameter("id"))));
+            taskService.update(new TaskEntity(status, taskName, projectId, work, startDate, endDate, executorId, id));
             return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
         }
     }
