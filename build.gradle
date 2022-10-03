@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'org.hsqldb', name: 'hsqldb', version: hsqldbVersion
+        classpath group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
     }
 }
 

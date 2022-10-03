@@ -16,7 +16,7 @@ import static java.lang.String.format;
 public class PropertyContextImpl implements PropertyContext {
     private static final Logger LOGGER = Logger.getLogger(PropertyContextImpl.class.getName());
     private static final String PAGE_PROPERTIES_PATH = "src/main/resources/page.properties";
-    private static final String CONFIG_PROPERTIES_PATH = "src/main/resources/config.properties";
+    private static final String CONFIG_PROPERTIES_PATH = "src/main/resources/database.properties";
     private static final String COMMAND_PROPERTIES_PATH = "src/main/resources/command.properties";
     private static final String SERVER_PROPERTIES_PATH = "src/main/resources/server.properties";
     private static final String PAGE_ATTRIBUTE = "page.";
