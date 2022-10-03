@@ -29,6 +29,32 @@ dependencies {
     compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
 }
 
+task createDatabase() {
+    group = 'database'
+    doLast{
+        String createQuery = new File('database/create.sql').text
+        executeSqlQuery(createQuery)
+    }
+}
+
+task dropDatabase() {
+    group = 'database'
+    doLast{
+        String dropQuery = new File('database/drop.sql').text
+        executeSqlQuery(dropQuery)
+    }
+}
+
+def executeSqlQuery(String query) {
+    ClassLoader loader = Sql.class.classLoader
+    project.buildscript.configurations.classpath.each { File file ->
+        loader.addURL(file.toURI().toURL())
+    }
+    Sql sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDrive)
+    sql.execute(query)
+    sql.close()
+}
+
 task startDatabase() {
     group = 'database'
     doLast {
@@ -48,13 +74,7 @@ task startDatabase() {
 task stopDatabase() {
     group = 'database'
     doLast {
-        ClassLoader loader = Sql.class.classLoader
-        project.buildscript.configurations.classpath.each { File file ->
-            loader.addURL(file.toURI().toURL())
-        }
-        Sql sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDrive) as Sql
-        sql.execute('SHUTDOWN;')
-        sql.close()
+        executeSqlQuery('SHUTDOWN;')
     }
 }
 

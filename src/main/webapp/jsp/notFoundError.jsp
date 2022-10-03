@@ -1,7 +1,7 @@
 <html>
 <head>
-    <link rel="stylesheet" href="../../css/general.css">
-    <link rel="stylesheet" href="../../css/buttons.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/buttons.css">
     <title>Страница не найдена</title>
 </head>
 <body>

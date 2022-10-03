@@ -1,16 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <link rel="stylesheet" href="../../css/general.css">
-    <link rel="stylesheet" href="../../css/buttons.css">
-    <link rel="stylesheet" href="../../css/tables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../css/tables.css">
     <title>Список задач</title>
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='/'"></button>
+        <button class="home-button" onclick="window.location.href='..'"></button>
 </header>
-<button class="back-button" onclick="window.location.href='/'">Назад</button><br>
+<button class="back-button" onclick="window.location.href='..'">Назад</button><br>
 <h3>Задачи</h3>
 <table>
     <tr>

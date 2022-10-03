@@ -3,15 +3,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <link rel="stylesheet" href="../../css/general.css">
-    <link rel="stylesheet" href="../../css/buttons.css">
-    <link rel="stylesheet" href="../../css/inputs.css">
-    <link rel="stylesheet" href="../../css/labels.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../css/inputs.css">
+    <link rel="stylesheet" href="../css/labels.css">
     <title>Добавить задачу</title>
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='/'"></button>
+        <button class="home-button" onclick="window.location.href='..'"></button>
 </header>
 <button class="back-button" onclick="window.location.href='/controller?command=tasksPage'">Отмена</button><br><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
