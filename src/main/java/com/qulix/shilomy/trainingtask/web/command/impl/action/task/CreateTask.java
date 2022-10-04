@@ -65,16 +65,24 @@ public class CreateTask implements Command {
             return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
         }
 
-        Date startDate = Date.valueOf(request.getParameter("startYear") +
-                "-" + request.getParameter("startMonth") +
-                "-" + request.getParameter("startDay"));
-        Date endDate = Date.valueOf(request.getParameter("endYear") +
-                "-" + request.getParameter("endMonth") +
-                "-" + request.getParameter("endDay"));
-
         DateValidator dateValidator = new DateValidatorImpl();
 
-        if (!isDateValid(request, dateValidator)) {
+        if (isDateValid(request, dateValidator)) {
+            Date startDate = Date.valueOf(request.getParameter("startYear") +
+                    "-" + request.getParameter("startMonth") +
+                    "-" + request.getParameter("startDay"));
+            Date endDate = Date.valueOf(request.getParameter("endYear") +
+                    "-" + request.getParameter("endMonth") +
+                    "-" + request.getParameter("endDay"));
+            if (endDate.after(startDate)){
+                taskService.add(new TaskEntity(status,taskName, projectId, work, startDate,endDate, executorId));
+                return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
+            } else {
+                request.addAttributeToJsp("dateCollision", true);
+                ShowCreateTaskPage.fillPage(request, employeeService, projectService);
+                return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
+            }
+        } else {
             checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
                     "invalidStartYear", "invalidStartDay", "wrongStartDate");
             checkDate(dateValidator, request,
@@ -82,13 +90,6 @@ public class CreateTask implements Command {
                     "invalidEndYear", "invalidEndDay", "wrongEndDate");
             ShowCreateTaskPage.fillPage(request, employeeService, projectService);
             return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
-        } else if (!endDate.after(startDate)) {
-            request.addAttributeToJsp("dateCollision", true);
-            ShowCreateTaskPage.fillPage(request, employeeService, projectService);
-            return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
-        } else {
-            taskService.add(new TaskEntity(status,taskName, projectId, work, startDate,endDate, executorId));
-            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
         }
     }
 
@@ -125,6 +126,9 @@ public class CreateTask implements Command {
         } else if (work == null || work.equals("")) {
             request.addAttributeToJsp("workNull", true);
             throw new NullFieldException("Work is null");
+        } else if (Integer.parseInt(work) < 0) {
+            request.addAttributeToJsp("workNegative", true);
+            throw new NullFieldException("Start year is null");
         } else if (startYear == null || startYear.equals("")) {
             request.addAttributeToJsp("startYearNull", true);
             throw new NullFieldException("Start year is null");

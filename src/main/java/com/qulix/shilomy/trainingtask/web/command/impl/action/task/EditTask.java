@@ -69,16 +69,24 @@ public class EditTask implements Command {
             return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
         }
 
-        Date startDate = Date.valueOf(request.getParameter("startYear") +
-                "-" + request.getParameter("startMonth") +
-                "-" + request.getParameter("startDay"));
-        Date endDate = Date.valueOf(request.getParameter("endYear") +
-                "-" + request.getParameter("endMonth") +
-                "-" + request.getParameter("endDay"));
-
         DateValidator dateValidator = new DateValidatorImpl();
 
-        if (!CreateTask.isDateValid(request, dateValidator)) {
+        if (CreateTask.isDateValid(request, dateValidator)) {
+            Date startDate = Date.valueOf(request.getParameter("startYear") +
+                    "-" + request.getParameter("startMonth") +
+                    "-" + request.getParameter("startDay"));
+            Date endDate = Date.valueOf(request.getParameter("endYear") +
+                    "-" + request.getParameter("endMonth") +
+                    "-" + request.getParameter("endDay"));
+            if (endDate.after(startDate)){
+                taskService.update(new TaskEntity(status, taskName, projectId, work, startDate, endDate, executorId, id));
+                return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
+            } else {
+                request.addAttributeToJsp("dateCollision", true);
+                ShowEditTaskPage.fillPage(request, projectService, employeeService);
+                return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
+            }
+        } else {
             CreateTask.checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
                     "invalidStartYear", "invalidStartDay", "wrongStartDate");
             CreateTask.checkDate(dateValidator, request,
@@ -86,13 +94,6 @@ public class EditTask implements Command {
                     "invalidEndYear", "invalidEndDay", "wrongEndDate");
             ShowEditTaskPage.fillPage(request, projectService, employeeService);
             return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
-        } else if (!endDate.after(startDate)) {
-            request.addAttributeToJsp("dateCollision", true);
-            ShowEditTaskPage.fillPage(request, projectService, employeeService);
-            return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
-        } else {
-            taskService.update(new TaskEntity(status, taskName, projectId, work, startDate, endDate, executorId, id));
-            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
         }
     }
 }
