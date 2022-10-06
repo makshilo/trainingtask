@@ -5,7 +5,6 @@ import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowCreateTaskP
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPage;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
@@ -23,11 +22,9 @@ public class EditTask implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
+    private static final String COMMAND_TASK_LIST = "/controller?command=tasksPage";
 
-    private static final String COMMAND_TASK_LIST = "command/tasks_page";
-
-    public static final String EDIT_TASK_PAGE = "page.editTask";
+    public static final String EDIT_TASK_PAGE = "/jsp/editTask.jsp";
 
     private final TaskService taskService;
 
@@ -35,18 +32,17 @@ public class EditTask implements Command {
 
     private final ProjectService projectService;
     private EditTask(TaskService taskService, EmployeeService employeeService, ProjectService projectService,
-                     RequestFactory requestFactory, PropertyContext propertyContext) {
+                     RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.taskService = taskService;
         this.employeeService = employeeService;
         this.projectService = projectService;
     }
 
     public static synchronized EditTask getInstance(TaskService taskService, EmployeeService employeeService, ProjectService projectService,
-                                                    RequestFactory requestFactory, PropertyContext propertyContext) {
+                                                    RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new EditTask(taskService, employeeService, projectService, requestFactory, propertyContext);
+            instance = new EditTask(taskService, employeeService, projectService, requestFactory);
         }
         return instance;
     }
@@ -66,7 +62,7 @@ public class EditTask implements Command {
                     request.getParameter("endYear"), request.getParameter("endDay"));
         } catch (NullFieldException e) {
             ShowCreateTaskPage.fillPage(request, employeeService, projectService);
-            return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
+            return requestFactory.createForwardResponse(EDIT_TASK_PAGE);
         }
 
         DateValidator dateValidator = new DateValidatorImpl();
@@ -80,11 +76,11 @@ public class EditTask implements Command {
                     "-" + request.getParameter("endDay"));
             if (endDate.after(startDate)){
                 taskService.update(new TaskEntity(status, taskName, projectId, work, startDate, endDate, executorId, id));
-                return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
+                return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
             } else {
                 request.addAttributeToJsp("dateCollision", true);
                 ShowEditTaskPage.fillPage(request, projectService, employeeService);
-                return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
+                return requestFactory.createForwardResponse(EDIT_TASK_PAGE);
             }
         } else {
             CreateTask.checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
@@ -93,7 +89,7 @@ public class EditTask implements Command {
                     "endYear", "endMonth", "endDay",
                     "invalidEndYear", "invalidEndDay", "wrongEndDate");
             ShowEditTaskPage.fillPage(request, projectService, employeeService);
-            return requestFactory.createForwardResponse(propertyContext.get(EDIT_TASK_PAGE));
+            return requestFactory.createForwardResponse(EDIT_TASK_PAGE);
         }
     }
 }

@@ -4,7 +4,6 @@ import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowCreateTaskPage;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
@@ -19,31 +18,43 @@ import java.sql.Date;
 
 public class CreateTask implements Command {
 
+    public static final String TASK_NAME_NULL = "taskNameNull";
+    public static final String WORK_NULL = "workNull";
+    public static final String START_YEAR_NULL = "startYearNull";
+    public static final String START_DAY_NULL = "startDayNull";
+    public static final String END_YEAR_NULL = "endYearNull";
+    public static final String END_DAY_NULL = "endDayNull";
+    public static final String TASK_NAME_NULL_MESSAGE = "Task name is null";
+    public static final String WORK_NULL_MESSAGE = "Work is null";
+    public static final String WORK_NEGATIVE = "workNegative";
+    public static final String WORK_NEGATIVE_MESSAGE = "Work is negative";
+    public static final String START_YEAR_NULL_MESSAGE = "Start year is null";
+    public static final String START_DAY_NULL_MESSAGE = "Start day is null";
+    public static final String END_YEAR_NULL_MESSAGE = "End year is null";
+    public static final String END_DAY_NULL_MESSAGE = "End day is null";
     private static CreateTask instance;
 
     private final RequestFactory requestFactory;
-    private final PropertyContext propertyContext;
 
-    private static final String COMMAND_TASK_LIST = "command/tasks_page";
-    public static final String CREATE_TASK_PAGE = "page.createTask";
+    private static final String COMMAND_TASK_LIST = "/controller?command=tasksPage";
+    public static final String CREATE_TASK_PAGE = "/jsp/createTask.jsp";
 
     private final TaskService taskService;
     private final EmployeeService employeeService;
     private final ProjectService projectService;
 
     private CreateTask(TaskService taskService, EmployeeService employeeService, ProjectService projectService,
-                       RequestFactory requestFactory, PropertyContext propertyContext) {
+                       RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.taskService = taskService;
         this.employeeService = employeeService;
         this.projectService = projectService;
     }
 
     public static synchronized CreateTask getInstance(TaskService taskService, EmployeeService employeeService, ProjectService projectService,
-                                                      RequestFactory requestFactory, PropertyContext propertyContext) {
+                                                      RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new CreateTask(taskService, employeeService, projectService, requestFactory, propertyContext);
+            instance = new CreateTask(taskService, employeeService, projectService, requestFactory);
         }
         return instance;
     }
@@ -62,7 +73,7 @@ public class CreateTask implements Command {
                     request.getParameter("endYear"), request.getParameter("endDay"));
         } catch (NullFieldException e) {
             ShowCreateTaskPage.fillPage(request, employeeService, projectService);
-            return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
+            return requestFactory.createForwardResponse(CREATE_TASK_PAGE);
         }
 
         DateValidator dateValidator = new DateValidatorImpl();
@@ -76,11 +87,11 @@ public class CreateTask implements Command {
                     "-" + request.getParameter("endDay"));
             if (endDate.after(startDate)){
                 taskService.add(new TaskEntity(status,taskName, projectId, work, startDate,endDate, executorId));
-                return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_TASK_LIST));
+                return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
             } else {
                 request.addAttributeToJsp("dateCollision", true);
                 ShowCreateTaskPage.fillPage(request, employeeService, projectService);
-                return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
+                return requestFactory.createForwardResponse(CREATE_TASK_PAGE);
             }
         } else {
             checkDate(dateValidator, request, "startYear", "startMonth", "startDay",
@@ -89,7 +100,7 @@ public class CreateTask implements Command {
                     "endYear", "endMonth", "endDay",
                     "invalidEndYear", "invalidEndDay", "wrongEndDate");
             ShowCreateTaskPage.fillPage(request, employeeService, projectService);
-            return requestFactory.createForwardResponse(propertyContext.get(CREATE_TASK_PAGE));
+            return requestFactory.createForwardResponse(CREATE_TASK_PAGE);
         }
     }
 
@@ -121,26 +132,26 @@ public class CreateTask implements Command {
     static void validateFields(CommandRequest request, String taskName, String work,
                                String startYear, String startDay, String endYear, String endDay) throws NullFieldException {
         if (taskName == null || taskName.equals("")) {
-            request.addAttributeToJsp("taskNameNull", true);
-            throw new NullFieldException("Task name is null");
+            request.addAttributeToJsp(TASK_NAME_NULL, true);
+            throw new NullFieldException(TASK_NAME_NULL_MESSAGE);
         } else if (work == null || work.equals("")) {
-            request.addAttributeToJsp("workNull", true);
-            throw new NullFieldException("Work is null");
+            request.addAttributeToJsp(WORK_NULL, true);
+            throw new NullFieldException(WORK_NULL_MESSAGE);
         } else if (Integer.parseInt(work) < 0) {
-            request.addAttributeToJsp("workNegative", true);
-            throw new NullFieldException("Start year is null");
+            request.addAttributeToJsp(WORK_NEGATIVE, true);
+            throw new NullFieldException(WORK_NEGATIVE_MESSAGE);
         } else if (startYear == null || startYear.equals("")) {
-            request.addAttributeToJsp("startYearNull", true);
-            throw new NullFieldException("Start year is null");
+            request.addAttributeToJsp(START_YEAR_NULL, true);
+            throw new NullFieldException(START_YEAR_NULL_MESSAGE);
         } else if (startDay == null || startDay.equals("")) {
-            request.addAttributeToJsp("startDayNull", true);
-            throw new NullFieldException("Start day is null");
+            request.addAttributeToJsp(START_DAY_NULL, true);
+            throw new NullFieldException(START_DAY_NULL_MESSAGE);
         } else if (endYear == null || endYear.equals("")) {
-            request.addAttributeToJsp("endYearNull", true);
-            throw new NullFieldException("End year is null");
+            request.addAttributeToJsp(END_YEAR_NULL, true);
+            throw new NullFieldException(END_YEAR_NULL_MESSAGE);
         } else if (endDay == null || endDay.equals("")) {
-            request.addAttributeToJsp("endDayNull", true);
-            throw new NullFieldException("End day is null");
+            request.addAttributeToJsp(END_DAY_NULL, true);
+            throw new NullFieldException(END_DAY_NULL_MESSAGE);
         }
     }
 }

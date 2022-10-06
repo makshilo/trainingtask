@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.action.employee;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
@@ -14,22 +13,19 @@ public class EditEmployee implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
-
-    private static final String COMMAND_EMPLOYEE_LIST = "command/employees_page";
-    public static final String EDIT_EMPLOYEE_PAGE = "page.editEmployee";
+    private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
+    public static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
 
 
     private final EmployeeService employeeService;
-    private EditEmployee(EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    private EditEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
     }
 
-    public static synchronized EditEmployee getInstance(EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized EditEmployee getInstance(EmployeeService employeeService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new EditEmployee(employeeService, requestFactory, propertyContext);
+            instance = new EditEmployee(employeeService, requestFactory);
         }
         return instance;
     }
@@ -44,9 +40,9 @@ public class EditEmployee implements Command {
         try {
             CreateEmployee.validateFields(request, firstName, lastName, patronymic, position);
         } catch (NullFieldException e) {
-            return requestFactory.createForwardResponse(propertyContext.get(EDIT_EMPLOYEE_PAGE));
+            return requestFactory.createForwardResponse(EDIT_EMPLOYEE_PAGE);
         }
         employeeService.update(new EmployeeEntity(firstName, lastName, patronymic, position, id));
-        return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_EMPLOYEE_LIST));
+        return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
     }
 }

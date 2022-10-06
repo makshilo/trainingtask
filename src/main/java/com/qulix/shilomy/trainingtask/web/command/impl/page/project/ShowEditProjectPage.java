@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.page.project;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
@@ -18,9 +17,7 @@ public class ShowEditProjectPage implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
-
-    private static final String PROJECT_EDIT_PAGE = "page.editProject";
+    private static final String PROJECT_EDIT_PAGE = "/jsp/editProject.jsp";
 
     private final ProjectService projectService;
 
@@ -28,18 +25,17 @@ public class ShowEditProjectPage implements Command {
 
     private final EmployeeService employeeService;
     private ShowEditProjectPage(ProjectService projectService, TaskService taskService, EmployeeService employeeService,
-                                RequestFactory requestFactory, PropertyContext propertyContext) {
+                                RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
         this.projectService = projectService;
         this.taskService = taskService;
     }
 
     public static synchronized ShowEditProjectPage getInstance(ProjectService projectService, TaskService taskService,
-    EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    EmployeeService employeeService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new ShowEditProjectPage(projectService, taskService,employeeService, requestFactory, propertyContext);
+            instance = new ShowEditProjectPage(projectService, taskService,employeeService, requestFactory);
         }
         return instance;
     }
@@ -50,7 +46,7 @@ public class ShowEditProjectPage implements Command {
         request.addAttributeToJsp("project", project);
         request.addAttributeToJsp("tasks", taskService.findByProject(project));
         request.addAttributeToJsp("employees", getEmployeeNames());
-        return requestFactory.createForwardResponse(propertyContext.get(PROJECT_EDIT_PAGE));
+        return requestFactory.createForwardResponse((PROJECT_EDIT_PAGE));
     }
 
     private HashMap<Long, String> getEmployeeNames() {

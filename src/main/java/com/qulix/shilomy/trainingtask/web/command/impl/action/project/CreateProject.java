@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.action.project;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
@@ -15,10 +14,9 @@ public class CreateProject implements Command {
     private static CreateProject instance;
 
     private final RequestFactory requestFactory;
-    private final PropertyContext propertyContext;
 
-    private static final String COMMAND_PROJECT_LIST = "command/projects_page";
-    public static final String CREATE_PROJECT_PAGE = "page.createProject";
+    private static final String COMMAND_PROJECT_LIST = "/controller?command=projectsPage";
+    public static final String CREATE_PROJECT_PAGE = "/jsp/createProject.jsp";
 
     private final ProjectService projectService;
 
@@ -27,15 +25,14 @@ public class CreateProject implements Command {
     public static final String PROJECT_DESCRIPTION_NULL = "projectDescriptionNull";
     public static final String PROJECT_DESCRIPTION_NULL_MESSAGE = "Project description is null";
 
-    private CreateProject(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    private CreateProject(ProjectService projectService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.projectService = projectService;
     }
 
-    public static synchronized CreateProject getInstance(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized CreateProject getInstance(ProjectService projectService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new CreateProject(projectService, requestFactory, propertyContext);
+            instance = new CreateProject(projectService, requestFactory);
         }
         return instance;
     }
@@ -47,15 +44,15 @@ public class CreateProject implements Command {
         try {
             validateFields(request, projectName, description);
         } catch (NullFieldException e) {
-            return requestFactory.createForwardResponse(propertyContext.get(CREATE_PROJECT_PAGE));
+            return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
         }
         ProjectEntity newProject = new ProjectEntity(projectName, description);
         if(!projectIsFound(projectService.findAll(), newProject)){
             projectService.add(newProject);
-            return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_PROJECT_LIST));
+            return requestFactory.createRedirectResponse(COMMAND_PROJECT_LIST);
         } else {
             request.addAttributeToJsp("projectIsFound", true);
-            return requestFactory.createForwardResponse(propertyContext.get(CREATE_PROJECT_PAGE));
+            return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
         }
     }
 

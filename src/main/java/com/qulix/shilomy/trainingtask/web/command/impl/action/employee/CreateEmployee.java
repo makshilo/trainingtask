@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.action.employee;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
@@ -13,10 +12,9 @@ public class CreateEmployee implements Command {
     private static CreateEmployee instance;
 
     private final RequestFactory requestFactory;
-    private final PropertyContext propertyContext;
 
-    private static final String COMMAND_EMPLOYEE_LIST = "command/employees_page";
-    public static final String CREATE_EMPLOYEE_PAGE = "page.createEmployee";
+    private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
+    public static final String CREATE_EMPLOYEE_PAGE = "/jsp/createEmployee.jsp";
 
     private final EmployeeService employeeService;
 
@@ -29,15 +27,14 @@ public class CreateEmployee implements Command {
     public static final String POSITION_NULL = "positionNull";
     public static final String EMPLOYEE_POSITION_NULL_MESSAGE = "Employee position is null";
 
-    private CreateEmployee(EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    private CreateEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
     }
 
-    public static synchronized CreateEmployee getInstance(EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized CreateEmployee getInstance(EmployeeService employeeService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new CreateEmployee(employeeService, requestFactory, propertyContext);
+            instance = new CreateEmployee(employeeService, requestFactory);
         }
         return instance;
     }
@@ -51,10 +48,10 @@ public class CreateEmployee implements Command {
         try {
             validateFields(request, firstName, lastName, patronymic, position);
         } catch (NullFieldException e) {
-            return requestFactory.createForwardResponse(propertyContext.get(CREATE_EMPLOYEE_PAGE));
+            return requestFactory.createForwardResponse(CREATE_EMPLOYEE_PAGE);
         }
         employeeService.add(new EmployeeEntity(firstName, lastName, patronymic, position));
-        return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_EMPLOYEE_LIST));
+        return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
     }
 
     static void validateFields(CommandRequest request, String firstName, String lastName, String patronymic, String position) throws NullFieldException {

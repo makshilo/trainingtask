@@ -21,7 +21,6 @@ import com.qulix.shilomy.trainingtask.web.command.impl.page.project.ShowProjectL
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowCreateTaskPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowEditTaskPage;
 import com.qulix.shilomy.trainingtask.web.command.impl.page.task.ShowTaskListPage;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
@@ -33,7 +32,6 @@ import com.qulix.shilomy.trainingtask.web.service.TaskService;
 
 public class CommandFactoryImpl implements CommandFactory {
     private final RequestFactory requestFactory = RequestFactory.getInstance();
-    private final PropertyContext propertyContext = PropertyContext.getInstance();
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private CommandFactoryImpl() {
@@ -44,128 +42,109 @@ public class CommandFactoryImpl implements CommandFactory {
         switch (name) {
             case "mainPage":
                 return ShowMainPage.getInstance(
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "projectsPage":
                 return ShowProjectListPage.getInstance(
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "projectCreatePage":
                 return ShowCreateProjectPage.getInstance(
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "createProject":
                 return CreateProject.getInstance(
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "projectEditPage":
                 return ShowEditProjectPage.getInstance(
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "editProject":
                 return EditProject.getInstance(
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "deleteProject":
                 return DeleteProject.getInstance(
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "tasksPage":
                 return ShowTaskListPage.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "taskCreatePage":
                 return ShowCreateTaskPage.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "createTask":
                 return CreateTask.getInstance(
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "taskEditPage":
                 return ShowEditTaskPage.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "editTask":
                 return EditTask.getInstance(
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
                         (ProjectService) serviceFactory.serviceFor(ProjectEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "deleteTask":
                 return DeleteTask.getInstance(
                         (TaskService) serviceFactory.serviceFor(TaskEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "employeesPage":
                 return ShowEmployeeListPage.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "employeeCreatePage":
                 return ShowCreateEmployeePage.getInstance(
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "createEmployee":
                 return CreateEmployee.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "employeeEditPage":
                 return ShowEditEmployeePage.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "editEmployee":
                 return EditEmployee.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             case "deleteEmployee":
                 return DeleteEmployee.getInstance(
                         (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class),
-                        requestFactory,
-                        propertyContext
+                        requestFactory
                 );
             default:
-                return NotFoundErrorPage.getInstance(requestFactory, propertyContext);
+                return NotFoundErrorPage.getInstance(requestFactory);
         }
     }
 

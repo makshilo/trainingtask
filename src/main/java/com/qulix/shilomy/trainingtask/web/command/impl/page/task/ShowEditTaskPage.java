@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.page.task;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
@@ -15,27 +14,23 @@ public class ShowEditTaskPage implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
-
-    private static final String TASK_EDIT_PAGE = "page.editTask";
+    private static final String TASK_EDIT_PAGE = "/jsp/editTask.jsp";
 
     private final EmployeeService employeeService;
     private final ProjectService projectService;
     private final TaskService taskService;
     private ShowEditTaskPage(EmployeeService employeeService, TaskService taskService, ProjectService projectService,
-                             RequestFactory requestFactory, PropertyContext propertyContext) {
+                             RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
         this.projectService = projectService;
         this.taskService = taskService;
     }
 
     public static synchronized ShowEditTaskPage getInstance(EmployeeService employeeService, TaskService taskService,
-                                                            ProjectService projectService,RequestFactory requestFactory,
-                                                            PropertyContext propertyContext) {
+                                                            ProjectService projectService,RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new ShowEditTaskPage(employeeService, taskService, projectService, requestFactory, propertyContext);
+            instance = new ShowEditTaskPage(employeeService, taskService, projectService, requestFactory);
         }
         return instance;
     }
@@ -47,7 +42,7 @@ public class ShowEditTaskPage implements Command {
         request.addAttributeToJsp("currentProject", projectService.get(task.getProjectId()));
         request.addAttributeToJsp("currentExecutor", employeeService.get(task.getExecutorId()));
         fillPage(request, projectService, employeeService);
-        return requestFactory.createForwardResponse(propertyContext.get(TASK_EDIT_PAGE));
+        return requestFactory.createForwardResponse(TASK_EDIT_PAGE);
     }
 
     public static void fillPage(CommandRequest request, ProjectService projectService, EmployeeService employeeService) {

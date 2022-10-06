@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.action.employee;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
@@ -12,20 +11,17 @@ public class DeleteEmployee implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
-
-    private static final String COMMAND_EMPLOYEE_LIST = "command/employees_page";
+    private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
 
     private final EmployeeService employeeService;
-    private DeleteEmployee(EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    private DeleteEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
     }
 
-    public static synchronized DeleteEmployee getInstance(EmployeeService employeeService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized DeleteEmployee getInstance(EmployeeService employeeService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new DeleteEmployee(employeeService, requestFactory, propertyContext);
+            instance = new DeleteEmployee(employeeService, requestFactory);
         }
         return instance;
     }
@@ -33,6 +29,6 @@ public class DeleteEmployee implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
         employeeService.delete(Long.parseLong(request.getParameter("id")));
-        return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_EMPLOYEE_LIST));
+        return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
     }
 }

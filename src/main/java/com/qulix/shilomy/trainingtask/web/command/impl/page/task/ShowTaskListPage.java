@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.page.task;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
@@ -18,9 +17,7 @@ public class ShowTaskListPage implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
-
-    private static final String TASKS_PAGE = "page.tasks";
+    private static final String TASKS_PAGE = "/jsp/taskList.jsp";
 
     private final TaskService taskService;
 
@@ -29,18 +26,17 @@ public class ShowTaskListPage implements Command {
     private final ProjectService projectService;
 
     private ShowTaskListPage(EmployeeService employeeService, ProjectService projectService, TaskService taskService,
-                             RequestFactory requestFactory, PropertyContext propertyContext) {
+                             RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
         this.projectService = projectService;
         this.taskService = taskService;
     }
 
     public static synchronized ShowTaskListPage getInstance(EmployeeService employeeService, ProjectService projectService, TaskService taskService,
-                                                            RequestFactory requestFactory, PropertyContext propertyContext) {
+                                                            RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new ShowTaskListPage(employeeService, projectService, taskService, requestFactory, propertyContext);
+            instance = new ShowTaskListPage(employeeService, projectService, taskService, requestFactory);
         }
         return instance;
     }
@@ -66,6 +62,6 @@ public class ShowTaskListPage implements Command {
         request.addAttributeToJsp("tasks", taskService.findAll());
         request.addAttributeToJsp("employees", getEmployeeNames());
         request.addAttributeToJsp("projects", getProjectNames());
-        return requestFactory.createForwardResponse(propertyContext.get(TASKS_PAGE));
+        return requestFactory.createForwardResponse(TASKS_PAGE);
     }
 }

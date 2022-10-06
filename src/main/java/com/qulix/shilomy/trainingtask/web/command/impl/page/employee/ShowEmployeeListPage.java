@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.page.employee;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
@@ -14,26 +13,20 @@ public class ShowEmployeeListPage implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
 
-    private static final String EMPLOYEES_PAGE = "page.employees";
+    private static final String EMPLOYEES_PAGE = "/jsp/employeeList.jsp";
 
 
     private final EmployeeService employeeService;
 
-    private ShowEmployeeListPage(EmployeeService employeeService,
-                                 RequestFactory requestFactory,
-                                 PropertyContext propertyContext) {
+    private ShowEmployeeListPage(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.employeeService = employeeService;
     }
 
-    public static synchronized ShowEmployeeListPage getInstance(EmployeeService employeeService,
-                                                                RequestFactory requestFactory,
-                                                                PropertyContext propertyContext) {
+    public static synchronized ShowEmployeeListPage getInstance(EmployeeService employeeService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new ShowEmployeeListPage(employeeService, requestFactory, propertyContext);
+            instance = new ShowEmployeeListPage(employeeService, requestFactory);
         }
         return instance;
     }
@@ -41,6 +34,6 @@ public class ShowEmployeeListPage implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
         request.addAttributeToJsp("employees", employeeService.findAll());
-        return requestFactory.createForwardResponse(propertyContext.get(EMPLOYEES_PAGE));
+        return requestFactory.createForwardResponse(EMPLOYEES_PAGE);
     }
 }

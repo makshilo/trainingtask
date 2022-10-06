@@ -3,7 +3,6 @@ package com.qulix.shilomy.trainingtask.web.command.impl.action.project;
 import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
-import com.qulix.shilomy.trainingtask.web.controller.PropertyContext;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
@@ -15,23 +14,20 @@ public class EditProject implements Command {
 
     private final RequestFactory requestFactory;
 
-    private final PropertyContext propertyContext;
+    private static final String COMMAND_PROJECTS_LIST = "/controller?command=projectsPage";
 
-    private static final String COMMAND_PROJECTS_LIST = "command/projects_page";
-
-    public static final String EDIT_PROJECT_PAGE = "page.editProject";
+    public static final String EDIT_PROJECT_PAGE = "/jsp/editProject.jsp";
 
     private final ProjectService projectService;
 
-    private EditProject(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    private EditProject(ProjectService projectService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
-        this.propertyContext = propertyContext;
         this.projectService = projectService;
     }
 
-    public static synchronized EditProject getInstance(ProjectService projectService, RequestFactory requestFactory, PropertyContext propertyContext) {
+    public static synchronized EditProject getInstance(ProjectService projectService, RequestFactory requestFactory) {
         if (instance == null) {
-            instance = new EditProject(projectService, requestFactory, propertyContext);
+            instance = new EditProject(projectService, requestFactory);
         }
         return instance;
     }
@@ -41,12 +37,12 @@ public class EditProject implements Command {
         try {
             CreateProject.validateFields(request, request.getParameter("projectName"), request.getParameter("description"));
         } catch (NullFieldException e) {
-            return requestFactory.createForwardResponse(propertyContext.get(EDIT_PROJECT_PAGE));
+            return requestFactory.createForwardResponse(EDIT_PROJECT_PAGE);
         }
         projectService.update(new ProjectEntity(
                 request.getParameter("projectName"),
                 request.getParameter("description"),
                 Long.parseLong(request.getParameter("id"))));
-        return requestFactory.createRedirectResponse(propertyContext.get(COMMAND_PROJECTS_LIST));
+        return requestFactory.createRedirectResponse(COMMAND_PROJECTS_LIST);
     }
 }
