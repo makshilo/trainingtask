@@ -11,9 +11,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=tasksPage'">Отмена</button><br><br>
+<a class="button" href="<c:url value="/controller?command=tasksPage"/>">Отмена</a><br><br>
 <form action="<c:url value="/controller?command=createTask"/>" method="post">
     <label for="taskName">Наименование:</label><br>
     <input maxlength="50" value="${fn:escapeXml(param.taskName)}" type="text" id="taskName" name="taskName">

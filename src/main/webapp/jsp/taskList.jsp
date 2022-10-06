@@ -8,9 +8,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='..'">Назад</button><br>
+<a class="button" href="<c:url value=".."/>">Назад</a><br>
 <h3>Задачи</h3>
 <table>
     <tr>
@@ -38,11 +38,11 @@
             <td><c:out value="${task.startDate}"/></td>
             <td><c:out value="${task.endDate}"/></td>
             <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=taskEditPage&id=${task.id}'">Изменить</button></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=deleteTask&id=${task.id}'">Удалить</button></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=taskEditPage&id=${task.id}"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=deleteTask&id=${task.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<button class="add-button" onclick="window.location.href='/controller?command=taskCreatePage'">Добавить</button>
+<a class="add-button" href="<c:url value="/controller?command=taskCreatePage"/>">Добавить</a>
 </body>
 </html>

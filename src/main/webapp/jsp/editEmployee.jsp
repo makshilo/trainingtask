@@ -11,9 +11,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=employeesPage'">Назад</button><br>
+<a class="button" href="<c:url value="/controller?command=employeesPage"/>">Отмена</a><br>
 <h1>Страница изменения сотрудника</h1>
 
 <c:set scope="request" var="id" value="${requestScope.employee.id}"/>

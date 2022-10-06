@@ -11,9 +11,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Отмена</button><br>
+<a class="button" href="<c:url value="/controller?command=projectsPage"/>">Отмена</a><br>
 
 <c:set scope="request" var="id" value="${requestScope.project.id}"/>
 
@@ -27,7 +27,7 @@
             <c:set var="projectName" value="${fn:escapeXml(param.projectName)}"/>
         </c:otherwise>
     </c:choose>
-    <input maxlength="100" type="text" id="projectName" name="projectName" value="projectName">
+    <input maxlength="100" type="text" id="projectName" name="projectName" value="${projectName}">
     <c:if test="${requestScope.projectNameNull}">Заполните поле</c:if><br><br>
     <label for="description">Описание:</label><br>
     <c:choose>
@@ -66,11 +66,11 @@
             <td><c:out value="${task.startDate}"/></td>
             <td><c:out value="${task.endDate}"/></td>
             <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=taskEditPage&id=${task.id}&projectLock'">Изменить</button></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=deleteTask&id=${task.id}'">Удалить</button></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=taskEditPage&id=${task.id}&projectLock"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=deleteTask&id=${task.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<button class="add-button" onclick="window.location.href='/controller?command=taskCreatePage&currentProject=${requestScope.project.id}&projectLock'">Добавить</button>
+<a class="add-button" href="<c:url value="/controller?command=taskCreatePage&currentProject=${requestScope.project.id}&projectLock"/>">Добавить</a>
 </body>
 </html>

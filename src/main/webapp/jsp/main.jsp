@@ -6,12 +6,12 @@
         <link rel="stylesheet" href="../css/buttons.css">
     </head>
     <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+        <a class="home-button" href="<c:url value=".."/>"></a>
     </header>
     <body>
         <h1 style="color:white">Добро пожаловать на главную страницу</h1>
-        <button class="projects-button" onclick="window.location.href='<c:url value="/controller?command=projectsPage"/>'">Проекты</button>
-        <button class="tasks-button" onclick="window.location.href='<c:url value="/controller?command=tasksPage"/>'">Задачи</button>
-        <button class="employees-button" onclick="window.location.href='<c:url value="/controller?command=employeesPage"/>'">Сотрудники</button>
+        <a class="main-menu-button" style="background-image: url(../css/img/projects.png)" href="<c:url value="/controller?command=projectsPage"/>">Проекты</a>
+        <a class="main-menu-button" style="background-image: url(../css/img/tasks.png)" href="<c:url value="/controller?command=tasksPage"/>">Задачи</a>
+        <a class="main-menu-button" style="background-image: url(../css/img/employees.png)" href="<c:url value="/controller?command=employeesPage"/>">Сотрудники</a>
     </body>
 </html>

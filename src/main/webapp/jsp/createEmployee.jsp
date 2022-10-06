@@ -10,9 +10,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=employeesPage'">Назад</button><br>
+<a class="button" href="<c:url value="/controller?command=employeesPage"/>">Отмена</a><br>
 <form action="<c:url value="/controller?command=createEmployee"/>" accept-charset="UTF-8" method="post">
     <label for="firstName">Имя:</label><br>
     <input maxlength="50" type="text" id="firstName" name="firstName" value="${param.firstName}">

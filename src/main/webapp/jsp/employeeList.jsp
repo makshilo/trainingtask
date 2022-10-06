@@ -8,9 +8,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='..'">Назад</button><br>
+<a class="button" href="<c:url value="/controller?command=employeesPage"/>">Назад</a><br>
 <h3>Сотрудники</h3>
 <table>
     <tr>
@@ -25,11 +25,11 @@
             <td><c:out value="${employee.firstName}"/></td>
             <td><c:out value="${employee.patronymic}"/></td>
             <td><c:out value="${employee.position}"/></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=employeeEditPage&id=${employee.id}'">Изменить</button></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=deleteEmployee&id=${employee.id}'">Удалить</button></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=employeeEditPage&id=${employee.id}"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=deleteEmployee&id=${employee.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<button class="add-button" onclick="window.location.href='/controller?command=employeeCreatePage'">Добавить</button>
+<a class="add-button" href="<c:url value="/controller?command=employeeCreatePage"/>">Добавить</a>
 </body>
 </html>

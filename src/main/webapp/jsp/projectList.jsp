@@ -8,9 +8,9 @@
 </head>
 <body>
 <header>
-    <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='..'">Назад</button><br>
+<a class="button" href="<c:url value=".."/>">Назад</a><br>
 <h3>Проекты</h3>
 <table>
     <tr>
@@ -21,11 +21,11 @@
         <tr>
             <td><c:out value="${project.name}"/></td>
             <td><c:out value="${project.description}"/></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=projectEditPage&id=${project.id}'">Изменить</button></td>
-            <td><button class="table-button" onclick="window.location.href='/controller?command=deleteProject&id=${project.id}'">Удалить</button></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=projectEditPage&id=${project.id}"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/controller?command=deleteProject&id=${project.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<button class="add-button" onclick="window.location.href='${pageContext.request.contextPath}/controller?command=projectCreatePage'">Добавить</button>
+<a class="add-button" href="<c:url value="/controller?command=projectCreatePage"/>">Добавить</a>
 </body>
 </html>

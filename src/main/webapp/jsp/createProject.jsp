@@ -10,9 +10,9 @@
 </head>
 <body>
 <header>
-        <button class="home-button" onclick="window.location.href='..'"></button>
+    <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<button class="back-button" onclick="window.location.href='/controller?command=projectsPage'">Отмена</button><br>
+<a class="button" href="<c:url value="/controller?command=projectsPage"/>">Отмена</a><br>
 <form action="<c:url value="/controller?command=createProject"/>" method="post">
     <label for="projectName">Наименование:</label><br>
     <input value="${fn:escapeXml(param.projectName)}" maxlength="100" type="text"
