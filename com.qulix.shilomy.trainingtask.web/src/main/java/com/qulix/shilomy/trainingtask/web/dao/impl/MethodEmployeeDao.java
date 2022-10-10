@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static java.sql.Types.INTEGER;
-import static java.sql.Types.NULL;
 
 public class MethodEmployeeDao extends CommonDao<EmployeeEntity> implements EmployeeDao {
     private static MethodEmployeeDao instance;

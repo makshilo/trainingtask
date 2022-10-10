@@ -1,5 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.db;
 
+
+
 import com.qulix.shilomy.trainingtask.web.exception.EntityExtractionFailedException;
 
 import java.sql.ResultSet;

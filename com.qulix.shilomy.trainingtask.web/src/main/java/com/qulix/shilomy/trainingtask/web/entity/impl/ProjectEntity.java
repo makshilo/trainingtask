@@ -2,8 +2,6 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
-import java.util.List;
-
 public class ProjectEntity implements Entity {
     private final String name;
     private final String description;

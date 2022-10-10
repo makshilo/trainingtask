@@ -1,0 +1,95 @@
+import groovy.sql.Sql
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'war'
+    id 'com.github.sahara3.tomcat-runner' version '0.2.1'
+}
+
+group 'com.qulix.shilomy'
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
+    implementation group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
+    runtimeOnly group: 'org.glassfish.web', name: 'jstl-impl', version: '1.2'
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
+}
+
+task createDatabase() {
+    group = 'database'
+    doLast{
+        String createQuery = new File('com.qulix.shilomy.trainingtask.web/src/main/resources/database/create.sql').text
+        executeSqlQuery(createQuery)
+    }
+}
+
+task dropDatabase() {
+    group = 'database'
+    doLast{
+        String dropQuery = new File('com.qulix.shilomy.trainingtask.web/src/main/resources/database/drop.sql').text
+        executeSqlQuery(dropQuery)
+    }
+}
+
+def executeSqlQuery(String query) {
+    ClassLoader loader = Sql.class.classLoader
+    project.buildscript.configurations.classpath.each { File file ->
+        loader.addURL(file.toURI().toURL())
+    }
+    def sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDrive)
+    sql.execute(query)
+    sql.close()
+}
+
+task startDatabase() {
+    group = 'database'
+    doLast {
+        def javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"
+        def classpath = project.buildscript.configurations.classpath.asPath
+
+        def className = "org.hsqldb.server.Server"
+        def filePath = "file:${projectDir}/${dbFile};user=${dbUser};password=${dbPassword}"
+
+        def builder = new ProcessBuilder(javaBin, "-cp", classpath, className, "-database.0", filePath, "-dbname.0", dbName)
+        builder.redirectErrorStream(true)
+        builder.directory(projectDir)
+        builder.start()
+    }
+}
+
+task stopDatabase() {
+    group = 'database'
+    doLast {
+        executeSqlQuery('SHUTDOWN;')
+    }
+}
+
+tomcat {
+    version = 9.0
+    port = serverPort as int
+
+    webapp("build/libs/${projectDir.name}.war") {
+        contextPath = ''
+    }
+}
+
+task startServer {
+    group = 'execution'
+    description = "Start tomcat embedded server"
+    dependsOn(war)
+    finalizedBy tomcatRun
+}
