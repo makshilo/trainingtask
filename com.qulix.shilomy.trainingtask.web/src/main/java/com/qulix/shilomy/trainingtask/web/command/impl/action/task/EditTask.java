@@ -74,7 +74,7 @@ public class EditTask implements Command {
             Date endDate = Date.valueOf(request.getParameter("endYear") +
                     "-" + request.getParameter("endMonth") +
                     "-" + request.getParameter("endDay"));
-            if (endDate.after(startDate)){
+            if (endDate.after(startDate) || endDate.equals(startDate)){
                 taskService.update(new TaskEntity(status, taskName, projectId, work, startDate, endDate, executorId, id));
                 return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
             } else {

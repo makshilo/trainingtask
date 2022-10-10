@@ -85,7 +85,7 @@ public class CreateTask implements Command {
             Date endDate = Date.valueOf(request.getParameter("endYear") +
                     "-" + request.getParameter("endMonth") +
                     "-" + request.getParameter("endDay"));
-            if (endDate.after(startDate)){
+            if (endDate.after(startDate) || endDate.equals(startDate)){
                 taskService.add(new TaskEntity(status,taskName, projectId, work, startDate,endDate, executorId));
                 return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
             } else {
