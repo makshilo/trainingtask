@@ -11,7 +11,7 @@
 <header>
     <a class="home-button" href="<c:url value=".."/>"></a>
 </header>
-<a class="button" href="<c:url value="/controller?command=employeesPage"/>">Назад</a><br>
+<a class="button" href="<c:url value=".."/>">Назад</a><br>
 <h3>Сотрудники</h3>
 <table>
     <tr>

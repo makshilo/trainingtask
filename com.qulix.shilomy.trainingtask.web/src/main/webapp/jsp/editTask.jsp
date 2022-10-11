@@ -48,10 +48,10 @@
                             ${fn:escapeXml(project.name)}
                     </option>
                 </c:forEach>
-            </select><br><br>
+            </select>
+            <c:if test="${requestScope.projectNull}">Заполните поле</c:if><br><br>
         </c:otherwise>
     </c:choose>
-    <c:if test="${requestScope.projectNull}">Заполните поле</c:if>
     <label for="work">Работа:</label><br>
     <c:choose>
         <c:when test="${requestScope.task.name != null}">
@@ -61,7 +61,7 @@
             <c:set var="work" value="${fn:escapeXml(param.work)}"/>
         </c:otherwise>
     </c:choose>
-    <input type="number" id="work" name="work" value="${work}">
+    <input style="width: 100px;" type="text" id="work" name="work" value="${work}">
     <c:if test="${requestScope.workNull}">Заполните поле</c:if>
     <c:if test="${requestScope.workNegative}">Неверная работа</c:if><br><br>
     <label>Дата начала</label><br>
@@ -78,7 +78,7 @@
         </c:otherwise>
     </c:choose>
     <label for="startYear">Год:</label>
-    <input value="${startYear}" type="number" id="startYear" name="startYear">
+    <input style="width: 100px;" value="${startYear}" type="text" id="startYear" name="startYear">
     <c:if test="${requestScope.startYearNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidStartYear}">Неверный год</c:if>
     <label for="startMonth">Месяц:</label>
@@ -98,7 +98,7 @@
     </select>
     <c:if test="${requestScope.startMonthNull}">Заполните поле</c:if>
     <label for="startDay">День:</label>
-    <input value="${startDay}" type="number" id="startDay" name="startDay">
+    <input style="width: 100px;" value="${startDay}" type="text" id="startDay" name="startDay">
     <c:if test="${requestScope.startDayNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidStartDay}">Неверный день</c:if>
     <c:if test="${requestScope.wrongStartDate}">Неверная дата начала</c:if><br><br>
@@ -116,7 +116,7 @@
         </c:otherwise>
     </c:choose>
     <label for="endYear">Год:</label>
-    <input value="${endYear}" type="number" id="endYear" name="endYear">
+    <input style="width: 100px;" value="${endYear}" type="text" id="endYear" name="endYear">
     <c:if test="${requestScope.endYearNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidEndYear}">Неверный год</c:if>
     <label for="endMonth">Месяц:</label>
@@ -136,7 +136,7 @@
     </select>
     <c:if test="${requestScope.endMonthNull}">Заполните поле</c:if>
     <label for="endDay">День:</label>
-    <input value="${endDay}" type="number" id="endDay" name="endDay">
+    <input style="width: 100px;" value="${endDay}" type="text" id="endDay" name="endDay">
     <c:if test="${requestScope.endDayNull}">Заполните поле</c:if>
     <c:if test="${requestScope.invalidEndDay}">Неверный день</c:if>
     <c:if test="${requestScope.wrongEndDate}">Неверная дата окончания</c:if><br><br>
