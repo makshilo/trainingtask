@@ -63,7 +63,7 @@
     </c:choose>
     <input style="width: 100px;" type="text" id="work" name="work" value="${work}">
     <c:if test="${requestScope.workNull}">Заполните поле</c:if>
-    <c:if test="${requestScope.workNegative}">Неверная работа</c:if><br><br>
+    <c:if test="${requestScope.workNegative}">Введённое значение не должно быть отрицательным</c:if><br><br>
     <label>Дата начала</label><br>
     <c:choose>
         <c:when test="${requestScope.task.startDate != null}">
@@ -80,7 +80,7 @@
     <label for="startYear">Год:</label>
     <input style="width: 100px;" value="${startYear}" type="text" id="startYear" name="startYear">
     <c:if test="${requestScope.startYearNull}">Заполните поле</c:if>
-    <c:if test="${requestScope.invalidStartYear}">Неверный год</c:if>
+    <c:if test="${requestScope.invalidStartYear}">Введённое значение не соответствует формату: гггг</c:if>
     <label for="startMonth">Месяц:</label>
     <select class="month-select" id="startMonth" name="startMonth">
         <option <c:if test="${startMonth == '01'}">selected</c:if> value="01">Январь</option>
@@ -100,8 +100,8 @@
     <label for="startDay">День:</label>
     <input style="width: 100px;" value="${startDay}" type="text" id="startDay" name="startDay">
     <c:if test="${requestScope.startDayNull}">Заполните поле</c:if>
-    <c:if test="${requestScope.invalidStartDay}">Неверный день</c:if>
-    <c:if test="${requestScope.wrongStartDate}">Неверная дата начала</c:if><br><br>
+    <c:if test="${requestScope.invalidStartDay}">Введённое значение не соответствует формату: дд</c:if>
+    <c:if test="${requestScope.wrongStartDate}">Введённая дата не существует</c:if><br><br>
     <label>Дата окончания</label><br>
     <c:choose>
         <c:when test="${requestScope.task.endDate != null}">
@@ -118,7 +118,7 @@
     <label for="endYear">Год:</label>
     <input style="width: 100px;" value="${endYear}" type="text" id="endYear" name="endYear">
     <c:if test="${requestScope.endYearNull}">Заполните поле</c:if>
-    <c:if test="${requestScope.invalidEndYear}">Неверный год</c:if>
+    <c:if test="${requestScope.invalidEndYear}">Введённое значение не соответствует формату: гггг</c:if>
     <label for="endMonth">Месяц:</label>
     <select class="month-select" id="endMonth" name="endMonth">
         <option <c:if test="${endMonth == '01'}">selected</c:if> value="01">Январь</option>
@@ -138,8 +138,8 @@
     <label for="endDay">День:</label>
     <input style="width: 100px;" value="${endDay}" type="text" id="endDay" name="endDay">
     <c:if test="${requestScope.endDayNull}">Заполните поле</c:if>
-    <c:if test="${requestScope.invalidEndDay}">Неверный день</c:if>
-    <c:if test="${requestScope.wrongEndDate}">Неверная дата окончания</c:if><br><br>
+    <c:if test="${requestScope.invalidEndDay}">Введённое значение не соответствует формату: дд</c:if>
+    <c:if test="${requestScope.wrongEndDate}">Введённая дата не существует</c:if><br><br>
     <c:if test="${requestScope.dateCollision}">Дата начала больше даты окончания<br><br></c:if>
     <label for="status">Статус:</label><br>
     <c:choose>
