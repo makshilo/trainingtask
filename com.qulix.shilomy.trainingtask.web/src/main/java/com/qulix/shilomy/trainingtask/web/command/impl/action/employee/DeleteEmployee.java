@@ -8,12 +8,14 @@ import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
 public class DeleteEmployee implements Command {
     private static DeleteEmployee instance;
-
     private final RequestFactory requestFactory;
+
+    public static final String ID_PARAM_NAME = "id";
 
     private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
 
     private final EmployeeService employeeService;
+
     private DeleteEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
         this.employeeService = employeeService;
@@ -28,7 +30,8 @@ public class DeleteEmployee implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        employeeService.delete(Long.parseLong(request.getParameter("id")));
+        Long employeeId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
+        employeeService.delete(employeeId);
         return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
     }
 }

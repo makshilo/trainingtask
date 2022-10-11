@@ -8,8 +8,9 @@ import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 
 public class DeleteProject implements Command {
     private static DeleteProject instance;
-
     private final RequestFactory requestFactory;
+
+    public static final String ID_PARAM_NAME = "id";
 
     private static final String COMMAND_PROJECT_LIST = "/controller?command=projectsPage";
 
@@ -28,7 +29,8 @@ public class DeleteProject implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        projectService.delete(Long.parseLong(request.getParameter("id")));
+        Long projectId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
+        projectService.delete(projectId);
         return requestFactory.createRedirectResponse(COMMAND_PROJECT_LIST);
     }
 }

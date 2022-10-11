@@ -8,8 +8,9 @@ import com.qulix.shilomy.trainingtask.web.service.TaskService;
 
 public class DeleteTask implements Command {
     private static DeleteTask instance;
-
     private final RequestFactory requestFactory;
+
+    public static final String ID_PARAM_NAME = "id";
 
     private static final String COMMAND_TASK_LIST = "/controller?command=tasksPage";
 
@@ -28,7 +29,8 @@ public class DeleteTask implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        taskService.delete(Long.parseLong(request.getParameter("id")));
+        Long taskId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
+        taskService.delete(taskId);
         return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
     }
 }

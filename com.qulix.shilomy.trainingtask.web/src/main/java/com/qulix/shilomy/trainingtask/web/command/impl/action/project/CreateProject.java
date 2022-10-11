@@ -5,7 +5,6 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 
 import java.util.List;
@@ -21,9 +20,7 @@ public class CreateProject implements Command {
     private final ProjectService projectService;
 
     public static final String PROJECT_NAME_NULL = "projectNameNull";
-    public static final String PROJECT_NAME_NULL_MESSAGE = "Project name is null";
     public static final String PROJECT_DESCRIPTION_NULL = "projectDescriptionNull";
-    public static final String PROJECT_DESCRIPTION_NULL_MESSAGE = "Project description is null";
 
     private CreateProject(ProjectService projectService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -41,17 +38,16 @@ public class CreateProject implements Command {
     public CommandResponse execute(CommandRequest request) {
         String projectName = request.getParameter("projectName");
         String description = request.getParameter("description");
-        try {
-            validateFields(request, projectName, description);
-        } catch (NullFieldException e) {
-            return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
-        }
-        ProjectEntity newProject = new ProjectEntity(projectName, description);
-        if(!projectIsFound(projectService.findAll(), newProject)){
-            projectService.add(newProject);
-            return requestFactory.createRedirectResponse(COMMAND_PROJECT_LIST);
+        if (validateFields(request, projectName, description)) {
+            ProjectEntity newProject = new ProjectEntity(projectName, description);
+            if(!projectIsFound(projectService.findAll(), newProject)){
+                projectService.add(newProject);
+                return requestFactory.createRedirectResponse(COMMAND_PROJECT_LIST);
+            } else {
+                request.addAttributeToJsp("projectIsFound", true);
+                return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
+            }
         } else {
-            request.addAttributeToJsp("projectIsFound", true);
             return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
         }
     }
@@ -65,13 +61,15 @@ public class CreateProject implements Command {
         return false;
     }
 
-    static void validateFields(CommandRequest request, String projectName, String projectDescription) throws NullFieldException {
+    static boolean validateFields(CommandRequest request, String projectName, String projectDescription) {
         if (projectName == null || projectName.equals("")) {
             request.addAttributeToJsp(PROJECT_NAME_NULL, true);
-            throw new NullFieldException(PROJECT_NAME_NULL_MESSAGE);
-        } else if (projectDescription == null || projectDescription.equals("")) {
-            request.addAttributeToJsp(PROJECT_DESCRIPTION_NULL, true);
-            throw new NullFieldException(PROJECT_DESCRIPTION_NULL_MESSAGE);
+            return false;
         }
+        if (projectDescription == null || projectDescription.equals("")) {
+            request.addAttributeToJsp(PROJECT_DESCRIPTION_NULL, true);
+            return false;
+        }
+        return true;
     }
 }

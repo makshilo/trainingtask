@@ -39,6 +39,7 @@
             </select><br><br>
         </c:otherwise>
     </c:choose>
+    <c:if test="${requestScope.projectNull}">Заполните поле</c:if>
     <label for="work">Работа:</label><br>
     <input type="number" id="work" name="work" value="${fn:escapeXml(param.work)}">
     <c:if test="${requestScope.workNull}">Заполните поле</c:if>
@@ -63,6 +64,7 @@
         <option <c:if test="${param.startMonth == '11'}">selected</c:if> value="11">Ноябрь</option>
         <option <c:if test="${param.startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
+    <c:if test="${requestScope.startMonthNull}">Заполните поле</c:if>
     <label for="startDay">День:</label>
     <input value="${fn:escapeXml(param.startDay)}" type="number" id="startDay" name="startDay">
     <c:if test="${requestScope.startDayNull}">Заполните поле</c:if>
@@ -88,6 +90,7 @@
         <option <c:if test="${param.endMonth == '11'}">selected</c:if> value="11">Ноябрь</option>
         <option <c:if test="${param.endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
+    <c:if test="${requestScope.endMonthNull}">Заполните поле</c:if>
     <label for="endDay">День:</label>
     <input value="${fn:escapeXml(param.endDay)}" type="number" id="endDay" name="endDay">
     <c:if test="${requestScope.endDayNull}">Заполните поле</c:if>
@@ -100,7 +103,8 @@
         <option <c:if test="${param.status == 'IN_PROGRESS'}">selected</c:if> value="IN_PROGRESS">В процессе</option>
         <option <c:if test="${param.status == 'DONE'}">selected</c:if> value="DONE">Завершена</option>
         <option <c:if test="${param.status == 'PAUSED'}">selected</c:if> value="PAUSED">Отложена</option>
-    </select><br><br>
+    </select>
+    <c:if test="${requestScope.statusNull}">Заполните поле</c:if><br><br>
     <label for="executor">Исполнитель:</label><br>
     <select name="executor" id="executor">
         <c:forEach var="employee" items="${requestScope.employees}">
@@ -111,7 +115,8 @@
                     ${employee.patronymic}
             </option>
         </c:forEach>
-    </select><br><br>
+    </select>
+    <c:if test="${requestScope.executorNull}">Заполните поле</c:if><br><br>
     <input type="submit" value="Сохранить">
 </form>
 </body>

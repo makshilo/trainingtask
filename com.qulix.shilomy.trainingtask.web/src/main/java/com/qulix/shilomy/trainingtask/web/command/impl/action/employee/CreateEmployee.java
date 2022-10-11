@@ -5,7 +5,6 @@ import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
-import com.qulix.shilomy.trainingtask.web.exception.NullFieldException;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
 public class CreateEmployee implements Command {
@@ -19,13 +18,9 @@ public class CreateEmployee implements Command {
     private final EmployeeService employeeService;
 
     public static final String FIRST_NAME_NULL = "firstNameNull";
-    public static final String EMPLOYEE_FIRST_NAME_NULL_MESSAGE = "Employee first name is null";
     public static final String LAST_NAME_NULL = "lastNameNull";
-    public static final String EMPLOYEE_LAST_NAME_NULL_MESSAGE = "Employee last name is null";
     public static final String PATRONYMIC_NULL = "patronymicNull";
-    public static final String EMPLOYEE_PATRONYMIC_NULL_MESSAGE = "Employee patronymic is null";
     public static final String POSITION_NULL = "positionNull";
-    public static final String EMPLOYEE_POSITION_NULL_MESSAGE = "Employee position is null";
 
     private CreateEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -45,28 +40,31 @@ public class CreateEmployee implements Command {
         String lastName = request.getParameter("lastName");
         String patronymic = request.getParameter("patronymic");
         String position = request.getParameter("position");
-        try {
-            validateFields(request, firstName, lastName, patronymic, position);
-        } catch (NullFieldException e) {
+
+        if (validateFields(request, firstName, lastName, patronymic, position)) {
+            employeeService.add(new EmployeeEntity(firstName, lastName, patronymic, position));
+            return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
+        } else {
             return requestFactory.createForwardResponse(CREATE_EMPLOYEE_PAGE);
         }
-        employeeService.add(new EmployeeEntity(firstName, lastName, patronymic, position));
-        return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
+
+
     }
 
-    static void validateFields(CommandRequest request, String firstName, String lastName, String patronymic, String position) throws NullFieldException {
+    static boolean validateFields(CommandRequest request, String firstName, String lastName, String patronymic, String position){
         if (firstName == null || firstName.equals("")) {
             request.addAttributeToJsp(FIRST_NAME_NULL, true);
-            throw new NullFieldException(EMPLOYEE_FIRST_NAME_NULL_MESSAGE);
+            return false;
         } else if (lastName == null || lastName.equals("")) {
             request.addAttributeToJsp(LAST_NAME_NULL, true);
-            throw new NullFieldException(EMPLOYEE_LAST_NAME_NULL_MESSAGE);
+            return false;
         } else if (patronymic == null || patronymic.equals("")) {
             request.addAttributeToJsp(PATRONYMIC_NULL, true);
-            throw new NullFieldException(EMPLOYEE_PATRONYMIC_NULL_MESSAGE);
+            return false;
         } else if (position == null || position.equals("")) {
             request.addAttributeToJsp(POSITION_NULL, true);
-            throw new NullFieldException(EMPLOYEE_POSITION_NULL_MESSAGE);
+            return false;
         }
+        return true;
     }
 }

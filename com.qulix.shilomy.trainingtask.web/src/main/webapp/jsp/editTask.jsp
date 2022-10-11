@@ -51,6 +51,7 @@
             </select><br><br>
         </c:otherwise>
     </c:choose>
+    <c:if test="${requestScope.projectNull}">Заполните поле</c:if>
     <label for="work">Работа:</label><br>
     <c:choose>
         <c:when test="${requestScope.task.name != null}">
@@ -95,6 +96,7 @@
         <option <c:if test="${startMonth == '11'}">selected</c:if> value="11">Ноябрь</option>
         <option <c:if test="${startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
+    <c:if test="${requestScope.startMonthNull}">Заполните поле</c:if>
     <label for="startDay">День:</label>
     <input value="${startDay}" type="number" id="startDay" name="startDay">
     <c:if test="${requestScope.startDayNull}">Заполните поле</c:if>
@@ -132,6 +134,7 @@
         <option <c:if test="${endMonth == '11'}">selected</c:if> value="11">Ноябрь</option>
         <option <c:if test="${endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
+    <c:if test="${requestScope.endMonthNull}">Заполните поле</c:if>
     <label for="endDay">День:</label>
     <input value="${endDay}" type="number" id="endDay" name="endDay">
     <c:if test="${requestScope.endDayNull}">Заполните поле</c:if>
@@ -152,7 +155,8 @@
         <option value="IN_PROGRESS" <c:if test="${status == 'IN_PROGRESS'}">selected</c:if> >В процессе</option>
         <option value="DONE" <c:if test="${status == 'DONE'}">selected</c:if> >Завершена</option>
         <option value="PAUSED" <c:if test="${status == 'PAUSED'}">selected</c:if> >Отложена</option>
-    </select><br><br>
+    </select>
+    <c:if test="${requestScope.statusNull}">Заполните поле</c:if><br><br>
     <label for="executor">Исполнитель:</label><br>
     <c:choose>
         <c:when test="${requestScope.task.executorId != null}">
@@ -171,7 +175,8 @@
                     ${fn:escapeXml(employee.patronymic)}
             </option>
         </c:forEach>
-    </select><br><br>
+    </select>
+    <c:if test="${requestScope.executorNull}">Заполните поле</c:if><br><br>
     <input type="submit" value="Сохранить">
 </form>
 </body>
