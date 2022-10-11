@@ -83,7 +83,7 @@ tomcat {
     port = serverPort as int
 
     webapp("build/libs/${projectDir.name}.war") {
-        contextPath = ''
+        contextPath = webAppContextPath
     }
 }
 
