@@ -43,6 +43,7 @@ public class CreateTask implements Command {
     public static final String TASK_NAME_NULL = "taskNameNull";
     public static final String PROJECT_NULL = "projectNull";
     public static final String WORK_NULL = "workNull";
+    public static final String WORK_NOT_INTEGER = "workNotInteger";
     public static final String WORK_NEGATIVE = "workNegative";
     public static final String START_YEAR_NULL = "startYearNull";
     public static final String INVALID_START_YEAR = "invalidStartYear";
@@ -140,9 +141,17 @@ public class CreateTask implements Command {
         if (work == null || work.equals(EMPTY_STRING)) {
             request.addAttributeToJsp(WORK_NULL, true);
             return false;
-        } else if (Integer.parseInt(work) < 0) {
-            request.addAttributeToJsp(WORK_NEGATIVE, true);
-            return false;
+        } else {
+            try {
+                Integer.parseInt(work);
+            } catch (NumberFormatException nfe) {
+                request.addAttributeToJsp(WORK_NOT_INTEGER, true);
+                return false;
+            }
+            if (Integer.parseInt(work) < 0) {
+                request.addAttributeToJsp(WORK_NEGATIVE, true);
+                return false;
+            }
         }
         if (startYear == null || startYear.equals(EMPTY_STRING)) {
             request.addAttributeToJsp(START_YEAR_NULL, true);

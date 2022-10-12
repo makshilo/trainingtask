@@ -63,6 +63,7 @@
     </c:choose>
     <input style="width: 100px;" type="text" id="work" name="work" value="${work}">
     <c:if test="${requestScope.workNull}">Заполните поле</c:if>
+    <c:if test="${requestScope.workNotInteger}">Введённое значение должно быть целым числом</c:if>
     <c:if test="${requestScope.workNegative}">Введённое значение не должно быть отрицательным</c:if><br><br>
     <label>Дата начала</label><br>
     <c:choose>

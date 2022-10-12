@@ -43,6 +43,7 @@
     <label for="work">Работа:</label><br>
     <input style="width: 100px;" type="text" id="work" name="work" value="${fn:escapeXml(param.work)}">
     <c:if test="${requestScope.workNull}">Заполните поле</c:if>
+    <c:if test="${requestScope.workNotInteger}">Введённое значение должно быть целым числом</c:if>
     <c:if test="${requestScope.workNegative}">Введённое значение не должно быть отрицательным</c:if><br><br>
     <label>Дата начала</label><br>
     <label for="startYear">Год:</label>
