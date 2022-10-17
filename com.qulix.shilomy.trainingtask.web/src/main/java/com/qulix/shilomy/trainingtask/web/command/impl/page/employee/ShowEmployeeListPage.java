@@ -10,12 +10,11 @@ import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 public class ShowEmployeeListPage implements Command {
 
     private static ShowEmployeeListPage instance;
-
     private final RequestFactory requestFactory;
 
+    public static final String EMPLOYEES_PARAM_NAME = "employees";
 
     private static final String EMPLOYEES_PAGE = "/jsp/employeeList.jsp";
-
 
     private final EmployeeService employeeService;
 
@@ -33,7 +32,7 @@ public class ShowEmployeeListPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        request.addAttributeToJsp("employees", employeeService.findAll());
+        request.addAttributeToJsp(EMPLOYEES_PARAM_NAME, employeeService.findAll());
         return requestFactory.createForwardResponse(EMPLOYEES_PAGE);
     }
 }

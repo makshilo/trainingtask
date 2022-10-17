@@ -8,9 +8,9 @@ import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 
 public class ShowProjectListPage implements Command {
     private static ShowProjectListPage instance;
-
     private final RequestFactory requestFactory;
 
+    public static final String PROJECTS_PARAM_NAME = "projects";
     private static final String PROJECTS_PAGE = "/jsp/projectList.jsp";
 
     private final ProjectService projectService;
@@ -29,7 +29,7 @@ public class ShowProjectListPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        request.addAttributeToJsp("projects", projectService.findAll());
+        request.addAttributeToJsp(PROJECTS_PARAM_NAME, projectService.findAll());
         return requestFactory.createForwardResponse(PROJECTS_PAGE);
     }
 }

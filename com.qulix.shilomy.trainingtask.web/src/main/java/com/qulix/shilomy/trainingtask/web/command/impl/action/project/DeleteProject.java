@@ -15,6 +15,7 @@ public class DeleteProject implements Command {
     private static final String COMMAND_PROJECT_LIST = "/controller?command=projectsPage";
 
     private final ProjectService projectService;
+
     private DeleteProject(ProjectService projectService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
         this.projectService = projectService;

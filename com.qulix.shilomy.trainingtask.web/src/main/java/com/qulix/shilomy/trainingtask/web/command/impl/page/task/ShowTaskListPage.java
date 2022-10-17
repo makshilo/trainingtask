@@ -13,16 +13,17 @@ import com.qulix.shilomy.trainingtask.web.service.TaskService;
 import java.util.HashMap;
 
 public class ShowTaskListPage implements Command {
-    private static ShowTaskListPage instance;
 
+    public static final String TASKS_PARAM_NAME = "tasks";
+    public static final String EMPLOYEES_PARAM_NAME = "employees";
+    public static final String PROJECTS_PARAM_NAME = "projects";
+    private static ShowTaskListPage instance;
     private final RequestFactory requestFactory;
 
     private static final String TASKS_PAGE = "/jsp/taskList.jsp";
 
     private final TaskService taskService;
-
     private final EmployeeService employeeService;
-
     private final ProjectService projectService;
 
     private ShowTaskListPage(EmployeeService employeeService, ProjectService projectService, TaskService taskService,
@@ -59,9 +60,9 @@ public class ShowTaskListPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        request.addAttributeToJsp("tasks", taskService.findAll());
-        request.addAttributeToJsp("employees", getEmployeeNames());
-        request.addAttributeToJsp("projects", getProjectNames());
+        request.addAttributeToJsp(TASKS_PARAM_NAME, taskService.findAll());
+        request.addAttributeToJsp(EMPLOYEES_PARAM_NAME, getEmployeeNames());
+        request.addAttributeToJsp(PROJECTS_PARAM_NAME, getProjectNames());
         return requestFactory.createForwardResponse(TASKS_PAGE);
     }
 }

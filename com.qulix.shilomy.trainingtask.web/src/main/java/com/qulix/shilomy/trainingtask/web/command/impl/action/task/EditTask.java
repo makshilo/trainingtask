@@ -14,6 +14,7 @@ import com.qulix.shilomy.trainingtask.web.service.TaskService;
 import java.sql.Date;
 
 public class EditTask implements Command {
+
     private static EditTask instance;
     private final RequestFactory requestFactory;
 
@@ -29,16 +30,18 @@ public class EditTask implements Command {
     public static final String END_DAY_PARAM_NAME = "endDay";
     public static final String EXECUTOR_PARAM_NAME = "executor";
     public static final String ID_PARAM_NAME = "id";
+
+    public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
     public static final String DATE_COLLISION = "dateCollision";
     public static final String MINUS_SIGN = "-";
 
     private static final String COMMAND_TASK_LIST = "/controller?command=tasksPage";
-
     public static final String EDIT_TASK_PAGE = "/jsp/editTask.jsp";
 
     private final TaskService taskService;
     private final EmployeeService employeeService;
     private final ProjectService projectService;
+
     private EditTask(TaskService taskService, EmployeeService employeeService, ProjectService projectService,
                      RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -83,7 +86,7 @@ public class EditTask implements Command {
                 taskService.update(new TaskEntity(status,taskName, actualProjectId, work, startDate,endDate, actualExecutorId, id));
                 return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
             } else {
-                request.addAttributeToJsp(DATE_COLLISION, true);
+                request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, DATE_COLLISION);
                 ShowCreateTaskPage.fillPage(request, employeeService, projectService);
                 return requestFactory.createForwardResponse(EDIT_TASK_PAGE);
             }

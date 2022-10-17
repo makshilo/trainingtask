@@ -1,10 +1,16 @@
 package com.qulix.shilomy.trainingtask.web.entity.impl;
 
 public enum TaskStatus {
-    NOT_STARTED,
-    IN_PROGRESS,
-    DONE,
-    PAUSED;
+    NOT_STARTED("Не начата"),
+    IN_PROGRESS("В процессе"),
+    DONE("Завершена"),
+    PAUSED("Отложена");
+
+    private final String status;
+
+    TaskStatus(String status) {
+        this.status = status;
+    }
 
     public static TaskStatus of(String name) {
         switch (name) {
@@ -19,5 +25,9 @@ public enum TaskStatus {
             default:
                 throw new IllegalArgumentException("Unknown task status: " + name);
         }
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

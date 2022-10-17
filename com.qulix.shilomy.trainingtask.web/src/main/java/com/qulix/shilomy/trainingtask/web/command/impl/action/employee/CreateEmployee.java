@@ -8,19 +8,24 @@ import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
 public class CreateEmployee implements Command {
+    public static final String FIRST_NAME_PARAM_NAME = "firstName";
+    public static final String LAST_NAME_PARAM_NAME = "lastName";
+    public static final String PATRONYMIC_PARAM_NAME = "patronymic";
+    public static final String POSITION_PARAM_NAME = "position";
     private static CreateEmployee instance;
-
     private final RequestFactory requestFactory;
 
-    private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
-    public static final String CREATE_EMPLOYEE_PAGE = "/jsp/createEmployee.jsp";
-
-    private final EmployeeService employeeService;
-
+    public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
     public static final String FIRST_NAME_NULL = "firstNameNull";
     public static final String LAST_NAME_NULL = "lastNameNull";
     public static final String PATRONYMIC_NULL = "patronymicNull";
     public static final String POSITION_NULL = "positionNull";
+    public static final String EMPTY_STRING = "";
+
+    private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
+    public static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
+
+    private final EmployeeService employeeService;
 
     private CreateEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -36,33 +41,31 @@ public class CreateEmployee implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String patronymic = request.getParameter("patronymic");
-        String position = request.getParameter("position");
+        String firstName = request.getParameter(FIRST_NAME_PARAM_NAME);
+        String lastName = request.getParameter(LAST_NAME_PARAM_NAME);
+        String patronymic = request.getParameter(PATRONYMIC_PARAM_NAME);
+        String position = request.getParameter(POSITION_PARAM_NAME);
 
         if (validateFields(request, firstName, lastName, patronymic, position)) {
             employeeService.add(new EmployeeEntity(firstName, lastName, patronymic, position));
             return requestFactory.createRedirectResponse(COMMAND_EMPLOYEE_LIST);
         } else {
-            return requestFactory.createForwardResponse(CREATE_EMPLOYEE_PAGE);
+            return requestFactory.createForwardResponse(EDIT_EMPLOYEE_PAGE);
         }
-
-
     }
 
     static boolean validateFields(CommandRequest request, String firstName, String lastName, String patronymic, String position){
-        if (firstName == null || firstName.equals("")) {
-            request.addAttributeToJsp(FIRST_NAME_NULL, true);
+        if (firstName == null || firstName.equals(EMPTY_STRING)) {
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, FIRST_NAME_NULL);
             return false;
-        } else if (lastName == null || lastName.equals("")) {
-            request.addAttributeToJsp(LAST_NAME_NULL, true);
+        } else if (lastName == null || lastName.equals(EMPTY_STRING)) {
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, LAST_NAME_NULL);
             return false;
-        } else if (patronymic == null || patronymic.equals("")) {
-            request.addAttributeToJsp(PATRONYMIC_NULL, true);
+        } else if (patronymic == null || patronymic.equals(EMPTY_STRING)) {
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, PATRONYMIC_NULL);
             return false;
-        } else if (position == null || position.equals("")) {
-            request.addAttributeToJsp(POSITION_NULL, true);
+        } else if (position == null || position.equals(EMPTY_STRING)) {
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, POSITION_NULL);
             return false;
         }
         return true;

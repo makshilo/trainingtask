@@ -4,12 +4,17 @@ import com.qulix.shilomy.trainingtask.web.command.Command;
 import com.qulix.shilomy.trainingtask.web.controller.CommandRequest;
 import com.qulix.shilomy.trainingtask.web.controller.CommandResponse;
 import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
+import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
 public class ShowEditEmployeePage implements Command {
     private static ShowEditEmployeePage instance;
-
     private final RequestFactory requestFactory;
+
+    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
+    public static final String PAGE_MODE = "edit";
+    public static final String ID_PARAM_NAME = "id";
+    public static final String EMPLOYEE_PARAM_NAME = "employee";
 
     private static final String EMPLOYEE_EDIT_PAGE = "/jsp/editEmployee.jsp";
 
@@ -28,7 +33,9 @@ public class ShowEditEmployeePage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        request.addAttributeToJsp("employee", employeeService.get(Long.parseLong(request.getParameter("id"))));
+        request.addAttributeToJsp(PAGE_MODE_PARAM_NAME, PAGE_MODE);
+        EmployeeEntity employee = employeeService.get(Long.parseLong(request.getParameter(ID_PARAM_NAME)));
+        request.addAttributeToJsp(EMPLOYEE_PARAM_NAME, employee);
         return requestFactory.createForwardResponse(EMPLOYEE_EDIT_PAGE);
     }
 }

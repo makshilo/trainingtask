@@ -11,16 +11,21 @@ import java.util.List;
 
 public class CreateProject implements Command {
     private static CreateProject instance;
-
     private final RequestFactory requestFactory;
 
-    private static final String COMMAND_PROJECT_LIST = "/controller?command=projectsPage";
-    public static final String CREATE_PROJECT_PAGE = "/jsp/createProject.jsp";
+    public static final String PROJECT_NAME_PARAM = "projectName";
+    public static final String DESCRIPTION_PARAM_NAME = "description";
 
-    private final ProjectService projectService;
-
+    public static final String PROJECT_IS_FOUND = "projectIsFound";
+    public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
     public static final String PROJECT_NAME_NULL = "projectNameNull";
     public static final String PROJECT_DESCRIPTION_NULL = "projectDescriptionNull";
+    public static final String EMPTY_STRING = "";
+
+    private static final String COMMAND_PROJECT_LIST = "/controller?command=projectsPage";
+    public static final String EDIT_PROJECT_PAGE = "/jsp/editProject.jsp";
+
+    private final ProjectService projectService;
 
     private CreateProject(ProjectService projectService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -36,19 +41,19 @@ public class CreateProject implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        String projectName = request.getParameter("projectName");
-        String description = request.getParameter("description");
+        String projectName = request.getParameter(PROJECT_NAME_PARAM);
+        String description = request.getParameter(DESCRIPTION_PARAM_NAME);
         if (validateFields(request, projectName, description)) {
             ProjectEntity newProject = new ProjectEntity(projectName, description);
             if(!projectIsFound(projectService.findAll(), newProject)){
                 projectService.add(newProject);
                 return requestFactory.createRedirectResponse(COMMAND_PROJECT_LIST);
             } else {
-                request.addAttributeToJsp("projectIsFound", true);
-                return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
+                request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, PROJECT_IS_FOUND);
+                return requestFactory.createForwardResponse(EDIT_PROJECT_PAGE);
             }
         } else {
-            return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
+            return requestFactory.createForwardResponse(EDIT_PROJECT_PAGE);
         }
     }
 
@@ -62,12 +67,12 @@ public class CreateProject implements Command {
     }
 
     static boolean validateFields(CommandRequest request, String projectName, String projectDescription) {
-        if (projectName == null || projectName.equals("")) {
-            request.addAttributeToJsp(PROJECT_NAME_NULL, true);
+        if (projectName == null || projectName.equals(EMPTY_STRING)) {
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, PROJECT_NAME_NULL);
             return false;
         }
-        if (projectDescription == null || projectDescription.equals("")) {
-            request.addAttributeToJsp(PROJECT_DESCRIPTION_NULL, true);
+        if (projectDescription == null || projectDescription.equals(EMPTY_STRING)) {
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, PROJECT_DESCRIPTION_NULL);
             return false;
         }
         return true;

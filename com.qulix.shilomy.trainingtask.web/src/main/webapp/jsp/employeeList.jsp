@@ -9,9 +9,9 @@
 </head>
 <body>
 <header>
-    <a class="home-button" href="<c:url value=".."/>"></a>
+    <a class="home-button" href=".."></a>
 </header>
-<a class="button" href="<c:url value=".."/>">Назад</a><br>
+<a class="button" href="..">Назад</a><br>
 <h3>Сотрудники</h3>
 <table>
     <tr>

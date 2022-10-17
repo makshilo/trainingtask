@@ -8,20 +8,20 @@ import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 
 public class EditEmployee implements Command {
+    private static EditEmployee instance;
+    private final RequestFactory requestFactory;
+
+    public static final String ID_PARAM_NAME = "id";
     public static final String FIRST_NAME_PARAM_NAME = "firstName";
     public static final String LAST_NAME_PARAM_NAME = "lastName";
     public static final String PATRONYMIC_PARAM_NAME = "patronymic";
     public static final String POSITION_PARAM_NAME = "position";
-    public static final String ID_PARAM_NAME = "id";
-    private static EditEmployee instance;
-
-    private final RequestFactory requestFactory;
 
     private static final String COMMAND_EMPLOYEE_LIST = "/controller?command=employeesPage";
     public static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
 
-
     private final EmployeeService employeeService;
+
     private EditEmployee(EmployeeService employeeService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
         this.employeeService = employeeService;

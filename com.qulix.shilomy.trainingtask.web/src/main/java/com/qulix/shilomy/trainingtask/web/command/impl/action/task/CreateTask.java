@@ -40,6 +40,7 @@ public class CreateTask implements Command {
     public static final String YEAR_FORMAT = "uuuu";
     public static final String DAY_FORMAT = "dd";
 
+    public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
     public static final String TASK_NAME_NULL = "taskNameNull";
     public static final String PROJECT_NULL = "projectNull";
     public static final String WORK_NULL = "workNull";
@@ -111,7 +112,7 @@ public class CreateTask implements Command {
                 taskService.add(new TaskEntity(status,taskName, actualProjectId, work, startDate,endDate, actualExecutorId));
                 return requestFactory.createRedirectResponse(COMMAND_TASK_LIST);
             } else {
-                request.addAttributeToJsp(DATE_COLLISION, true);
+                request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, DATE_COLLISION);
                 ShowCreateTaskPage.fillPage(request, employeeService, projectService);
                 return requestFactory.createForwardResponse(CREATE_TASK_PAGE);
             }
@@ -131,78 +132,78 @@ public class CreateTask implements Command {
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY_FORMAT).withResolverStyle(ResolverStyle.STRICT);
 
         if (taskName == null || taskName.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(TASK_NAME_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, TASK_NAME_NULL);
             return false;
         }
         if (projectId == null || projectId.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(PROJECT_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, PROJECT_NULL);
             return false;
         }
         if (work == null || work.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(WORK_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, WORK_NULL);
             return false;
         } else {
             try {
                 Integer.parseInt(work);
             } catch (NumberFormatException nfe) {
-                request.addAttributeToJsp(WORK_NOT_INTEGER, true);
+                request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, WORK_NOT_INTEGER);
                 return false;
             }
             if (Integer.parseInt(work) < 0) {
-                request.addAttributeToJsp(WORK_NEGATIVE, true);
+                request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, WORK_NEGATIVE);
                 return false;
             }
         }
         if (startYear == null || startYear.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(START_YEAR_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, START_YEAR_NULL);
             return false;
         } else if (!dateValidator.isValid(yearFormatter, startYear)) {
-            request.addAttributeToJsp(INVALID_START_YEAR, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, INVALID_START_YEAR);
             return false;
         }
         if (startMonth == null || startMonth.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(START_MONTH_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, START_MONTH_NULL);
             return false;
         }
         if (startDay == null || startDay.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(START_DAY_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, START_DAY_NULL);
             return false;
         } else if (!dateValidator.isValid(dayFormatter, startDay)) {
-            request.addAttributeToJsp(INVALID_START_DAY, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, INVALID_START_DAY);
             return false;
         }
         if (!isDateValid(dateValidator, startYear, startMonth, startDay)) {
-            request.addAttributeToJsp(WRONG_START_DATE, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, WRONG_START_DATE);
             return false;
         }
         if (endYear == null || endYear.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(END_YEAR_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, END_YEAR_NULL);
             return false;
         } else if (!dateValidator.isValid(yearFormatter, endYear)) {
-            request.addAttributeToJsp(INVALID_END_YEAR, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, INVALID_END_YEAR);
             return false;
         }
         if (endMonth == null || endMonth.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(END_MONTH_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, END_MONTH_NULL);
             return false;
         }
         if (endDay == null || endDay.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(END_DAY_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, END_DAY_NULL);
             return false;
         } else if (!dateValidator.isValid(dayFormatter, endDay)) {
-            request.addAttributeToJsp(INVALID_END_DAY, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, INVALID_END_DAY);
             return false;
         }
         if (!isDateValid(dateValidator, endYear, endMonth, endDay)) {
-            request.addAttributeToJsp(WRONG_END_DATE, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, WRONG_END_DATE);
             return false;
         }
         if (executorId == null || executorId.equals(EMPTY_STRING)) {
-            request.addAttributeToJsp(EXECUTOR_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, EXECUTOR_NULL);
             return false;
         }
         if (status == null) {
-            request.addAttributeToJsp(STATUS_NULL, true);
+            request.addAttributeToJsp(VALIDATION_ERROR_PARAM_NAME, STATUS_NULL);
             return false;
         }
         return true;

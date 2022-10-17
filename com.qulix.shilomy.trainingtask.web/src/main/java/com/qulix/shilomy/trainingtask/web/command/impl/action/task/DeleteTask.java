@@ -15,6 +15,7 @@ public class DeleteTask implements Command {
     private static final String COMMAND_TASK_LIST = "/controller?command=tasksPage";
 
     private final TaskService taskService;
+
     private DeleteTask(TaskService taskService, RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
         this.taskService = taskService;

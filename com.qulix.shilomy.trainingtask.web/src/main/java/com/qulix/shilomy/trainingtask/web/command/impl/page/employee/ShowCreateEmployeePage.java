@@ -7,11 +7,12 @@ import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 
 public class ShowCreateEmployeePage implements Command {
     private static ShowCreateEmployeePage instance;
-
     private final RequestFactory requestFactory;
 
+    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
+    public static final String PAGE_MODE = "create";
 
-    private static final String CREATE_EMPLOYEE_PAGE = "/jsp/createEmployee.jsp";
+    private static final String CREATE_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
 
     private ShowCreateEmployeePage(RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -26,6 +27,7 @@ public class ShowCreateEmployeePage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
+        request.addAttributeToJsp(PAGE_MODE_PARAM_NAME, PAGE_MODE);
         return requestFactory.createForwardResponse(CREATE_EMPLOYEE_PAGE);
     }
 }

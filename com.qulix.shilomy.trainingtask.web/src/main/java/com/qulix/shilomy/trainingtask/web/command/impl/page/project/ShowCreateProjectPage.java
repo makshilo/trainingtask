@@ -7,10 +7,12 @@ import com.qulix.shilomy.trainingtask.web.controller.RequestFactory;
 
 public class ShowCreateProjectPage implements Command {
     private static ShowCreateProjectPage instance;
-
     private final RequestFactory requestFactory;
 
-    private static final String CREATE_PROJECT_PAGE = "/jsp/createProject.jsp";
+    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
+    public static final String PAGE_MODE = "create";
+
+    private static final String PROJECT_EDIT_PAGE = "/jsp/editProject.jsp";
 
     private ShowCreateProjectPage(RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -25,6 +27,7 @@ public class ShowCreateProjectPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return requestFactory.createForwardResponse(CREATE_PROJECT_PAGE);
+        request.addAttributeToJsp(PAGE_MODE_PARAM_NAME, PAGE_MODE);
+        return requestFactory.createForwardResponse(PROJECT_EDIT_PAGE);
     }
 }
