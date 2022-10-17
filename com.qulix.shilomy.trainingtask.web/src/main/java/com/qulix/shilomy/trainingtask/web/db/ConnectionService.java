@@ -15,7 +15,7 @@ public class ConnectionService {
     public static final String DB_USER_PROPERTY_NAME = "dbUser";
     public static final String DB_PASSWORD_PROPERTY_NAME = "dbPassword";
 
-    private final String APP_CONFIG_PATH = "gradle.properties";
+    private final String APP_CONFIG_PATH = "../gradle.properties";
     private final Properties appProperties;
 
     private static final Logger LOGGER = Logger.getLogger(ConnectionService.class.getName());
