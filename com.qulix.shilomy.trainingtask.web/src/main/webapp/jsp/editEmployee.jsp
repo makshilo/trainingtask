@@ -14,17 +14,17 @@
 <header>
     <a class="home-button" href=".."></a>
 </header>
-<a class="button" href="<c:url value="/controller?command=employeesPage"/>">Отмена</a><br>
+<a class="button" href="<c:url value="/employees?action=employeeList"/>">Отмена</a><br>
 <h1>Страница изменения сотрудника</h1>
 
 <c:set scope="request" var="id" value="${requestScope.employee.id}"/>
 
 <c:choose>
     <c:when test="${requestScope.pageMode == 'create'}">
-        <c:url value="/controller?command=createEmployee" var="action"/>
+        <c:url value="/employees?action=createEmployee" var="action"/>
     </c:when>
     <c:when test="${requestScope.pageMode == 'edit'}">
-        <c:url value="/controller?command=editEmployee&id=${param.id}" var="action"/>
+        <c:url value="/employees?action=editEmployee&id=${param.id}" var="action"/>
     </c:when>
 </c:choose>
 

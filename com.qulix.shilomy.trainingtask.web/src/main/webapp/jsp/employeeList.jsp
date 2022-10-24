@@ -26,11 +26,11 @@
             <td><c:out value="${employee.firstName}"/></td>
             <td><c:out value="${employee.patronymic}"/></td>
             <td><c:out value="${employee.position}"/></td>
-            <td><a class="table-button" href="<c:url value="/controller?command=employeeEditPage&id=${employee.id}"/>">Изменить</a></td>
-            <td><a class="table-button" href="<c:url value="/controller?command=deleteEmployee&id=${employee.id}"/>">Удалить</a></td>
+            <td><a class="table-button" href="<c:url value="/employees?action=editEmployeePage&id=${employee.id}"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/employees?action=deleteEmployee&id=${employee.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="<c:url value="/controller?command=employeeCreatePage"/>">Добавить</a>
+<a class="add-button" href="<c:url value="/employees?action=createEmployeePage"/>">Добавить</a>
 </body>
 </html>

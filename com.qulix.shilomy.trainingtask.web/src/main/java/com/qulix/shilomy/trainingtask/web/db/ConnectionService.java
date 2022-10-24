@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.db;
 
-import com.qulix.shilomy.trainingtask.web.exception.CouldNotInitialiseConnectionService;
+import com.qulix.shilomy.trainingtask.web.exception.ConnectionServiceInitializationFailed;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class ConnectionService {
     private static ConnectionService instance;
 
 
-    private ConnectionService() throws CouldNotInitialiseConnectionService, IOException {
+    private ConnectionService() throws ConnectionServiceInitializationFailed, IOException {
         appProperties = new Properties();
         appProperties.load(new FileInputStream(APP_CONFIG_PATH));
         registerDrivers();
@@ -33,7 +33,7 @@ public class ConnectionService {
         if (instance == null) {
             try {
                 instance = new ConnectionService();
-            } catch (CouldNotInitialiseConnectionService | IOException e) {
+            } catch (ConnectionServiceInitializationFailed | IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -48,12 +48,12 @@ public class ConnectionService {
                 appProperties.getProperty(DB_PASSWORD_PROPERTY_NAME));
     }
 
-    public void registerDrivers() throws CouldNotInitialiseConnectionService {
+    public void registerDrivers() throws ConnectionServiceInitializationFailed {
         LOGGER.finest("driver registration");
         try {
             DriverManager.registerDriver(DriverManager.getDriver(appProperties.getProperty(DB_URL_PROPERTY_NAME)));
         } catch (SQLException e) {
-            throw new CouldNotInitialiseConnectionService("Failed to register driver", e);
+            throw new ConnectionServiceInitializationFailed("Failed to register driver", e);
         }
     }
 }

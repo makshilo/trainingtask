@@ -39,11 +39,11 @@
             <td><c:out value="${task.startDate}"/></td>
             <td><c:out value="${task.endDate}"/></td>
             <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-            <td><a class="table-button" href="<c:url value="/controller?command=taskEditPage&id=${task.id}"/>">Изменить</a></td>
-            <td><a class="table-button" href="<c:url value="/controller?command=deleteTask&id=${task.id}"/>">Удалить</a></td>
+            <td><a class="table-button" href="<c:url value="/tasks?action=taskEditPage&id=${task.id}"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/tasks?action=deleteTask&id=${task.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="<c:url value="/controller?command=taskCreatePage"/>">Добавить</a>
+<a class="add-button" href="<c:url value="/tasks?action=createTaskPage"/>">Добавить</a>
 </body>
 </html>

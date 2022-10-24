@@ -22,11 +22,11 @@
         <tr>
             <td><c:out value="${project.name}"/></td>
             <td><c:out value="${project.description}"/></td>
-            <td><a class="table-button" href="<c:url value="/controller?command=projectEditPage&id=${project.id}"/>">Изменить</a></td>
-            <td><a class="table-button" href="<c:url value="/controller?command=deleteProject&id=${project.id}"/>">Удалить</a></td>
+            <td><a class="table-button" href="<c:url value="/projects?action=editProjectPage&id=${project.id}"/>">Изменить</a></td>
+            <td><a class="table-button" href="<c:url value="/projects?action=deleteProject&id=${project.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="<c:url value="/controller?command=projectCreatePage"/>">Добавить</a>
+<a class="add-button" href="<c:url value="/projects?action=createProjectPage"/> ">Добавить</a>
 </body>
 </html>
