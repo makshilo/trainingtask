@@ -37,5 +37,5 @@ create schema TRAININGTASKDB
                 on update cascade on delete set null,
         constraint TASK_LIST_PROJECT_LIST_PROJECT_ID_FK
             foreign key (TASK_PROJECT_ID) references TRAININGTASKDB.PROJECT_LIST
-                on update cascade on delete set null
+                on update cascade on delete cascade
     )
