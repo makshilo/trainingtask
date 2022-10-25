@@ -23,6 +23,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.HashMap;
 
+/**
+ * Http сервлет для работы с задачами(TaskEntity)
+ */
 @WebServlet("/tasks")
 public class TaskController extends HttpServlet {
 
@@ -95,12 +98,34 @@ public class TaskController extends HttpServlet {
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
+    /**
+     * Метод обработки POST запросов
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                 полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
     }
 
+    /**
+     * Метод обработки GET запросов, получает действие из запроса и вызывает соответствующий метод
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                       полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                        отправляемый сервлетом клиенту
+     *
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter(ACTION_PARAM_NAME);
@@ -127,6 +152,14 @@ public class TaskController extends HttpServlet {
         }
     }
 
+    /**
+     * Метод который заполняет страницу списка задач,
+     * а затем перенаправляет на неё
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     private void taskList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(TASKS_PARAM_NAME, taskService.findAll());
         request.setAttribute(EMPLOYEES_PARAM_NAME, getEmployeeNames());
@@ -135,6 +168,15 @@ public class TaskController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    /**
+     * Метод который заполняет форму задачи в зависимости от параметра
+     * режима(pageMode), а затем перенаправляет на неё
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @param pageMode режим работы формы
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     private void showTaskForm(HttpServletRequest request, HttpServletResponse response, String pageMode) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(EDIT_TASK_PAGE);
         if (pageMode.equals(EDIT_MODE)) {
@@ -144,10 +186,26 @@ public class TaskController extends HttpServlet {
         } else {
             request.setAttribute(PAGE_MODE_PARAM_NAME, CREATE_MODE);
         }
-        fillPage(request, employeeService, projectService);
+        request.setAttribute(EMPLOYEES_PARAM_NAME, employeeService.findAll());
+        request.setAttribute(PROJECTS_PARAM_NAME, projectService.findAll());
+        request.setAttribute(TASK_STATUS_PARAM_NAME, TaskStatus.values());
+        if (request.getParameter(PROJECT_LOCK_PARAM) != null) {
+            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(CURRENT_PROJECT_PARAM_NAME)));
+            request.setAttribute(PROJECT_LOCK_PARAM, true);
+            request.setAttribute(CURRENT_PROJECT_PARAM_NAME, currentProject);
+        }
         dispatcher.forward(request, response);
     }
 
+    /**
+     * Метод который получает из формы параметры задачи и по результатам проверки
+     * либо добавляет новую и перенаправляет на страницу списка задач
+     * либо возвращает на страницу формы
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     * @throws ServletException если в работе сервлета возникают проблемы
+     */
     private void createTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         TaskStatus status = TaskStatus.of(request.getParameter(STATUS_PARAM_NAME));
         String taskName = request.getParameter(TASK_NAME_PARAM);
@@ -160,8 +218,6 @@ public class TaskController extends HttpServlet {
         String endMonth = request.getParameter(END_MONTH_PARAM_NAME);
         String endDay = request.getParameter(END_DAY_PARAM_NAME);
         String executorId = request.getParameter(EXECUTOR_PARAM_NAME);
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher(EDIT_TASK_PAGE);
 
         if (validateFields(request, taskName, projectId, work,
                 startYear, startMonth, startDay,
@@ -177,15 +233,22 @@ public class TaskController extends HttpServlet {
                 response.sendRedirect(COMMAND_TASK_LIST);
             } else {
                 request.setAttribute(VALIDATION_ERROR_PARAM_NAME, DATE_COLLISION);
-                fillPage(request, employeeService, projectService);
-                dispatcher.forward(request, response);
+                showTaskForm(request, response, CREATE_MODE);
             }
         } else {
-            fillPage(request, employeeService, projectService);
-            dispatcher.forward(request, response);
+            showTaskForm(request, response, CREATE_MODE);
         }
     }
 
+    /**
+     * Метод который получает из формы параметры задачи и по результатам проверки
+     * либо редактирует конкретную и перенаправляет на страницу списка задач
+     * либо возвращает на страницу формы
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     * @throws ServletException если в работе сервлета возникают проблемы
+     */
     private void editTask(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         TaskStatus status = TaskStatus.of(request.getParameter(STATUS_PARAM_NAME));
         String taskName = request.getParameter(TASK_NAME_PARAM);
@@ -199,8 +262,6 @@ public class TaskController extends HttpServlet {
         String endDay = request.getParameter(END_DAY_PARAM_NAME);
         String executorId = request.getParameter(EXECUTOR_PARAM_NAME);
         Long id = Long.parseLong(request.getParameter(ID_PARAM_NAME));
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher(EDIT_TASK_PAGE);
 
         if (validateFields(request, taskName, projectId, work,
                 startYear, startMonth, startDay,
@@ -216,21 +277,32 @@ public class TaskController extends HttpServlet {
                 response.sendRedirect(COMMAND_TASK_LIST);
             } else {
                 request.setAttribute(VALIDATION_ERROR_PARAM_NAME, DATE_COLLISION);
-                fillPage(request, employeeService, projectService);
-                dispatcher.forward(request, response);
+                showTaskForm(request, response, EDIT_MODE);
             }
         } else {
-            fillPage(request, employeeService, projectService);
-            dispatcher.forward(request, response);
+            showTaskForm(request, response, EDIT_MODE);
         }
     }
 
+    /**
+     * Метод который получает идентификатор задачи,
+     * по которому удаляет конкретную задачу,
+     * и перенаправляет на страницу списка задач для её обновления
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     private void deleteTask(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long taskId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
         taskService.delete(taskId);
         response.sendRedirect(COMMAND_TASK_LIST);
     }
 
+    /**
+     * Метод который создаёт таблицу, в которой ключ это идентификатор работника,
+     * а значение полное имя
+     * @return таблица идентификаторов и имён работников
+     */
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {
@@ -239,6 +311,11 @@ public class TaskController extends HttpServlet {
         return employeeNames;
     }
 
+    /**
+     * Метод который создаёт таблицу, в которой ключ это идентификатор проекта,
+     * а значение наименование проекта
+     * @return таблица идентификаторов и наименований проектов
+     */
     private HashMap<Long, String> getProjectNames() {
         final HashMap<Long, String> projectNames = new HashMap<>();
         for (ProjectEntity project : projectService.findAll()) {
@@ -247,17 +324,23 @@ public class TaskController extends HttpServlet {
         return projectNames;
     }
 
-    public static void fillPage(HttpServletRequest request, EmployeeService employeeService, ProjectService projectService) {
-        request.setAttribute(EMPLOYEES_PARAM_NAME, employeeService.findAll());
-        request.setAttribute(PROJECTS_PARAM_NAME, projectService.findAll());
-        request.setAttribute(TASK_STATUS_PARAM_NAME, TaskStatus.values());
-        if (request.getParameter(PROJECT_LOCK_PARAM) != null) {
-            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(CURRENT_PROJECT_PARAM_NAME)));
-            request.setAttribute(PROJECT_LOCK_PARAM, true);
-            request.setAttribute(CURRENT_PROJECT_PARAM_NAME, currentProject);
-        }
-    }
-
+    /**
+     * Метод который проверяет данные задач и записывает ошибки в запрос
+     * @param request запрос клиента
+     * @param taskName имя задачи
+     * @param projectId идентификатор проекта
+     * @param work часы работы над задачей
+     * @param startYear год начала
+     * @param startMonth месяц начала
+     * @param startDay день начала
+     * @param endYear год окончания
+     * @param endMonth месяц окончания
+     * @param endDay день окончания
+     * @param executorId идентификатор работника
+     * @param status статус задачи
+     * @return false если данные не проходят проверку и
+     * true если данные верны
+     */
     private boolean validateFields(HttpServletRequest request, String taskName, String projectId, String work,
                                   String startYear, String startMonth, String startDay,
                                   String endYear, String endMonth, String endDay, String executorId, TaskStatus status) {
@@ -345,6 +428,14 @@ public class TaskController extends HttpServlet {
         return true;
     }
 
+    /**
+     * Метод который проверяет существует ли введённая дата
+     * @param dateValidator заранее созданный валидатор даты
+     * @param year проверяемый год
+     * @param month проверяемый месяц
+     * @param day проверяемый день
+     * @return true если дата верна и false если даты не существует
+     */
     static boolean isDateValid(DateValidator dateValidator, String year, String month, String day) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT).withResolverStyle(ResolverStyle.STRICT);
 

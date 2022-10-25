@@ -7,6 +7,16 @@ import com.qulix.shilomy.trainingtask.web.exception.EntityUpdateException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Общий интерфейс дао сущностей,
+ * описывает базовые методы для сущности
+ * <li>создание</li>
+ * <li>получение</li>
+ * <li>получение всех</li>
+ * <li>обновление</li>
+ * <li>удаление</li>
+ * @param <T>
+ */
 public interface EntityDao<T extends Entity> {
 
     T create(T entity) throws EntityUpdateException, InterruptedException;

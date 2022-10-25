@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+/**
+ * Класс, который предназначен для выдачи соединений с базой данных
+ */
 public class ConnectionService {
     public static final String DB_URL_PROPERTY_NAME = "dbUrl";
     public static final String DB_USER_PROPERTY_NAME = "dbUser";
@@ -29,6 +32,10 @@ public class ConnectionService {
         registerDrivers();
     }
 
+    /**
+     * Метод получения единственного объекта этого класса
+     * @return объект ConnectionService
+     */
     public static synchronized ConnectionService getInstance() {
         if (instance == null) {
             try {
@@ -40,6 +47,12 @@ public class ConnectionService {
         return instance;
     }
 
+    /**
+     * Метод который создаёт соединение
+     * @return Connection
+     * @throws SQLException если при открытии соединения,
+     * возникают ошибки со стороны базы данных
+     */
     public synchronized Connection getConnection() throws SQLException {
         LOGGER.finest("creating connection");
         return DriverManager.getConnection(
@@ -48,6 +61,10 @@ public class ConnectionService {
                 appProperties.getProperty(DB_PASSWORD_PROPERTY_NAME));
     }
 
+    /**
+     * Метод регистрации драйвера базы данных
+     * @throws ConnectionServiceInitializationFailed если ошибка возникает при регистрации драйвера
+     */
     public void registerDrivers() throws ConnectionServiceInitializationFailed {
         LOGGER.finest("driver registration");
         try {

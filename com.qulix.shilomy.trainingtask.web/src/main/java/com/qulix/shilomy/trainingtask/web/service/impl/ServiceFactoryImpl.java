@@ -15,19 +15,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Класс исполнение фабрики для классов сервисов, является синглтоном
+ */
 public class ServiceFactoryImpl implements ServiceFactory {
     private final Map<Class<?>, EntityService<?>> serviceByEntity = new HashMap<>();
     private static final String SERVICE_NOT_FOUND = "Could not create service for %s class";
 
     private final DaoFactory daoFactory = DaoFactory.getInstance();
+
+    /**
+     * Приватный конструктор по умолчанию
+     */
     private ServiceFactoryImpl() {
 
     }
 
+    /**
+     * Метод получения единственного объекта из класса хранилища
+     * @return Объект DaoFactoryImpl
+     */
     public static ServiceFactoryImpl getInstance() {
         return Holder.INSTANCE;
     }
 
+    /**
+     * Метод приведения сервиса к общему интерфейсу
+     * @param modelClass класс необходимой сущности
+     * @return объект сервиса, приведённый к общему интерфейсу
+     * @param <T> класс сущности унаследовынный от базового интерфейса сущности(Entity)
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Entity> EntityService<T> serviceFor(Class<T> modelClass) {
@@ -35,6 +52,10 @@ public class ServiceFactoryImpl implements ServiceFactory {
                 .computeIfAbsent(modelClass, createServiceForEntity());
     }
 
+    /**
+     * Метод получения объекта класса сервиса для указанного класса
+     * @return объект сервиса для указанной сущности
+     */
     private Function<Class<?>, EntityService<?>> createServiceForEntity() {
         return clazz -> {
             final String className = clazz.getSimpleName();
@@ -54,6 +75,9 @@ public class ServiceFactoryImpl implements ServiceFactory {
         };
     }
 
+    /**
+     * Класс хранилище для обЪекта ServiceFactoryImpl
+     */
     private static class Holder {
         public static ServiceFactoryImpl INSTANCE = new ServiceFactoryImpl();
     }

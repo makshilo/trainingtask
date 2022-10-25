@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Http сервлет для работы с работниками(EmployeeEntity)
+ */
 @WebServlet("/employees")
 public class EmployeeController extends HttpServlet {
 
@@ -47,12 +50,34 @@ public class EmployeeController extends HttpServlet {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
+    /**
+     * Метод обработки POST запросов
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                 полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
     }
 
+    /**
+     * Метод обработки GET запросов, получает действие из запроса и вызывает соответствующий метод
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                       полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                        отправляемый сервлетом клиенту
+     *
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter(ACTION_PARAM_NAME);
@@ -74,17 +99,34 @@ public class EmployeeController extends HttpServlet {
                 editEmployee(request, response);
                 break;
             case DELETE_EMPLOYEE_ACTION_NAME:
-                deleteProject(request, response);
+                deleteEmployee(request, response);
                 break;
         }
     }
 
+    /**
+     * Метод который заполняет страницу списка работников,
+     * а затем перенаправляет на неё
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     private void employeeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(EMPLOYEES_PARAM_NAME, employeeService.findAll());
         RequestDispatcher dispatcher = request.getRequestDispatcher(EMPLOYEES_PAGE);
         dispatcher.forward(request, response);
     }
 
+    /**
+     * Метод который заполняет форму работника в зависимости от параметра
+     * режима(pageMode), а затем перенаправляет на неё
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @param pageMode режим работы формы
+     * @throws ServletException если в работе сервлета возникают проблемы
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
     private void showEmployeeForm(HttpServletRequest request, HttpServletResponse response, String pageMode) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(EDIT_EMPLOYEE_PAGE);
         if (pageMode.equals(EDIT_MODE)) {
@@ -98,6 +140,15 @@ public class EmployeeController extends HttpServlet {
         }
     }
 
+    /**
+     * Метод который получает из формы параметры работника и по результатам проверки
+     * либо добавляет нового и перенаправляет на страницу списка работников
+     * либо возвращает на страницу формы
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     * @throws ServletException если в работе сервлета возникают проблемы
+     */
     private void createEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String firstName = request.getParameter(FIRST_NAME_PARAM_NAME);
         String lastName = request.getParameter(LAST_NAME_PARAM_NAME);
@@ -113,6 +164,15 @@ public class EmployeeController extends HttpServlet {
         }
     }
 
+    /**
+     * Метод который получает из формы параметры работника и по результатам валидации
+     * либо редактирует конкретного и перенаправляет на страницу списка работников
+     * либо возвращает на страницу формы
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     * @throws ServletException если в работе сервлета возникают проблемы
+     */
     private void editEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String firstName = request.getParameter(FIRST_NAME_PARAM_NAME);
         String lastName = request.getParameter(LAST_NAME_PARAM_NAME);
@@ -128,12 +188,32 @@ public class EmployeeController extends HttpServlet {
         }
     }
 
-    private void deleteProject(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    /**
+     * Метод который получает идентификатор работника,
+     * по которому удаляет конкретного работника,
+     * и перенаправляет на страницу списка работников
+     * для её обновления
+     * @param request запрос клиента
+     * @param response ответ сервера
+     * @throws IOException возникает в случае проблем с получением/записью данных
+     */
+    private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long employeeId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
         employeeService.delete(employeeId);
         response.sendRedirect(COMMAND_EMPLOYEE_LIST);
     }
 
+    /**
+     * Метод который проверяет данные работника и
+     * записывает ошибку в запрос
+     * @param request запрос клиента
+     * @param firstName Имя
+     * @param lastName Фамилия
+     * @param patronymic отчество
+     * @param position должность
+     * @return false если данные не проходят проверку и
+     * true если данные верны
+     */
     private boolean validateFields(HttpServletRequest request, String firstName, String lastName, String patronymic, String position){
         if (firstName == null || firstName.equals(EMPTY_STRING)) {
             request.setAttribute(VALIDATION_ERROR_PARAM_NAME, FIRST_NAME_NULL);

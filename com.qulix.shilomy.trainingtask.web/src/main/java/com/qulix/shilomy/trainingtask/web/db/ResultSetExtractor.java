@@ -1,7 +1,5 @@
 package com.qulix.shilomy.trainingtask.web.db;
 
-
-
 import com.qulix.shilomy.trainingtask.web.exception.EntityExtractionFailedException;
 
 import java.sql.ResultSet;
@@ -9,6 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Функциональный интерфейс который получает
+ * результат из результирующего множества
+ * @param <T>
+ */
 @FunctionalInterface
 public interface ResultSetExtractor<T> {
 
