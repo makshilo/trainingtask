@@ -39,11 +39,11 @@
             <td><c:out value="${task.startDate}"/></td>
             <td><c:out value="${task.endDate}"/></td>
             <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-            <td><a class="table-button" href="<c:url value="/editTaskPage?id=${task.id}"/>">Изменить</a></td>
-            <td><a class="table-button" href="<c:url value="/deleteTask?id=${task.id}"/>">Удалить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/editTaskPage?id=${task.id}">Изменить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/deleteTask?id=${task.id}">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="<c:url value="/createTaskPage"/>">Добавить</a>
+<a class="add-button" href="${pageContext.request.contextPath}/createTaskPage">Добавить</a>
 </body>
 </html>

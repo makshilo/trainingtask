@@ -14,45 +14,29 @@
 <header>
     <a class="home-button" href=".."></a>
 </header>
-<a class="button" href="<c:url value="/projects"/>">Отмена</a><br>
+<a class="button" href="${pageContext.request.contextPath}/projects">Отмена</a><br>
 
 <c:set scope="request" var="id" value="${requestScope.project.id}"/>
 
-<c:choose>
-    <c:when test="${requestScope.pageMode == 'create'}">
-        <c:url value="/createProject" var="action"/>
-        <c:set scope="application" var="mode" value="create"/>
-    </c:when>
-    <c:when test="${requestScope.pageMode == 'edit'}">
-        <c:url value="/editProject?id=${param.id}" var="action"/>
-        <c:set scope="application" var="mode" value="edit"/>
-    </c:when>
-</c:choose>
+<c:set var="action" value="${pageContext.request.contextPath.concat(requestScope.pageMode == 'edit' ?
+'/editProject?id='.concat(param.id) : '/createProject')}"/>
+
+<c:set var="mode" scope="application" value="${requestScope.pageMode == 'edit' ? 'edit' : 'create'}"/>
 
 <form action="${action}" method="post">
     <label for="projectName">Наименование:</label><br>
-    <c:choose>
-        <c:when test="${requestScope.project.name != null}">
-            <c:set var="projectName" value="${requestScope.project.name}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="projectName" value="${param.projectName}"/>
-        </c:otherwise>
-    </c:choose>
-    <input maxlength="100" type="text" id="projectName" name="projectName" value="${fn:escapeXml(projectName)}">
-    <c:if test="${requestScope.validationError == 'projectNameNull'}">Заполните поле</c:if>
-    <c:if test="${requestScope.validationError == 'projectIsFound'}">Такой проект уже существует</c:if><br><br>
+
+    <c:set var="projectName" value="${requestScope.project.name != null ? requestScope.project.name : param.projectName}"/>
+
+    <input maxlength="100" type="text" id="projectName" name="projectName" value="${fn:escapeXml(projectName)}"><br><br>
     <label for="description">Описание:</label><br>
-    <c:choose>
-        <c:when test="${requestScope.project.description != null}">
-            <c:set var="description" value="${requestScope.project.description}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="description" value="${param.description}"/>
-        </c:otherwise>
-    </c:choose>
-    <textarea maxlength="1000" id="description" name="description" rows="4" cols="50">${fn:escapeXml(description)}</textarea>
-    <c:if test="${requestScope.validationError == 'projectDescriptionNull'}">Заполните поле</c:if><br><br>
+
+    <c:set var="description" value="${requestScope.project.description != null ? requestScope.project.description : param.description}"/>
+
+    <textarea maxlength="1000" id="description" name="description" rows="4" cols="50">${fn:escapeXml(description)}</textarea><br><br>
+
+    <a style="margin-left: 10px"><c:out value="${requestScope.validationError}"/></a><br><br>
+
     <input type="submit" value="Сохранить">
 </form>
 <c:if test="${mode == 'edit'}">
@@ -80,12 +64,12 @@
                 <td><c:out value="${task.startDate}"/></td>
                 <td><c:out value="${task.endDate}"/></td>
                 <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-                <td><a class="table-button" href="<c:url value="/editTaskPage?id=${task.id}&projectLock"/>">Изменить</a></td>
-                <td><a class="table-button" href="<c:url value="/deleteTask?id=${task.id}"/>">Удалить</a></td>
+                <td><a class="table-button" href="${pageContext.request.contextPath}/editTaskPage?id=${task.id}&projectLock">Изменить</a></td>
+                <td><a class="table-button" href="${pageContext.request.contextPath}/deleteTask?id=${task.id}">Удалить</a></td>
             </tr>
         </c:forEach>
     </table>
-    <a class="add-button" href="<c:url value="/createTaskPage?currentProject=${requestScope.project.id}&projectLock"/>">Добавить</a>
+    <a class="add-button" href="${pageContext.request.contextPath}/createTaskPage?currentProject=${requestScope.project.id}&projectLock">Добавить</a>
 </c:if>
 </body>
 </html>

@@ -22,11 +22,11 @@
         <tr>
             <td><c:out value="${project.name}"/></td>
             <td><c:out value="${project.description}"/></td>
-            <td><a class="table-button" href="<c:url value="/editProjectPage?id=${project.id}"/>">Изменить</a></td>
-            <td><a class="table-button" href="<c:url value="/deleteProject?id=${project.id}"/>">Удалить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/editProjectPage?id=${project.id}">Изменить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/deleteProject?id=${project.id}">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="<c:url value="/createProjectPage"/>">Добавить</a>
+<a class="add-button" href="${pageContext.request.contextPath}/createProjectPage">Добавить</a>
 </body>
 </html>

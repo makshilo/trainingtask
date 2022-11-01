@@ -26,11 +26,11 @@
             <td><c:out value="${employee.firstName}"/></td>
             <td><c:out value="${employee.patronymic}"/></td>
             <td><c:out value="${employee.position}"/></td>
-            <td><a class="table-button" href="<c:url value="/editEmployeePage?id=${employee.id}"/>">Изменить</a></td>
-            <td><a class="table-button" href="<c:url value="/deleteEmployee?id=${employee.id}"/>">Удалить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/editEmployeePage?id=${employee.id}">Изменить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/deleteEmployee?id=${employee.id}">Удалить</a></td>
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="<c:url value="/createEmployeePage"/>">Добавить</a>
+<a class="add-button" href="${pageContext.request.contextPath}/createEmployeePage">Добавить</a>
 </body>
 </html>

@@ -14,32 +14,21 @@
 <header>
     <a class="home-button" href=".."></a>
 </header>
-<a class="button" href="<c:url value="/tasks"/>">Отмена</a><br><br>
+<a class="button" href="${pageContext.request.contextPath}/tasks">Отмена</a><br><br>
 
 <c:set scope="request" var="id" value="${requestScope.task.id}"/>
 
-<c:choose>
-    <c:when test="${requestScope.pageMode == 'create'}">
-        <c:url value="/createTask" var="action"/>
-    </c:when>
-    <c:when test="${requestScope.pageMode == 'edit'}">
-        <c:url value="/editTask?id=${param.id}" var="action"/>
-    </c:when>
-</c:choose>
+<c:set var="action" value="${pageContext.request.contextPath.concat(requestScope.pageMode == 'edit' ?
+'/editTask?id='.concat(param.id) : '/createTask')}"/>
 
 <form action="${action}" method="post">
     <label for="taskName">Наименование:</label><br>
-    <c:choose>
-        <c:when test="${requestScope.task.name != null}">
-            <c:set var="taskName" value="${requestScope.task.name}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="taskName" value="${param.taskName}"/>
-        </c:otherwise>
-    </c:choose>
-    <input maxlength="50" type="text" id="taskName" name="taskName" value="${fn:escapeXml(taskName)}">
-    <c:if test="${requestScope.validationError == 'taskNameNull'}">Заполните поле</c:if><br><br>
+
+    <c:set var="taskName" value="${requestScope.task.name != null ? requestScope.task.name : param.taskName}"/>
+
+    <input maxlength="50" type="text" id="taskName" name="taskName" value="${fn:escapeXml(taskName)}"><br><br>
     <label for="project">Наименование проекта:</label><br>
+
     <c:choose>
         <c:when test="${requestScope.projectLock == true}">
             <select disabled name="project" id="project">
@@ -57,24 +46,18 @@
                             ${project.name}
                     </option>
                 </c:forEach>
-            </select>
-            <c:if test="${requestScope.validationError == 'projectNull'}">Заполните поле</c:if><br><br>
+            </select><br><br>
         </c:otherwise>
     </c:choose>
+
     <label for="work">Работа:</label><br>
-    <c:choose>
-        <c:when test="${requestScope.task.name != null}">
-            <c:set var="work" value="${requestScope.task.work}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="work" value="${param.work}"/>
-        </c:otherwise>
-    </c:choose>
-    <input style="width: 100px;" type="text" id="work" name="work" value="${fn:escapeXml(work)}">
-    <c:if test="${requestScope.validationError == 'workNull'}">Заполните поле</c:if>
-    <c:if test="${requestScope.validationError == 'workNotInteger'}">Введённое значение должно быть целым числом</c:if>
-    <c:if test="${requestScope.validationError == 'workNegative'}">Введённое значение не должно быть отрицательным</c:if><br><br>
+
+    <c:set var="work" value="${requestScope.task.name != null ? requestScope.task.work : param.work}"/>
+
+    <input style="width: 100px;" type="text" id="work" name="work" value="${fn:escapeXml(work)}"><br><br>
+
     <label>Дата начала</label><br>
+
     <c:choose>
         <c:when test="${requestScope.task.startDate != null}">
             <c:set var="startYear" value="${requestScope.task.startDate.toString().substring(0,4)}"/>
@@ -87,11 +70,13 @@
             <c:set var="startDay" value="${param.startDay}"/>
         </c:otherwise>
     </c:choose>
+
     <label for="startYear">Год:</label>
+
     <input style="width: 100px;" value="${fn:escapeXml(startYear)}" type="text" id="startYear" name="startYear">
-    <c:if test="${requestScope.validationError == 'startYearNull'}">Заполните поле</c:if>
-    <c:if test="${requestScope.validationError == 'invalidStartYear'}">Введённое значение не соответствует формату: гггг</c:if>
+
     <label for="startMonth">Месяц:</label>
+
     <select class="month-select" id="startMonth" name="startMonth">
         <option <c:if test="${startMonth == '01'}">selected</c:if> value="01">Январь</option>
         <option <c:if test="${startMonth == '02'}">selected</c:if> value="02">Февраль</option>
@@ -106,13 +91,13 @@
         <option <c:if test="${startMonth == '11'}">selected</c:if> value="11">Ноябрь</option>
         <option <c:if test="${startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
-    <c:if test="${requestScope.validationError == 'startMonthNull'}">Заполните поле</c:if>
+
     <label for="startDay">День:</label>
-    <input style="width: 100px;" value="${fn:escapeXml(startDay)}" type="text" id="startDay" name="startDay">
-    <c:if test="${requestScope.validationError == 'startDayNull'}">Заполните поле</c:if>
-    <c:if test="${requestScope.validationError == 'invalidStartDay'}">Введённое значение не соответствует формату: дд</c:if>
-    <c:if test="${requestScope.validationError == 'wrongStartDate'}">Введённая дата не существует</c:if><br><br>
+
+    <input style="width: 100px;" value="${fn:escapeXml(startDay)}" type="text" id="startDay" name="startDay"><br><br>
+
     <label>Дата окончания</label><br>
+
     <c:choose>
         <c:when test="${requestScope.task.endDate != null}">
             <c:set var="endYear" value="${requestScope.task.endDate.toString().substring(0,4)}"/>
@@ -125,11 +110,13 @@
             <c:set var="endDay" value="${param.endDay}"/>
         </c:otherwise>
     </c:choose>
+
     <label for="endYear">Год:</label>
+
     <input style="width: 100px;" value="${fn:escapeXml(endYear)}" type="text" id="endYear" name="endYear">
-    <c:if test="${requestScope.validationError == 'endYearNull'}">Заполните поле</c:if>
-    <c:if test="${requestScope.validationError == 'invalidEndYear'}">Введённое значение не соответствует формату: гггг</c:if>
+
     <label for="endMonth">Месяц:</label>
+
     <select class="month-select" id="endMonth" name="endMonth">
         <option <c:if test="${endMonth == '01'}">selected</c:if> value="01">Январь</option>
         <option <c:if test="${endMonth == '02'}">selected</c:if> value="02">Февраль</option>
@@ -144,22 +131,15 @@
         <option <c:if test="${endMonth == '11'}">selected</c:if> value="11">Ноябрь</option>
         <option <c:if test="${endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
-    <c:if test="${requestScope.validationError == 'endMonthNull'}">Заполните поле</c:if>
+
     <label for="endDay">День:</label>
-    <input style="width: 100px;" value="${fn:escapeXml(endDay)}" type="text" id="endDay" name="endDay">
-    <c:if test="${requestScope.validationError == 'endDayNull'}">Заполните поле</c:if>
-    <c:if test="${requestScope.validationError == 'invalidEndDay'}">Введённое значение не соответствует формату: дд</c:if>
-    <c:if test="${requestScope.validationError == 'wrongEndDate'}">Введённая дата не существует</c:if><br><br>
-    <c:if test="${requestScope.validationError == 'dateCollision'}">Дата начала больше даты окончания<br><br></c:if>
+
+    <input style="width: 100px;" value="${fn:escapeXml(endDay)}" type="text" id="endDay" name="endDay"><br><br>
+
     <label for="status">Статус:</label><br>
-    <c:choose>
-        <c:when test="${requestScope.task.status != null}">
-            <c:set var="status" value="${requestScope.task.status}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="status" value="${param.status}"/>
-        </c:otherwise>
-    </c:choose>
+
+    <c:set var="status" value="${requestScope.task.status != null ? requestScope.task.status : param.status}"/>
+
     <select name="status" id="status">
         <c:forEach var="status" items="${requestScope.taskStatus}">
             <option value="${status}"
@@ -167,17 +147,12 @@
                     ${status.getStatus()}
             </option>
         </c:forEach>
-    </select>
-    <c:if test="${requestScope.validationError == 'statusNull'}">Заполните поле</c:if><br><br>
+    </select><br><br>
+
     <label for="executor">Исполнитель:</label><br>
-    <c:choose>
-        <c:when test="${requestScope.task.executorId != null}">
-            <c:set var="executor" value="${requestScope.task.executorId}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="executor" value="${param.executor}"/>
-        </c:otherwise>
-    </c:choose>
+
+    <c:set var="executor" value="${requestScope.task.executorId != null ? requestScope.task.executorId : param.executor}"/>
+
     <select name="executor" id="executor">
         <c:forEach var="employee" items="${requestScope.employees}">
             <option value="${employee.id}"
@@ -187,8 +162,10 @@
                     ${employee.patronymic}
             </option>
         </c:forEach>
-    </select>
-    <c:if test="${requestScope.validationError == 'executorNull'}">Заполните поле</c:if><br><br>
+    </select><br><br>
+
+    <a style="margin-left: 10px"><c:out value="${requestScope.validationError}"/></a><br><br>
+
     <input type="submit" value="Сохранить">
 </form>
 </body>

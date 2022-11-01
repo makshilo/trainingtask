@@ -20,9 +20,9 @@ public class CreateProjectController extends HttpServlet {
     public static final String EMPTY_STRING = "";
 
     public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
-    public static final String PROJECT_IS_FOUND = "projectIsFound";
-    public static final String PROJECT_NAME_NULL = "projectNameNull";
-    public static final String PROJECT_DESCRIPTION_NULL = "projectDescriptionNull";
+    public static final String PROJECT_IS_FOUND = "Такой проект уже существует";
+    public static final String PROJECT_NAME_NULL = "Наименование проекта не заполнено";
+    public static final String PROJECT_DESCRIPTION_NULL = "Описание проекта не заполнено";
 
     public static final String EDIT_PROJECT_PAGE = "/jsp/editProject.jsp";
     private static final String COMMAND_PROJECT_LIST = "/projects";

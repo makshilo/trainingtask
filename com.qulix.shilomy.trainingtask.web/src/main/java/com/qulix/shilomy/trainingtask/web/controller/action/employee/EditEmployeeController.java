@@ -23,10 +23,10 @@ public class EditEmployeeController extends HttpServlet {
     public static final String EDIT_MODE = "edit";
 
     public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
-    public static final String FIRST_NAME_NULL = "firstNameNull";
-    public static final String LAST_NAME_NULL = "lastNameNull";
-    public static final String PATRONYMIC_NULL = "patronymicNull";
-    public static final String POSITION_NULL = "positionNull";
+    public static final String FIRST_NAME_NULL = "Имя не заполнено";
+    public static final String LAST_NAME_NULL = "Фамилмя не заполнена";
+    public static final String PATRONYMIC_NULL = "Отчество не заполнено";
+    public static final String POSITION_NULL = "Должность не заполнена";
     public static final String EMPTY_STRING = "";
 
     private static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
