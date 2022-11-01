@@ -14,16 +14,16 @@
 <header>
     <a class="home-button" href=".."></a>
 </header>
-<a class="button" href="<c:url value="/tasks?action=taskList"/>">Отмена</a><br><br>
+<a class="button" href="<c:url value="/tasks"/>">Отмена</a><br><br>
 
 <c:set scope="request" var="id" value="${requestScope.task.id}"/>
 
 <c:choose>
     <c:when test="${requestScope.pageMode == 'create'}">
-        <c:url value="/tasks?action=createTask" var="action"/>
+        <c:url value="/createTask" var="action"/>
     </c:when>
     <c:when test="${requestScope.pageMode == 'edit'}">
-        <c:url value="/tasks?action=editTask&id=${param.id}" var="action"/>
+        <c:url value="/editTask?id=${param.id}" var="action"/>
     </c:when>
 </c:choose>
 

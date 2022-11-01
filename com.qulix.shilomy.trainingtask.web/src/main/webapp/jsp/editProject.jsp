@@ -14,17 +14,17 @@
 <header>
     <a class="home-button" href=".."></a>
 </header>
-<a class="button" href="<c:url value="/projects?action=projectList"/>">Отмена</a><br>
+<a class="button" href="<c:url value="/projects"/>">Отмена</a><br>
 
 <c:set scope="request" var="id" value="${requestScope.project.id}"/>
 
 <c:choose>
     <c:when test="${requestScope.pageMode == 'create'}">
-        <c:url value="/projects?action=createProject" var="action"/>
+        <c:url value="/createProject" var="action"/>
         <c:set scope="application" var="mode" value="create"/>
     </c:when>
     <c:when test="${requestScope.pageMode == 'edit'}">
-        <c:url value="/projects?action=editProject&id=${param.id}" var="action"/>
+        <c:url value="/editProject?id=${param.id}" var="action"/>
         <c:set scope="application" var="mode" value="edit"/>
     </c:when>
 </c:choose>
@@ -80,12 +80,12 @@
                 <td><c:out value="${task.startDate}"/></td>
                 <td><c:out value="${task.endDate}"/></td>
                 <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
-                <td><a class="table-button" href="<c:url value="/tasks?action=taskEditPage&id=${task.id}&projectLock"/>">Изменить</a></td>
-                <td><a class="table-button" href="<c:url value="/tasks?action=deleteTask&id=${task.id}"/>">Удалить</a></td>
+                <td><a class="table-button" href="<c:url value="/editTaskPage?id=${task.id}&projectLock"/>">Изменить</a></td>
+                <td><a class="table-button" href="<c:url value="/deleteTask?id=${task.id}"/>">Удалить</a></td>
             </tr>
         </c:forEach>
     </table>
-    <a class="add-button" href="<c:url value="/tasks?action=createTaskPage&currentProject=${requestScope.project.id}&projectLock"/>">Добавить</a>
+    <a class="add-button" href="<c:url value="/createTaskPage?currentProject=${requestScope.project.id}&projectLock"/>">Добавить</a>
 </c:if>
 </body>
 </html>
