@@ -123,6 +123,6 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
     }
 
     private String composeHashCode(TaskEntity taskEntity) {
-        return taskEntity.getName() + taskEntity.getStatus();
+        return taskEntity.getName() + taskEntity.getExecutorId() + taskEntity.getStartDate() + taskEntity.getEndDate();
     }
 }

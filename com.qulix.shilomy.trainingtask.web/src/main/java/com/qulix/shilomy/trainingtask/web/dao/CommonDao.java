@@ -68,15 +68,11 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
 
     /**
      * Перед тем как добавить сущность, метод проверяет нет ли таковой в базе.
-     * Если есть, то он сразу вернёт данную сущность. А если нет, то сначала метод
-     * добавит её в базу, а затем сразу вернёт по уникальному полю
+     * Если есть, то он вернёт данную сущность. А если нет, то сначала
+     * добавит её в базу, а затем вернёт по уникальному полю
      */
     @Override
     public T create(T t) throws InterruptedException {
-        T checkEntity = search(selectByUFExpression, ps -> fillUniqueField(ps, t), this::extractResultCheckingException);
-        if (checkEntity != null) {
-            return checkEntity;
-        }
         try {
             update(insertExpression, st -> fillEntity(st, t));
         } catch (InterruptedException e) {
@@ -115,18 +111,13 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
     /**
      * Метод получает сущность с её реальным id и проверяет есть ли такая в базе.
      * Далее он обновляет все поля сущности.
-     * Если оказалось так, что новая обновлённая сущность является копией уже существующей,
+     * Если обновлённая сущность является копией уже существующей,
      * то обновление не будет произведено, а просто вернётся сущность которая уже существовала
      * в базе(с другим идентификатором)
      */
     @Override
     public T update(T t) throws InterruptedException, EntityNotFoundException {
         try {
-            T checkEntity = search(selectByIdExpression,
-                    ps -> ps.setLong(1, t.getId()), this::extractResultCheckingException);
-            if (checkEntity == null) {
-                throw new EntityNotFoundException(format("Entity with id=%s not found", t.getId()));
-            }
             update(updateExpression, ps -> updateEntity(ps, t));
             return search(selectByUFExpression, st -> fillUniqueField(st, t), this::extractResultCheckingException);
         } catch (InterruptedException e) {

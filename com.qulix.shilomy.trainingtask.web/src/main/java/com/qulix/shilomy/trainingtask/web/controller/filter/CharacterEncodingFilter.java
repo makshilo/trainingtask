@@ -1,11 +1,13 @@
-package com.qulix.shilomy.trainingtask.web.controller;
+package com.qulix.shilomy.trainingtask.web.controller.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
  * Фильтр кодировки символов с использованием UTF-8
  */
+@WebFilter(filterName = "CharacterEncodingFilter", urlPatterns = "/*")
 public class CharacterEncodingFilter implements Filter {
 
     /**
@@ -14,7 +16,8 @@ public class CharacterEncodingFilter implements Filter {
      *               конфигурации и инициализации фильтра
      */
     @Override
-    public void init(FilterConfig config) {
+    public void init(FilterConfig config) throws ServletException {
+        Filter.super.init(config);
     }
 
     /**
@@ -36,5 +39,6 @@ public class CharacterEncodingFilter implements Filter {
      */
     @Override
     public void destroy() {
+        Filter.super.destroy();
     }
 }
