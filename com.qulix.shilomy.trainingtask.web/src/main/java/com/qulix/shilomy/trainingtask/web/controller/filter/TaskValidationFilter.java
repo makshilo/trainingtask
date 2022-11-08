@@ -74,11 +74,26 @@ public class TaskValidationFilter implements Filter {
     private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
+    /**
+     * Метод инициализации
+     * @param filterConfig a <code>FilterConfig</code> обЪект который хранит параметры
+     *               конфигурации и инициализации фильтра
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
     }
 
+    /**
+     * Метод который получает данные из запроса и проверяет их корректность,
+     * если данные некорректны возвращает на страницу формы,
+     * если данные корректны передаёт запрос следующему фильтру в цепочке.
+     * @param request <code>ServletRequest</code> обЪект который хранит запрос пользователя
+     * @param response <code>ServletResponse</code> объект который хранит ответ фильтра
+     * @param chain <code>FilterChain</code> для вызова следующего ресурса фильтра
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     * @throws ServletException если в работе сервлета возникают проблемы
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String page = ((HttpServletRequest)request).getRequestURI();
@@ -189,6 +204,12 @@ public class TaskValidationFilter implements Filter {
         }
     }
 
+    /**
+     * Метод который заполняет страницу данными, которые необходимы для её корректной работы.
+     *
+     * @param request объект {@link ServletRequest} который хранит запрос клиента,
+     *                полученный от сервлета
+     */
     public void fillPage(ServletRequest request) {
         request.setAttribute(EMPLOYEES_PARAM_NAME, employeeService.findAll());
         request.setAttribute(PROJECTS_PARAM_NAME, projectService.findAll());
@@ -200,18 +221,37 @@ public class TaskValidationFilter implements Filter {
         }
     }
 
+    /**
+     * Метод который проверяет не пересекаются ли даты начала и окончания.
+     * @param startDate дата начала
+     * @param endDate дата окончания
+     * @return true если даты пересекаются и false если нет.
+     */
     private boolean checkDateCollision(String startDate, String endDate) {
         Date start = Date.valueOf(startDate);
         Date end = Date.valueOf(endDate);
         return !end.after(start) && !end.equals(start);
     }
 
+    /**
+     * Метод проверяет дату на существование и корректность.
+     * @param dateValidator валидатор которым будет проверяться дата
+     * @param year год
+     * @param month месяц
+     * @param day день
+     * @return true если дата верна и false если нет.
+     */
     private boolean isDateValid(DateValidator dateValidator, String year, String month, String day) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT).withResolverStyle(ResolverStyle.STRICT);
 
         return dateValidator.isValid(dateFormatter, year + MINUS_SIGN + month + MINUS_SIGN + day);
     }
 
+    /**
+     * Метод который проверяет являются ли данные в строке целым числом.
+     * @param param проверяемая строка
+     * @return true, если является целым числом, false если нет.
+     */
     private boolean isInt(String param) {
         try {
             Integer.parseInt(param);
@@ -221,6 +261,9 @@ public class TaskValidationFilter implements Filter {
         return true;
     }
 
+    /**
+     * Метод завершения работы фильтра
+     */
     @Override
     public void destroy() {
         Filter.super.destroy();

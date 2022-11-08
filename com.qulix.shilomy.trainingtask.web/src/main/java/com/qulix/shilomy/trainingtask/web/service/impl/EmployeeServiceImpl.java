@@ -27,16 +27,30 @@ public class EmployeeServiceImpl implements EmployeeService {
         return instance;
     }
 
+    /**
+     * Метод получения сущности работника по идентификатору.
+     * @param id идентификатор
+     * @return сущность работника(EmployeeEntity)
+     */
     @Override
     public EmployeeEntity get(Long id) {
         return employeeDao.read(id).orElse(null);
     }
 
+    /**
+     * Метод поиска всех сущностей работника.
+     * @return список найденных сущностей
+     */
     @Override
     public List<EmployeeEntity> findAll() {
         return employeeDao.readAll();
     }
 
+    /**
+     * Метод добавления сущности работника.
+     * @param employeeEntity сущность работника для добавления
+     * @return добавленная сущность
+     */
     @Override
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
         try {
@@ -47,6 +61,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
+    /**
+     * Метод обновления сущности работника.
+     * @param employeeEntity сущность которя содержит параметры для обновления
+     * @return обновлённая сущность
+     */
     @Override
     public EmployeeEntity update(EmployeeEntity employeeEntity) {
         try {
@@ -60,6 +79,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
+    /**
+     * Метод удаления сущности по идентификатору.
+     * @param id идентификатор
+     * @return результат
+     */
     @Override
     public boolean delete(Long id) {
         return employeeDao.delete(id);

@@ -12,12 +12,12 @@ public class CharacterEncodingFilter implements Filter {
 
     /**
      * Метод инициализации
-     * @param config a <code>FilterConfig</code> обЪект который хранит параметры
+     * @param filterConfig a <code>FilterConfig</code> обЪект который хранит параметры
      *               конфигурации и инициализации фильтра
      */
     @Override
-    public void init(FilterConfig config) throws ServletException {
-        Filter.super.init(config);
+    public void init(FilterConfig filterConfig) throws ServletException {
+        Filter.super.init(filterConfig);
     }
 
     /**
@@ -35,7 +35,7 @@ public class CharacterEncodingFilter implements Filter {
     }
 
     /**
-     * Метод завершения
+     * Метод завершения работы фильтра
      */
     @Override
     public void destroy() {

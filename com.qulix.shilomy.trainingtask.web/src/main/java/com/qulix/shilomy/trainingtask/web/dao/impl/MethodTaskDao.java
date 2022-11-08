@@ -15,7 +15,11 @@ import java.util.logging.Logger;
 
 import static java.sql.Types.INTEGER;
 
+/**
+ * Класс реализация объекта доступа к данным для сущности задачи.
+ */
 public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
+    private static MethodTaskDao instance;
 
     private static final String TASK_TABLE_NAME = "trainingtaskdb.task_list";
     private static final String TASK_NAME_COLUMN = "task_name";
@@ -42,12 +46,17 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
             TASK_EXECUTOR_ID_COLUMN,
             TASK_UNIQUE_HASH);
 
-    private static MethodTaskDao instance;
-
+    /**
+     * Защищённый конструктор по умолчанию.
+     */
     protected MethodTaskDao() {
         super(LOGGER);
     }
 
+    /**
+     * Метод получения объекта класса.
+     * @return объект MethodTaskDao
+     */
     public static synchronized MethodTaskDao getInstance() {
         if (instance == null) {
             instance = new MethodTaskDao();
@@ -55,31 +64,59 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
         return instance;
     }
 
+    /**
+     * Метод получения имени таблицы.
+     * @return TASK_TABLE_NAME
+     */
     @Override
     protected String getTableName() {
         return TASK_TABLE_NAME;
     }
 
+    /**
+     * Метод получения имени поля идентификатора.
+     * @return TASK_ID
+     */
     @Override
     protected String getIdFieldName() {
         return TASK_ID;
     }
 
+    /**
+     * Метод получения уникального поля.
+     * @return TASK_UNIQUE_HASH
+     */
     @Override
     protected String getUniqueFieldName() {
         return TASK_UNIQUE_HASH;
     }
 
+    /**
+     * Метод получения списка полей.
+     * @return FIELDS
+     */
     @Override
     protected List<String> getFields() {
         return FIELDS;
     }
 
+    /**
+     * Метод заполнения сущности.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected void fillEntity(PreparedStatement statement, TaskEntity entity) throws SQLException {
         fillFields(statement, entity);
     }
 
+    /**
+     * Метод обновления сущности.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected void updateEntity(PreparedStatement statement, TaskEntity entity) throws SQLException {
         fillFields(statement, entity);
@@ -87,11 +124,23 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
         statement.setLong(10, entity.getId());
     }
 
+    /**
+     * Метод заполнения уникального поля.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected void fillUniqueField(PreparedStatement statement, TaskEntity entity) throws SQLException {
         statement.setString(1, composeHashCode(entity));
     }
 
+    /**
+     * Метод заполнения результрирующего множества.
+     * @param resultSet результирующее множество
+     * @return сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected TaskEntity extractResultSet(ResultSet resultSet) throws SQLException {
         return new TaskEntity(
@@ -105,11 +154,22 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
                 resultSet.getLong(TASK_ID));
     }
 
+    /**
+     * Метод получения задачи по проекту.
+     * @param project проект который содержит задачу.
+     * @return задачи принадлежащие проекту
+     */
     @Override
     public List<TaskEntity> receiveTaskByProject(ProjectEntity project) {
         return receiveEntitiesByParam(TASK_PROJECT_ID_COLUMN, project.getId());
     }
 
+    /**
+     * Метод заполнения полей.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     private void fillFields(PreparedStatement statement, TaskEntity entity) throws SQLException {
         statement.setNull(1, INTEGER);
         statement.setString(2, entity.getName());
@@ -122,6 +182,11 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
         statement.setString(9, composeHashCode(entity));
     }
 
+    /**
+     * Метод создания уникальной строки для работника
+     * @param taskEntity сущность работника
+     * @return уникальная строка
+     */
     private String composeHashCode(TaskEntity taskEntity) {
         return taskEntity.getName() + taskEntity.getExecutorId() + taskEntity.getStartDate() + taskEntity.getEndDate();
     }

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по удалению работника.
+ */
 @WebServlet("/deleteEmployee")
 public class DeleteEmployeeController extends HttpServlet {
     public static final String ID_PARAM_NAME = "id";
@@ -19,6 +22,17 @@ public class DeleteEmployeeController extends HttpServlet {
 
     private static final String COMMAND_EMPLOYEE_LIST = "/employees";
 
+    /**
+     * Метод обработки GET запроса, который получает данные из запроса, удаляет сущность из базы,
+     * а потом перенаправляет на страницу со списком сотрудников.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long employeeId = Long.parseLong(request.getParameter(ID_PARAM_NAME));

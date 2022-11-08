@@ -13,8 +13,11 @@ import java.util.logging.Logger;
 
 import static java.sql.Types.INTEGER;
 
+/**
+ * Класс реализация объекта доступа к данным для сущности проекта.
+ */
 public class MethodProjectDao extends CommonDao<ProjectEntity> implements ProjectDao {
-
+    private static MethodProjectDao instance;
     private static final String PROJECT_TABLE_NAME = "trainingtaskdb.project_list";
     private static final String PROJECT_NAME_COLUMN = "project_name";
     private static final String PROJECT_DESCRIPTION = "project_description";
@@ -30,12 +33,17 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
             PROJECT_DESCRIPTION,
             PROJECT_UNIQUE_HASH);
 
-    private static MethodProjectDao instance;
-
+    /**
+     * Защищённый конструктор по умолчанию.
+     */
     protected MethodProjectDao() {
         super(LOGGER);
     }
 
+    /**
+     * Метод получения объекта класса.
+     * @return объект MethodProjectDao
+     */
     public static synchronized MethodProjectDao getInstance() {
         if (instance == null) {
             instance = new MethodProjectDao();
@@ -43,31 +51,59 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
         return instance;
     }
 
+    /**
+     * Метод получения имени таблицы.
+     * @return PROJECT_TABLE_NAME
+     */
     @Override
     protected String getTableName() {
         return PROJECT_TABLE_NAME;
     }
 
+    /**
+     * Метод получения имени поля идентификатора.
+     * @return PROJECT_ID_COLUMN
+     */
     @Override
     protected String getIdFieldName() {
         return PROJECT_ID_COLUMN;
     }
 
+    /**
+     * Метод получения уникального поля.
+     * @return PROJECT_UNIQUE_HASH
+     */
     @Override
     protected String getUniqueFieldName() {
         return PROJECT_UNIQUE_HASH;
     }
 
+    /**
+     * Метод получения списка полей.
+     * @return FIELDS
+     */
     @Override
     protected List<String> getFields() {
         return FIELDS;
     }
 
+    /**
+     * Метод заполнения сущности.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected void fillEntity(PreparedStatement statement, ProjectEntity entity) throws SQLException {
         fillFields(statement, entity);
     }
 
+    /**
+     * Метод обновления сущности.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected void updateEntity(PreparedStatement statement, ProjectEntity entity) throws SQLException {
         fillFields(statement, entity);
@@ -75,16 +111,33 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
         statement.setLong(5, entity.getId());
     }
 
+    /**
+     * Метод заполнения уникального поля.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected void fillUniqueField(PreparedStatement statement, ProjectEntity entity) throws SQLException {
         statement.setString(1, composeHashCode(entity));
     }
 
+    /**
+     * Метод получения проекта по имени.
+     * @param name имя проекта
+     * @return сущность проекта
+     */
     @Override
     public List<ProjectEntity> receiveProjectByName(String name) {
-        return receiveEntitiesByParam(PROJECT_NAME_COLUMN,name);
+        return receiveEntitiesByParam(PROJECT_NAME_COLUMN, name);
     }
 
+    /**
+     * Метод заполнения результрирующего множества.
+     * @param resultSet результирующее множество
+     * @return сущность
+     * @throws SQLException ошибка базы данных
+     */
     @Override
     protected ProjectEntity extractResultSet(ResultSet resultSet) throws SQLException {
         return new ProjectEntity(
@@ -93,6 +146,12 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
                 resultSet.getLong(PROJECT_ID_COLUMN));
     }
 
+    /**
+     * Метод заполнения полей.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     private void fillFields(PreparedStatement statement, ProjectEntity entity) throws SQLException {
         statement.setNull(1, INTEGER);
         statement.setString(2, entity.getName());
@@ -100,5 +159,10 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
         statement.setString(4, composeHashCode(entity));
     }
 
+    /**
+     * Метод создания уникальной строки для работника
+     * @param projectEntity сущность работника
+     * @return уникальная строка
+     */
     private String composeHashCode(ProjectEntity projectEntity){return projectEntity.getName() + projectEntity.getDescription();}
 }

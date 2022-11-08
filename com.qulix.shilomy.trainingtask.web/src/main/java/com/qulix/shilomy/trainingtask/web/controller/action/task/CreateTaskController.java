@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по созданию задачи.
+ */
 @WebServlet("/createTask")
 public class CreateTaskController extends HttpServlet {
     public static final String STATUS_PARAM_NAME = "status";
@@ -32,6 +35,17 @@ public class CreateTaskController extends HttpServlet {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
 
+    /**
+     * Метод обработки POST запроса, который получает данные из запроса, добавляет новую сущность в базу,
+     * а потом перенаправляет на страницу со списком задач.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         TaskStatus status = TaskStatus.of(request.getParameter(STATUS_PARAM_NAME));

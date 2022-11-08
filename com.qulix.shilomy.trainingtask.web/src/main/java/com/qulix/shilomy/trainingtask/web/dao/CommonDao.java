@@ -18,12 +18,14 @@ import java.util.logging.Logger;
 import static java.lang.String.format;
 import static java.lang.String.join;
 
+/**
+ * Абстрактный класс, который задаёт базовые для всех классов доступа к данным методы.
+ * @param <T> объект класса реализующий интерфейс сущности
+ */
 public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
 
     private static final String SELECT_ALL_FROM = "select %s from %s";
-    private static final String SELECT_FIELD = "select %s as field from %s";
     private static final String INSERT_INTO = "insert into %s (%s) values(%s)";
-    private static final String FIELD_NAME = "field";
     private static final String WHERE_FIELD = "where %s = ?";
     private static final String UPDATE_SET = "update %s set %s";
     private static final String DELETE_FROM = "delete from %s";
@@ -42,7 +44,10 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
     private final String updateExpression;
     private final String deleteExpression;
 
-
+    /**
+     * Защищённый конструктор, который заполняет строки выражений для базы данных,
+     * а также получает объект сервиса подключений.
+     */
     protected CommonDao(Logger logger) {
         this.logger = logger;
         connectionService = ConnectionService.getInstance();
@@ -54,12 +59,20 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         this.updateExpression = format(UPDATE_SET, getTableName(), join(COMMA, updateParams())) + SPACE + format(WHERE_FIELD, getIdFieldName());
     }
 
+    /**
+     * Метод вставки параметров.
+     * @return список параметров
+     */
     private List<String> insertParams() {
         final List<String> parameters = new ArrayList<>();
         getFields().forEach(param -> parameters.add(PREPARE_STATEMENT_PARAM));
         return parameters;
     }
 
+    /**
+     * Метод добавления символа обновления для параметров сущности
+     * @return список параметров для обновления
+     */
     private List<String> updateParams() {
         final List<String> parameters = new ArrayList<>();
         getFields().forEach(param -> parameters.add(param + UPDATE_PARAM));
@@ -67,9 +80,10 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
     }
 
     /**
-     * Перед тем как добавить сущность, метод проверяет нет ли таковой в базе.
-     * Если есть, то он вернёт данную сущность. А если нет, то сначала
-     * добавит её в базу, а затем вернёт по уникальному полю
+     * Метод который добавляет сущность в базу, а затем возвращает по уникальному полю.
+     * @param t сущность для создания
+     * @return созданная сущность
+     * @throws InterruptedException ошибка прерывания действия
      */
     @Override
     public T create(T t) throws InterruptedException {
@@ -83,19 +97,27 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         return search(selectByUFExpression, ps -> fillUniqueField(ps, t), this::extractResultCheckingException);
     }
 
+    /**
+     * Метод поиска по идентификатору.
+     * @param id идентификатор
+     * @return найденная сущность
+     */
     @Override
-    public Optional<T> read(Long id) {
+    public synchronized Optional<T> read(Long id) {
         try {
             return Optional.ofNullable(
                     search(selectByIdExpression, ps -> ps.setLong(1, id), this::extractResultCheckingException)
             );
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "take connection interrupted", e);
-            Thread.currentThread().interrupt();
             return Optional.empty();
         }
     }
 
+    /**
+     * Метод поиска всех сущностей.
+     * @return список найденных сущностей
+     */
     @Override
     public List<T> readAll() {
         try {
@@ -109,24 +131,28 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
     }
 
     /**
-     * Метод получает сущность с её реальным id и проверяет есть ли такая в базе.
-     * Далее он обновляет все поля сущности.
-     * Если обновлённая сущность является копией уже существующей,
-     * то обновление не будет произведено, а просто вернётся сущность которая уже существовала
-     * в базе(с другим идентификатором)
+     * Метод который обновляет все поля сущности.
+     * @param t сущность для обновления.
+     * @return обновлённая сущность
+     * @throws InterruptedException ошибка прерывания действия
+     * @throws EntityNotFoundException ошибка поиска сущности
      */
     @Override
-    public T update(T t) throws InterruptedException, EntityNotFoundException {
+    public synchronized T update(T t) throws InterruptedException, EntityNotFoundException {
         try {
             update(updateExpression, ps -> updateEntity(ps, t));
             return search(selectByUFExpression, st -> fillUniqueField(st, t), this::extractResultCheckingException);
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "take connection interrupted");
-            Thread.currentThread().interrupt();
             throw e;
         }
     }
 
+    /**
+     * Метод удаления сущности.
+     * @param id идентификатор
+     * @return результат удаления
+     */
     @Override
     public boolean delete(Long id) {
         try {
@@ -139,6 +165,18 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         }
     }
 
+    /**
+     * Метод который выполняет поиск непосредственно в базе,
+     * метод получает соединение,
+     * записывает в утверждение строку запроса,
+     * выполняет запрос, закрывает подключение,
+     * @param sql строка с запросом в базу данных
+     * @param statementPreparation интерфейс подготовки утверждения
+     * @param extractor интерфейс работы с результирующим множеством
+     * @return результирующее множество или null если извлечение не произведено
+     * @param <R> тип сущности
+     * @throws InterruptedException ошибка прерывания действия
+     */
     private <R> R search(String sql, StatementPreparator statementPreparation,
                          ResultSetExtractor<R> extractor) throws InterruptedException {
         try (Connection conn = connectionService.getConnection();
@@ -157,6 +195,18 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         return null;
     }
 
+    /**
+     * Метод который выполняет поиск непосредственно в базе,
+     * метод получает соединение,
+     * записывает в утверждение строку запроса,
+     * выполняет запрос, закрывает подключение,
+     * @param sql строка с запросом в базу данных
+     * @param statementPreparation интерфейс подготовки утверждения
+     * @param extractor интерфейс работы с результирующим множеством
+     * @return результирующее множество в виде списка или null если извлечение не произведено
+     * @param <R> тип сущности
+     * @throws InterruptedException ошибка прерывания действия
+     */
     private <R> List<R> searchList(String sql, StatementPreparator statementPreparation,
                                    ResultSetExtractor<R> extractor) throws InterruptedException {
         try (Connection conn = connectionService.getConnection();
@@ -173,6 +223,16 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         return Collections.emptyList();
     }
 
+    /**
+     * Метод который выполняет непосредственно обновление сущности в базе данных.
+     * метод получает соединение,
+     * записывает в утверждение строку запроса,
+     * выполняет обновление, закрывает подключение,
+     * @param sql строка с запросом в базу данных
+     * @param statementPreparation интерфейс подготовки утверждения
+     * @return результат обновления
+     * @throws InterruptedException ошибка прерывания действия
+     */
     private int update(String sql, StatementPreparator statementPreparation) throws InterruptedException {
         try (Connection conn = connectionService.getConnection();
              final PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -186,6 +246,12 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         return 0;
     }
 
+    /**
+     * Метод который достаёт данные из результирующего множества.
+     * @param resultSet результирующее множество
+     * @return данные из результирующего множества
+     * @throws EntityExtractionFailedException ошибка получения сущности
+     */
     private T extractResultCheckingException(ResultSet resultSet) throws EntityExtractionFailedException {
         try {
             return extractResultSet(resultSet);
@@ -195,41 +261,12 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         }
     }
 
-    private Object extractField(ResultSet resultSet) throws EntityExtractionFailedException {
-        try {
-            return resultSet.getObject(FIELD_NAME);
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception occurred extracting entity from ResultSet", e);
-            throw new EntityExtractionFailedException("failed to extract entity parameter id", e);
-        }
-    }
-
-    protected Object receiveEntityParam(Entity entity, String fieldName) {
-        try {
-            final String selectField = format(SELECT_FIELD, fieldName, getTableName()) + SPACE + format(WHERE_FIELD, getIdFieldName());
-            return search(selectField, st -> st.setLong(1, entity.getId()), this::extractField);
-        } catch (InterruptedException e) {
-            logger.warning("take connection interrupted");
-            Thread.currentThread().interrupt();
-        }
-        return null;
-    }
-
-    protected Optional<T> receiveEntityByParam(String fieldName, Object param) {
-        final String selectByField = format(
-                SELECT_ALL_FROM, join(COMMA, getFields()), getTableName()) + SPACE + format(WHERE_FIELD, fieldName
-        );
-        try {
-            return Optional.ofNullable(
-                    search(selectByField, st -> st.setObject(1, param), this::extractResultCheckingException)
-            );
-        } catch (InterruptedException e) {
-            logger.warning("take connection interrupted");
-            Thread.currentThread().interrupt();
-        }
-        return Optional.empty();
-    }
-
+    /**
+     * Метод получения сущности по параметру.
+     * @param fieldName название поля
+     * @param param параметр сущности
+     * @return список найденных сущностей
+     */
     protected List<T> receiveEntitiesByParam(String fieldName, Object param) {
         final String selectByField = format(
                 SELECT_ALL_FROM, join(COMMA, getFields()), getTableName()) + SPACE + format(WHERE_FIELD, fieldName
@@ -243,19 +280,55 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
         return Collections.emptyList();
     }
 
+    /**
+     * Метод получения имени таблицы.
+     */
     protected abstract String getTableName();
 
+    /**
+     * Метод получения имени поля идентификатора.
+     */
     protected abstract String getIdFieldName();
 
+    /**
+     * Метод получения уникального поля.
+     */
     protected abstract String getUniqueFieldName();
 
+    /**
+     * Метод получения списка полей.
+     */
     protected abstract List<String> getFields();
 
+    /**
+     * Метод заполнения сущности.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     protected abstract void fillEntity(PreparedStatement statement, T entity) throws SQLException;
 
+    /**
+     * Метод обновления сущности.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     protected abstract void updateEntity(PreparedStatement statement, T entity) throws SQLException;
 
+    /**
+     * Метод заполнения уникального поля.
+     * @param statement утверждение
+     * @param entity сущность
+     * @throws SQLException ошибка базы данных
+     */
     protected abstract void fillUniqueField(PreparedStatement statement, T entity) throws SQLException;
 
+    /**
+     * Метод заполнения результрирующего множества.
+     * @param resultSet результирующее множество
+     * @return сущность
+     * @throws SQLException ошибка базы данных
+     */
     protected abstract T extractResultSet(ResultSet resultSet) throws SQLException;
 }

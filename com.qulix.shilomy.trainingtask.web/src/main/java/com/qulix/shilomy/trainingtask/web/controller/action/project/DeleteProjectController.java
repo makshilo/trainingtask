@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по удалению проекта.
+ */
 @WebServlet("/deleteProject")
 public class DeleteProjectController extends HttpServlet {
     public static final String ID_PARAM_NAME = "id";
@@ -19,6 +22,17 @@ public class DeleteProjectController extends HttpServlet {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
 
+    /**
+     * Метод обработки GET запроса, который получает данные из запроса, удаляет сущность из базы,
+     * а потом перенаправляет на страницу со списком проектов.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long projectId = Long.parseLong(request.getParameter(ID_PARAM_NAME));

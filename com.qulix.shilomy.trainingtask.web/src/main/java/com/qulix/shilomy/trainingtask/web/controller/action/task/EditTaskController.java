@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию задачи.
+ */
 @WebServlet("/editTask")
 public class EditTaskController extends HttpServlet {
     public static final String ID_PARAM_NAME = "id";
@@ -33,6 +36,17 @@ public class EditTaskController extends HttpServlet {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
 
+    /**
+     * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,
+     * а потом перенаправляет на страницу со списком задач.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         TaskStatus status = TaskStatus.of(request.getParameter(STATUS_PARAM_NAME));
@@ -47,8 +61,6 @@ public class EditTaskController extends HttpServlet {
         String endDay = request.getParameter(END_DAY_PARAM_NAME);
         String executorId = request.getParameter(EXECUTOR_PARAM_NAME);
         Long id = Long.parseLong(request.getParameter(ID_PARAM_NAME));
-
-        System.out.println(id);
 
         Date startDate = Date.valueOf(startYear + MINUS_SIGN + startMonth + MINUS_SIGN + startDay);
         Date endDate = Date.valueOf(endYear + MINUS_SIGN + endMonth + MINUS_SIGN + endDay);

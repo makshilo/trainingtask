@@ -2,6 +2,9 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
+/**
+ * POJO класс для сущности работника
+ */
 public class EmployeeEntity implements Entity {
     private final String firstName;
     private final String lastName;

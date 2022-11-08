@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по отображению страницы редактирования проекта.
+ */
 @WebServlet("/editProjectPage")
 public class EditProjectPageController extends HttpServlet {
     public static final String PROJECT_PARAM_NAME = "project";
@@ -35,6 +38,18 @@ public class EditProjectPageController extends HttpServlet {
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
+    /**
+     * Метод обработки GET запроса,
+     * который добавляет на страницу параметр режима формы и сущность для редактирования,
+     * а затем перенаправляет на неё.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProjectEntity project = projectService.get(Long.parseLong(request.getParameter(ID_PARAM_NAME)));
@@ -45,6 +60,11 @@ public class EditProjectPageController extends HttpServlet {
         request.getRequestDispatcher(EDIT_PROJECT_PAGE).forward(request, response);
     }
 
+    /**
+     * Метод который создаёт таблицу, в которой ключ это идентификатор работника,
+     * а значение полное имя
+     * @return таблица идентификаторов и имён работников
+     */
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {

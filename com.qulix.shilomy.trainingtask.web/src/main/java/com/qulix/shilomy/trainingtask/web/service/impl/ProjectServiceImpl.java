@@ -27,16 +27,30 @@ public class ProjectServiceImpl implements ProjectService {
         return instance;
     }
 
+    /**
+     * Метод получения сущности проекта по идентификатору.
+     * @param id идентификатор
+     * @return сущность работника(EmployeeEntity)
+     */
     @Override
     public ProjectEntity get(Long id) {
         return projectDao.read(id).orElse(null);
     }
 
+    /**
+     * Метод поиска всех сущностей проекта.
+     * @return список найденных сущностей
+     */
     @Override
     public List<ProjectEntity> findAll() {
         return projectDao.readAll();
     }
 
+    /**
+     * Метод добавления сущности проекта.
+     * @param projectEntity сущность проекта для добавления
+     * @return добавленная сущность
+     */
     @Override
     public ProjectEntity add(ProjectEntity projectEntity) {
         try {
@@ -47,6 +61,11 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    /**
+     * Метод обновления сущности проекта.
+     * @param projectEntity сущность которя содержит параметры для обновления
+     * @return обновлённая сущность
+     */
     @Override
     public ProjectEntity update(ProjectEntity projectEntity) {
         try {
@@ -60,6 +79,11 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    /**
+     * Метод удаления сущности по идентификатору.
+     * @param id идентификатор
+     * @return результат
+     */
     @Override
     public boolean delete(Long id) {
         return projectDao.delete(id);

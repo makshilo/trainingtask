@@ -25,7 +25,11 @@ public class ConnectionService {
 
     private static ConnectionService instance;
 
-
+    /**
+     * Приватный конструктор, который получает файл с параметрами и рагистрирует драйвер базы данных.
+     * @throws ConnectionServiceInitializationFailed ошибка инициализации сервиса подключений
+     * @throws IOException ошибка чтения файла с параметрами
+     */
     private ConnectionService() throws ConnectionServiceInitializationFailed, IOException {
         appProperties = new Properties();
         appProperties.load(new FileInputStream(APP_CONFIG_PATH));

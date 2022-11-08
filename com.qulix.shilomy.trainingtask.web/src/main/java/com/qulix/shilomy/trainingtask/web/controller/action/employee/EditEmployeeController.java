@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию работника.
+ */
 @WebServlet("/editEmployee")
 public class EditEmployeeController extends HttpServlet {
     public static final String ID_PARAM_NAME = "id";
@@ -23,6 +26,17 @@ public class EditEmployeeController extends HttpServlet {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
+    /**
+     * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,
+     * а потом перенаправляет на страницу со списком сотрудников.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String firstName = request.getParameter(FIRST_NAME_PARAM_NAME);

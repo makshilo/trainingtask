@@ -28,16 +28,30 @@ public class TaskServiceImpl implements TaskService {
         return instance;
     }
 
+    /**
+     * Метод получения сущности задачи по идентификатору.
+     * @param id идентификатор
+     * @return сущность работника(EmployeeEntity)
+     */
     @Override
     public TaskEntity get(Long id) {
         return taskDao.read(id).orElse(null);
     }
 
+    /**
+     * Метод поиска всех сущностей задач.
+     * @return список найденных сущностей
+     */
     @Override
     public List<TaskEntity> findAll() {
         return taskDao.readAll();
     }
 
+    /**
+     * Метод добавления сущности задачи.
+     * @param taskEntity сущность задачи для добавления
+     * @return добавленная сущность
+     */
     @Override
     public TaskEntity add(TaskEntity taskEntity) {
         try {
@@ -48,6 +62,11 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+    /**
+     * Метод обновления сущности задачи.
+     * @param taskEntity сущность которя содержит параметры для обновления.
+     * @return обновлённая сущность
+     */
     @Override
     public TaskEntity update(TaskEntity taskEntity) {
         try {
@@ -61,11 +80,21 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+    /**
+     * Метод удаления сущности по идентификатору.
+     * @param id идентификатор
+     * @return результат
+     */
     @Override
     public boolean delete(Long id) {
         return taskDao.delete(id);
     }
 
+    /**
+     * Метод поиска сущностей задач принадлежащих проекту.
+     * @param projectEntity сущность проекта
+     * @return список задач
+     */
     @Override
     public List<TaskEntity> findByProject(ProjectEntity projectEntity) {
         return taskDao.receiveTaskByProject(projectEntity)

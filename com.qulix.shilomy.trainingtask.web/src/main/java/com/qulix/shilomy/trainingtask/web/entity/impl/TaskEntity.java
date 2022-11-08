@@ -4,7 +4,9 @@ import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
 import java.sql.Date;
 
-
+/**
+ * POJO класс для сущности задачи.
+ */
 public class TaskEntity implements Entity {
     private final TaskStatus status;
     private final String name;

@@ -1,5 +1,8 @@
 package com.qulix.shilomy.trainingtask.web.entity.impl;
 
+/**
+ * Перечисление возможных статусов для сущноти задачи.
+ */
 public enum TaskStatus {
     NOT_STARTED("Не начата"),
     IN_PROGRESS("В процессе"),
@@ -12,6 +15,11 @@ public enum TaskStatus {
         this.status = status;
     }
 
+    /**
+     * Метод получения статуса по имени.
+     * @param name имя статуса
+     * @return status
+     */
     public static TaskStatus of(String name) {
         switch (name) {
             case "NOT_STARTED":

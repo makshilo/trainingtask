@@ -2,6 +2,9 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
+/**
+ * POJO класс для сущности проекта.
+ */
 public class ProjectEntity implements Entity {
     private final String name;
     private final String description;

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию проекта.
+ */
 @WebServlet("/editProject")
 public class EditProjectController extends HttpServlet {
     public static final String PROJECT_NAME_PARAM = "projectName";
@@ -21,6 +24,17 @@ public class EditProjectController extends HttpServlet {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
 
+    /**
+     * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,
+     * а потом перенаправляет на страницу со списком проектов.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String projectName = request.getParameter(PROJECT_NAME_PARAM);

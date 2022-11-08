@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.page.project;
+package com.qulix.shilomy.trainingtask.web.controller.page.employee;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по отображению страницы создания проекта.
+ * Класс HTTP сервлета, который отвечает за обработку запроса по отображению страницы создания работника.
  */
-@WebServlet("/createProjectPage")
-public class CreateProjectPageController extends HttpServlet {
+@WebServlet("/createEmployeePage")
+public class CreateEmployeePageController extends HttpServlet {
     public static final String PAGE_MODE_PARAM_NAME = "pageMode";
     public static final String CREATE_MODE = "create";
 
-    public static final String EDIT_PROJECT_PAGE = "/jsp/editProject.jsp";
+    private static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
 
     /**
      * Метод обработки GET запроса, который добавляет на страницу параметр режима формы,
@@ -31,6 +31,6 @@ public class CreateProjectPageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(PAGE_MODE_PARAM_NAME, CREATE_MODE);
-        request.getRequestDispatcher(EDIT_PROJECT_PAGE).forward(request, response);
+        request.getRequestDispatcher(EDIT_EMPLOYEE_PAGE).forward(request, response);
     }
 }
