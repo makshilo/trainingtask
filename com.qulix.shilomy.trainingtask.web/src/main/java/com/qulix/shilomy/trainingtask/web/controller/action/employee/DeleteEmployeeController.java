@@ -23,7 +23,7 @@ public class DeleteEmployeeController extends HttpServlet {
     private static final String COMMAND_EMPLOYEE_LIST = "/employees";
 
     /**
-     * Метод обработки GET запроса, который получает данные из запроса, удаляет сущность из базы,
+     * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,
      * а потом перенаправляет на страницу со списком сотрудников.
      * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
      *                  полученный от сервлета
@@ -34,7 +34,7 @@ public class DeleteEmployeeController extends HttpServlet {
      * @throws IOException возникает в случае проблем с получением строки для перенаправления
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long employeeId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
         employeeService.delete(employeeId);
         response.sendRedirect(COMMAND_EMPLOYEE_LIST);

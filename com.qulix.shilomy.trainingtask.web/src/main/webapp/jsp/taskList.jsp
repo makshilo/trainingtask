@@ -40,7 +40,11 @@
             <td><c:out value="${task.endDate}"/></td>
             <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
             <td><a class="table-button" href="${pageContext.request.contextPath}/editTaskPage?id=${task.id}">Изменить</a></td>
-            <td><a class="table-button" href="${pageContext.request.contextPath}/deleteTask?id=${task.id}">Удалить</a></td>
+            <td>
+                <form action="${pageContext.request.contextPath}/deleteTask?id=${task.id}" method="post">
+                    <button class="table-button" name="delete" type="submit">Удалить</button>
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>

@@ -27,7 +27,11 @@
             <td><c:out value="${employee.patronymic}"/></td>
             <td><c:out value="${employee.position}"/></td>
             <td><a class="table-button" href="${pageContext.request.contextPath}/editEmployeePage?id=${employee.id}">Изменить</a></td>
-            <td><a class="table-button" href="${pageContext.request.contextPath}/deleteEmployee?id=${employee.id}">Удалить</a></td>
+            <td>
+                <form action="${pageContext.request.contextPath}/deleteEmployee?id=${employee.id}" method="post">
+                    <button class="table-button" name="delete" type="submit">Удалить</button>
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>

@@ -4,7 +4,6 @@ import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ public class DeleteTaskController extends HttpServlet {
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
 
     /**
-     * Метод обработки GET запроса, который получает данные из запроса, удаляет сущность из базы,
+     * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,
      * а потом перенаправляет на страницу со списком задач.
      * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
      *                  полученный от сервлета
@@ -35,7 +34,7 @@ public class DeleteTaskController extends HttpServlet {
      * @throws IOException возникает в случае проблем с получением строки для перенаправления
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long taskId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
         taskService.delete(taskId);
         response.sendRedirect(COMMAND_TASK_LIST);

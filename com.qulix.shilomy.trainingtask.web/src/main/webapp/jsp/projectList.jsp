@@ -23,7 +23,11 @@
             <td><c:out value="${project.name}"/></td>
             <td><c:out value="${project.description}"/></td>
             <td><a class="table-button" href="${pageContext.request.contextPath}/editProjectPage?id=${project.id}">Изменить</a></td>
-            <td><a class="table-button" href="${pageContext.request.contextPath}/deleteProject?id=${project.id}">Удалить</a></td>
+            <td>
+                <form action="${pageContext.request.contextPath}/deleteProject?id=${project.id}" method="post">
+                    <button class="table-button" name="delete" type="submit">Удалить</button>
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>
