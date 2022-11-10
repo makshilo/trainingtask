@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.task;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
@@ -21,13 +22,6 @@ import java.util.HashMap;
  */
 @WebServlet("/tasks")
 public class TaskListController extends HttpServlet {
-    public static final String TASKS_PARAM_NAME = "tasks";
-    public static final String ID_PARAM_NAME = "id";
-    public static final String EMPLOYEES_PARAM_NAME = "employees";
-    public static final String PROJECTS_PARAM_NAME = "projects";
-
-    private static final String TASK_LIST_PAGE = "/jsp/taskList.jsp";
-
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
@@ -47,10 +41,10 @@ public class TaskListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(TASKS_PARAM_NAME, taskService.findAll());
-        request.setAttribute(EMPLOYEES_PARAM_NAME, getEmployeeNames());
-        request.setAttribute(PROJECTS_PARAM_NAME, getProjectNames());
-        request.getRequestDispatcher(TASK_LIST_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.TASKS_PARAM_NAME, taskService.findAll());
+        request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, getEmployeeNames());
+        request.setAttribute(ControllerConstants.PROJECTS_PARAM_NAME, getProjectNames());
+        request.getRequestDispatcher(ControllerConstants.TASK_LIST_PAGE).forward(request, response);
     }
 
     /**

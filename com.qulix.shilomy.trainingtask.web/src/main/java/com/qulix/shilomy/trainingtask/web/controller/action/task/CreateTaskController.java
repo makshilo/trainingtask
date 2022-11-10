@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.action.task;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
@@ -17,20 +18,7 @@ import java.sql.Date;
  */
 @WebServlet("/createTask")
 public class CreateTaskController extends HttpServlet {
-    public static final String STATUS_PARAM_NAME = "status";
-    public static final String TASK_NAME_PARAM = "taskName";
-    public static final String PROJECT_PARAM_NAME = "project";
-    public static final String WORK_PARAM_NAME = "work";
-    public static final String START_YEAR_PARAM_NAME = "startYear";
-    public static final String START_MONTH_PARAM_NAME = "startMonth";
-    public static final String START_DAY_PARAM_NAME = "startDay";
-    public static final String END_YEAR_PARAM_NAME = "endYear";
-    public static final String END_MONTH_PARAM_NAME = "endMonth";
-    public static final String END_DAY_PARAM_NAME = "endDay";
-    public static final String EXECUTOR_PARAM_NAME = "executor";
-    public static final String MINUS_SIGN = "-";
 
-    private static final String COMMAND_TASK_LIST = "/tasks";
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
@@ -48,24 +36,24 @@ public class CreateTaskController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        TaskStatus status = TaskStatus.of(request.getParameter(STATUS_PARAM_NAME));
-        String taskName = request.getParameter(TASK_NAME_PARAM);
-        String projectId = request.getParameter(PROJECT_PARAM_NAME);
-        String work = request.getParameter(WORK_PARAM_NAME);
-        String startYear = request.getParameter(START_YEAR_PARAM_NAME);
-        String startMonth = request.getParameter(START_MONTH_PARAM_NAME);
-        String startDay = request.getParameter(START_DAY_PARAM_NAME);
-        String endYear = request.getParameter(END_YEAR_PARAM_NAME);
-        String endMonth = request.getParameter(END_MONTH_PARAM_NAME);
-        String endDay = request.getParameter(END_DAY_PARAM_NAME);
-        String executorId = request.getParameter(EXECUTOR_PARAM_NAME);
+        TaskStatus status = TaskStatus.of(request.getParameter(ControllerConstants.STATUS_PARAM_NAME));
+        String taskName = request.getParameter(ControllerConstants.TASK_NAME_PARAM);
+        String projectId = request.getParameter(ControllerConstants.PROJECT_PARAM_NAME);
+        String work = request.getParameter(ControllerConstants.WORK_PARAM_NAME);
+        String startYear = request.getParameter(ControllerConstants.START_YEAR_PARAM_NAME);
+        String startMonth = request.getParameter(ControllerConstants.START_MONTH_PARAM_NAME);
+        String startDay = request.getParameter(ControllerConstants.START_DAY_PARAM_NAME);
+        String endYear = request.getParameter(ControllerConstants.END_YEAR_PARAM_NAME);
+        String endMonth = request.getParameter(ControllerConstants.END_MONTH_PARAM_NAME);
+        String endDay = request.getParameter(ControllerConstants.END_DAY_PARAM_NAME);
+        String executorId = request.getParameter(ControllerConstants.EXECUTOR_PARAM_NAME);
 
-        Date startDate = Date.valueOf(startYear + MINUS_SIGN + startMonth + MINUS_SIGN + startDay);
-        Date endDate = Date.valueOf(endYear + MINUS_SIGN + endMonth + MINUS_SIGN + endDay);
+        Date startDate = Date.valueOf(startYear + ControllerConstants.MINUS_SIGN + startMonth + ControllerConstants.MINUS_SIGN + startDay);
+        Date endDate = Date.valueOf(endYear + ControllerConstants.MINUS_SIGN + endMonth + ControllerConstants.MINUS_SIGN + endDay);
 
         TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId));
 
         taskService.add(newTask);
-        response.sendRedirect(COMMAND_TASK_LIST);
+        response.sendRedirect(ControllerConstants.COMMAND_TASK_LIST);
     }
 }

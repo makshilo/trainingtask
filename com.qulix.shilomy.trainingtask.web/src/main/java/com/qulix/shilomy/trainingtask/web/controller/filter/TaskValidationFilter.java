@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.filter;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
@@ -19,33 +20,10 @@ import java.time.format.ResolverStyle;
 
 @WebFilter(filterName = "TaskValidationFilter", urlPatterns = {"/createTask", "/editTask"})
 public class TaskValidationFilter implements Filter {
-    public static final String EMPLOYEES_PARAM_NAME = "employees";
-    public static final String PROJECTS_PARAM_NAME = "projects";
-    public static final String CURRENT_PROJECT_PARAM_NAME = "currentProject";
-    public static final String PROJECT_LOCK_PARAM = "projectLock";
-    public static final String TASK_STATUS_PARAM_NAME = "taskStatus";
-
-    public static final String STATUS_PARAM_NAME = "status";
-    public static final String TASK_NAME_PARAM = "taskName";
-    public static final String PROJECT_PARAM_NAME = "project";
-    public static final String WORK_PARAM_NAME = "work";
-    public static final String START_YEAR_PARAM_NAME = "startYear";
-    public static final String START_MONTH_PARAM_NAME = "startMonth";
-    public static final String START_DAY_PARAM_NAME = "startDay";
-    public static final String END_YEAR_PARAM_NAME = "endYear";
-    public static final String END_MONTH_PARAM_NAME = "endMonth";
-    public static final String END_DAY_PARAM_NAME = "endDay";
-    public static final String EXECUTOR_PARAM_NAME = "executor";
-    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
-    public static final String EDIT_MODE = "edit";
-    public static final String EMPTY_STRING = "";
-    public static final String MINUS_SIGN = "-";
-
     public static final String DATE_FORMAT = "uuuu-MM-dd";
     public static final String YEAR_FORMAT = "uuuu";
     public static final String DAY_FORMAT = "dd";
 
-    public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
     public static final String TASK_NAME_NULL = "Наименование задачи не заполнено";
     public static final String PROJECT_NULL = "Проект не выбран";
     public static final String WORK_NULL = "Работа не заполнена";
@@ -67,7 +45,6 @@ public class TaskValidationFilter implements Filter {
     public static final String EXECUTOR_NULL = "Исполнитель не выбран";
     public static final String STATUS_NULL = "Статус не выбран";
 
-    private static final String EDIT_TASK_PAGE = "/jsp/editTask.jsp";
     public static final String EDIT_TASK = "/editTask";
 
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -98,107 +75,107 @@ public class TaskValidationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String page = ((HttpServletRequest)request).getRequestURI();
         if (page.equals(EDIT_TASK)) {
-            request.setAttribute(PAGE_MODE_PARAM_NAME, EDIT_MODE);
+            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
         }
 
-        TaskStatus status = TaskStatus.of(request.getParameter(STATUS_PARAM_NAME));
-        String taskName = request.getParameter(TASK_NAME_PARAM);
-        String projectId = request.getParameter(PROJECT_PARAM_NAME);
-        String work = request.getParameter(WORK_PARAM_NAME);
-        String startYear = request.getParameter(START_YEAR_PARAM_NAME);
-        String startMonth = request.getParameter(START_MONTH_PARAM_NAME);
-        String startDay = request.getParameter(START_DAY_PARAM_NAME);
-        String endYear = request.getParameter(END_YEAR_PARAM_NAME);
-        String endMonth = request.getParameter(END_MONTH_PARAM_NAME);
-        String endDay = request.getParameter(END_DAY_PARAM_NAME);
-        String executorId = request.getParameter(EXECUTOR_PARAM_NAME);
+        TaskStatus status = TaskStatus.of(request.getParameter(ControllerConstants.STATUS_PARAM_NAME));
+        String taskName = request.getParameter(ControllerConstants.TASK_NAME_PARAM);
+        String projectId = request.getParameter(ControllerConstants.PROJECT_PARAM_NAME);
+        String work = request.getParameter(ControllerConstants.WORK_PARAM_NAME);
+        String startYear = request.getParameter(ControllerConstants.START_YEAR_PARAM_NAME);
+        String startMonth = request.getParameter(ControllerConstants.START_MONTH_PARAM_NAME);
+        String startDay = request.getParameter(ControllerConstants.START_DAY_PARAM_NAME);
+        String endYear = request.getParameter(ControllerConstants.END_YEAR_PARAM_NAME);
+        String endMonth = request.getParameter(ControllerConstants.END_MONTH_PARAM_NAME);
+        String endDay = request.getParameter(ControllerConstants.END_DAY_PARAM_NAME);
+        String executorId = request.getParameter(ControllerConstants.EXECUTOR_PARAM_NAME);
 
         DateValidator dateValidator = DateValidatorImpl.getInstance();
 
         DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR_FORMAT).withResolverStyle(ResolverStyle.STRICT);
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY_FORMAT).withResolverStyle(ResolverStyle.STRICT);
 
-        if (taskName == null || taskName.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, TASK_NAME_NULL);
+        if (taskName == null || taskName.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, TASK_NAME_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (projectId == null || projectId.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, PROJECT_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (projectId == null || projectId.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, PROJECT_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (work == null || work.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, WORK_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (work == null || work.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, WORK_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if(!isInt(work)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, WORK_NOT_INTEGER);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, WORK_NOT_INTEGER);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (Integer.parseInt(work) < 0) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, WORK_NEGATIVE);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, WORK_NEGATIVE);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (startYear == null || startYear.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, START_YEAR_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (startYear == null || startYear.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, START_YEAR_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (!dateValidator.isValid(yearFormatter, startYear)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, INVALID_START_YEAR);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, INVALID_START_YEAR);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (startMonth == null || startMonth.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, START_MONTH_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (startMonth == null || startMonth.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, START_MONTH_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (startDay == null || startDay.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, START_DAY_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (startDay == null || startDay.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, START_DAY_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (!dateValidator.isValid(dayFormatter, startDay)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, INVALID_START_DAY);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, INVALID_START_DAY);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (!isDateValid(dateValidator, startYear, startMonth, startDay)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, WRONG_START_DATE);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, WRONG_START_DATE);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (endYear == null || endYear.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, END_YEAR_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (endYear == null || endYear.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, END_YEAR_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (!dateValidator.isValid(yearFormatter, endYear)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, INVALID_END_YEAR);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, INVALID_END_YEAR);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (endMonth == null || endMonth.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, END_MONTH_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (endMonth == null || endMonth.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, END_MONTH_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (endDay == null || endDay.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, END_DAY_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (endDay == null || endDay.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, END_DAY_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (!dateValidator.isValid(dayFormatter, endDay)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, INVALID_END_DAY);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, INVALID_END_DAY);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (!isDateValid(dateValidator, endYear, endMonth, endDay)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, WRONG_END_DATE);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, WRONG_END_DATE);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (checkDateCollision(startYear + MINUS_SIGN + startMonth + MINUS_SIGN + startDay,
-                                      endYear + MINUS_SIGN + endMonth + MINUS_SIGN + endDay)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, DATE_COLLISION);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (checkDateCollision(startYear + ControllerConstants.MINUS_SIGN + startMonth + ControllerConstants.MINUS_SIGN + startDay,
+                                      endYear + ControllerConstants.MINUS_SIGN + endMonth + ControllerConstants.MINUS_SIGN + endDay)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, DATE_COLLISION);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
-        } else if (executorId == null || executorId.equals(EMPTY_STRING)) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, EXECUTOR_NULL);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        } else if (executorId == null || executorId.equals(ControllerConstants.EMPTY_STRING)) {
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, EXECUTOR_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else if (status == null) {
-            request.setAttribute(VALIDATION_ERROR_PARAM_NAME, STATUS_NULL);
+            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, STATUS_NULL);
             fillPage(request);
-            request.getRequestDispatcher(EDIT_TASK_PAGE).forward(request, response);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         } else {
             chain.doFilter(request, response);
         }
@@ -211,13 +188,13 @@ public class TaskValidationFilter implements Filter {
      *                полученный от сервлета
      */
     public void fillPage(ServletRequest request) {
-        request.setAttribute(EMPLOYEES_PARAM_NAME, employeeService.findAll());
-        request.setAttribute(PROJECTS_PARAM_NAME, projectService.findAll());
-        request.setAttribute(TASK_STATUS_PARAM_NAME, TaskStatus.values());
-        if (request.getParameter(PROJECT_LOCK_PARAM) != null) {
-            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(CURRENT_PROJECT_PARAM_NAME)));
-            request.setAttribute(PROJECT_LOCK_PARAM, true);
-            request.setAttribute(CURRENT_PROJECT_PARAM_NAME, currentProject);
+        request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, employeeService.findAll());
+        request.setAttribute(ControllerConstants.PROJECTS_PARAM_NAME, projectService.findAll());
+        request.setAttribute(ControllerConstants.STATUS_PARAM_NAME, TaskStatus.values());
+        if (request.getParameter(ControllerConstants.PROJECT_LOCK_PARAM) != null) {
+            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.CURRENT_PROJECT_PARAM_NAME)));
+            request.setAttribute(ControllerConstants.PROJECT_LOCK_PARAM, true);
+            request.setAttribute(ControllerConstants.CURRENT_PROJECT_PARAM_NAME, currentProject);
         }
     }
 
@@ -244,7 +221,7 @@ public class TaskValidationFilter implements Filter {
     private boolean isDateValid(DateValidator dateValidator, String year, String month, String day) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT).withResolverStyle(ResolverStyle.STRICT);
 
-        return dateValidator.isValid(dateFormatter, year + MINUS_SIGN + month + MINUS_SIGN + day);
+        return dateValidator.isValid(dateFormatter, year + ControllerConstants.MINUS_SIGN + month + ControllerConstants.MINUS_SIGN + day);
     }
 
     /**

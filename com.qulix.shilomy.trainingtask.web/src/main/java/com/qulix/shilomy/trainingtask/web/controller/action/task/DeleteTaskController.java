@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.action.task;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -15,10 +16,6 @@ import java.io.IOException;
  */
 @WebServlet("/deleteTask")
 public class DeleteTaskController extends HttpServlet {
-    public static final String ID_PARAM_NAME = "id";
-
-    private static final String COMMAND_TASK_LIST = "/tasks";
-
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
 
@@ -35,8 +32,8 @@ public class DeleteTaskController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long taskId = Long.parseLong(request.getParameter(ID_PARAM_NAME));
+        Long taskId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
         taskService.delete(taskId);
-        response.sendRedirect(COMMAND_TASK_LIST);
+        response.sendRedirect(ControllerConstants.COMMAND_TASK_LIST);
     }
 }

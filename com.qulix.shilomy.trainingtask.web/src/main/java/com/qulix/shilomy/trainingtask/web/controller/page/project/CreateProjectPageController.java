@@ -1,5 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.project;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,11 +14,6 @@ import java.io.IOException;
  */
 @WebServlet("/createProjectPage")
 public class CreateProjectPageController extends HttpServlet {
-    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
-    public static final String CREATE_MODE = "create";
-
-    public static final String EDIT_PROJECT_PAGE = "/jsp/editProject.jsp";
-
     /**
      * Метод обработки GET запроса, который добавляет на страницу параметр режима формы,
      * а затем перенаправляет на неё.
@@ -30,7 +27,7 @@ public class CreateProjectPageController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(PAGE_MODE_PARAM_NAME, CREATE_MODE);
-        request.getRequestDispatcher(EDIT_PROJECT_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.CREATE_MODE);
+        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
     }
 }

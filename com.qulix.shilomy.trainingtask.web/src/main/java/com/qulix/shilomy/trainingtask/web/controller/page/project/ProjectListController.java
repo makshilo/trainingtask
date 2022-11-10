@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.project;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
@@ -16,12 +17,6 @@ import java.io.IOException;
  */
 @WebServlet("/projects")
 public class ProjectListController extends HttpServlet {
-
-    public static final String ID_PARAM_NAME = "id";
-    public static final String PROJECTS_PARAM_NAME = "projects";
-
-    public static final String PROJECT_LIST_PAGE = "/jsp/projectList.jsp";
-
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
 
@@ -39,7 +34,7 @@ public class ProjectListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(PROJECTS_PARAM_NAME, projectService.findAll());
-        request.getRequestDispatcher(PROJECT_LIST_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.PROJECTS_PARAM_NAME, projectService.findAll());
+        request.getRequestDispatcher(ControllerConstants.PROJECT_LIST_PAGE).forward(request, response);
     }
 }

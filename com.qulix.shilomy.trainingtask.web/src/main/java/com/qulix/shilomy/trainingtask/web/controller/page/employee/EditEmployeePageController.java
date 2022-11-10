@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.employee;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
@@ -16,13 +17,6 @@ import java.io.IOException;
  */
 @WebServlet("/editEmployeePage")
 public class EditEmployeePageController extends HttpServlet {
-    public static final String EMPLOYEE_PARAM_NAME = "employee";
-    public static final String ID_PARAM_NAME = "id";
-    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
-    public static final String EDIT_MODE = "edit";
-
-    private static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";
-
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
@@ -40,9 +34,9 @@ public class EditEmployeePageController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(PAGE_MODE_PARAM_NAME, EDIT_MODE);
-        EmployeeEntity employee = employeeService.get(Long.parseLong(request.getParameter(ID_PARAM_NAME)));
-        request.setAttribute(EMPLOYEE_PARAM_NAME, employee);
-        request.getRequestDispatcher(EDIT_EMPLOYEE_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
+        EmployeeEntity employee = employeeService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME)));
+        request.setAttribute(ControllerConstants.EMPLOYEE_PARAM_NAME, employee);
+        request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE).forward(request, response);
     }
 }

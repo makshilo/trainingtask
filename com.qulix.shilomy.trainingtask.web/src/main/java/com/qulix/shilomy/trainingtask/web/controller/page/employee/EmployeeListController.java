@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.employee;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
@@ -16,10 +17,6 @@ import java.io.IOException;
  */
 @WebServlet("/employees")
 public class EmployeeListController extends HttpServlet {
-    public static final String EMPLOYEES_PARAM_NAME = "employees";
-
-    private static final String EMPLOYEES_PAGE = "/jsp/employeeList.jsp";
-
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
     private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
 
@@ -37,7 +34,7 @@ public class EmployeeListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(EMPLOYEES_PARAM_NAME, employeeService.findAll());
-        request.getRequestDispatcher(EMPLOYEES_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, employeeService.findAll());
+        request.getRequestDispatcher(ControllerConstants.EMPLOYEES_PAGE).forward(request, response);
     }
 }
