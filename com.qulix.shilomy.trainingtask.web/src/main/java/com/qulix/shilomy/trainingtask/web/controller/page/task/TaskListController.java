@@ -6,6 +6,7 @@ import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
@@ -47,6 +48,7 @@ public class TaskListController extends HttpServlet {
         request.setAttribute(ControllerConstants.TASKS_PARAM_NAME, taskService.findAll());
         request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, getEmployeeNames());
         request.setAttribute(ControllerConstants.PROJECTS_PARAM_NAME, getProjectNames());
+        request.setAttribute(ControllerConstants.STATUS_PARAM_NAME, TaskStatus.values());
         request.getRequestDispatcher(ControllerConstants.TASK_LIST_PAGE).forward(request, response);
     }
 

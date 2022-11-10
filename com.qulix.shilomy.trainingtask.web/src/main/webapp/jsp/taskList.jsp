@@ -26,12 +26,9 @@
     <c:forEach var="task" items="${requestScope.tasks}">
         <tr>
             <td>
-                <c:choose>
-                    <c:when test="${task.status == 'NOT_STARTED'}">Не начата</c:when>
-                    <c:when test="${task.status == 'IN_PROGRESS'}">Выполняется</c:when>
-                    <c:when test="${task.status == 'DONE'}">Готова</c:when>
-                    <c:when test="${task.status == 'PAUSED'}">Приостановлена</c:when>
-                </c:choose>
+                <c:forEach var="status" items="${requestScope.status}">
+                    <c:if test="${status == task.status}">${status.getStatus()}</c:if>
+                </c:forEach>
             </td>
             <td><c:out value="${task.name}"/></td>
             <td><c:out value="${requestScope.projects.get(task.projectId)}"/></td>

@@ -138,12 +138,11 @@
 
     <label for="status">Статус:</label><br>
 
-    <c:set var="status" value="${requestScope.task.status != null ? requestScope.task.status : param.status}"/>
+    <c:set var="selectedStatus" value="${requestScope.task.status != null ? requestScope.task.status : param.status}"/>
 
     <select name="status" id="status">
-        <c:forEach var="status" items="${requestScope.taskStatus}">
-            <option value="${status}"
-                    <c:if test="${status == param.status}">selected</c:if>>
+        <c:forEach var="status" items="${requestScope.status}">
+            <option value="${status}" <c:if test="${status == param.status || status == selectedStatus}">selected</c:if>>
                     ${status.getStatus()}
             </option>
         </c:forEach>
