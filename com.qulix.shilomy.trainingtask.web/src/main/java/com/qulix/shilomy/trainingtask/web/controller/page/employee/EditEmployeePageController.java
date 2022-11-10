@@ -1,9 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.employee;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
-import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
+import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +18,7 @@ import java.io.IOException;
  */
 @WebServlet("/editEmployeePage")
 public class EditEmployeePageController extends HttpServlet {
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
+    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
 
     /**
      * Метод обработки GET запроса,

@@ -1,12 +1,14 @@
 package com.qulix.shilomy.trainingtask.web.controller.filter;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
+import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
+import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 import com.qulix.shilomy.trainingtask.web.validator.DateValidator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.DateValidatorImpl;
 
@@ -47,9 +49,8 @@ public class TaskValidationFilter implements Filter {
 
     public static final String EDIT_TASK = "/editTask";
 
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
-    private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
+    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
+    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
 
     /**
      * Метод инициализации

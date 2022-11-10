@@ -1,13 +1,17 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.task;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
+import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
+import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
+import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,10 +26,9 @@ import java.util.HashMap;
  */
 @WebServlet("/tasks")
 public class TaskListController extends HttpServlet {
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
-    private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
-    private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
+    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
+    private final TaskService taskService = TaskServiceImpl.getInstance(MethodTaskDao.getInstance());
+    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
 
     /**
      * Метод обработки GET запросов, который добавляет на страницу необходимые для её работы данные,

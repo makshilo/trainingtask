@@ -1,9 +1,9 @@
 package com.qulix.shilomy.trainingtask.web.controller.action.task;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
-import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
 import com.qulix.shilomy.trainingtask.web.service.TaskService;
+import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +16,7 @@ import java.io.IOException;
  */
 @WebServlet("/deleteTask")
 public class DeleteTaskController extends HttpServlet {
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final TaskService taskService = (TaskService) serviceFactory.serviceFor(TaskEntity.class);
+    private final TaskService taskService = TaskServiceImpl.getInstance(MethodTaskDao.getInstance());
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,

@@ -1,9 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.controller.action.employee;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
-import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
+import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +17,7 @@ import java.io.IOException;
  */
 @WebServlet("/createEmployee")
 public class CreateEmployeeController extends HttpServlet {
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final EmployeeService employeeService = (EmployeeService) serviceFactory.serviceFor(EmployeeEntity.class);
+    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, добавляет новую сущность в базу,

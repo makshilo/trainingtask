@@ -1,9 +1,9 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
 import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.ServiceFactory;
+import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +17,7 @@ import java.io.IOException;
  */
 @WebServlet("/projects")
 public class ProjectListController extends HttpServlet {
-    private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
-    private final ProjectService projectService = (ProjectService) serviceFactory.serviceFor(ProjectEntity.class);
+    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
 
     /**
      * Метод обработки GET запросов, который добавляет на страницу необходимые для её работы данные,
