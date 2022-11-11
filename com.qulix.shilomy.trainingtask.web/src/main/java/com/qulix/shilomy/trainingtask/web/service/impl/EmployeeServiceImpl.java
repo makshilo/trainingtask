@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
      * @return сущность работника(EmployeeEntity)
      */
     public EmployeeEntity get(Long id) {
-        return employeeDao.read(id).orElse(null);
+        return employeeDao.read(id).orElseThrow();
     }
 
     /**
@@ -52,11 +52,11 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     @Override
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
         try {
-            return employeeDao.create(employeeEntity);
+            return employeeDao.create(employeeEntity).orElseThrow();
         } catch (InterruptedException e) {
             LOGGER.severe("Error while adding employee: " + e.getMessage());
         }
-        return null;
+        return employeeEntity;
     }
 
     /**
@@ -67,14 +67,14 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     @Override
     public EmployeeEntity update(EmployeeEntity employeeEntity) {
         try {
-            EmployeeEntity employee = employeeDao.update(employeeEntity);
+            EmployeeEntity employee = employeeDao.update(employeeEntity).orElseThrow();
             return get(employee.getId());
         } catch (InterruptedException e) {
             LOGGER.severe("Error while updating employee: " + e.getMessage());
         } catch (EntityNotFoundException e) {
             LOGGER.severe("Employee not found " + e.getMessage());
         }
-        return null;
+        return employeeEntity;
     }
 
     /**

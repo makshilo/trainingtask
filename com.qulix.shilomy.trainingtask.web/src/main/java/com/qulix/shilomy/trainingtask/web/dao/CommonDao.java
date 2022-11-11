@@ -81,12 +81,13 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
 
     /**
      * Метод который добавляет сущность в базу, а затем возвращает по уникальному полю.
+     *
      * @param t сущность для создания
      * @return созданная сущность
      * @throws InterruptedException ошибка прерывания действия
      */
     @Override
-    public T create(T t) throws InterruptedException {
+    public Optional<T> create(T t) throws InterruptedException {
         try {
             update(insertExpression, st -> fillEntity(st, t));
         } catch (InterruptedException e) {
@@ -105,9 +106,7 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
     @Override
     public synchronized Optional<T> read(Long id) {
         try {
-            return Optional.ofNullable(
-                    search(selectByIdExpression, ps -> ps.setLong(1, id), this::extractResultCheckingException)
-            );
+            return search(selectByIdExpression, ps -> ps.setLong(1, id), this::extractResultCheckingException);
         } catch (InterruptedException e) {
             logger.log(Level.WARNING, "take connection interrupted", e);
             return Optional.empty();
@@ -132,13 +131,14 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
 
     /**
      * Метод который обновляет все поля сущности.
+     *
      * @param t сущность для обновления.
      * @return обновлённая сущность
-     * @throws InterruptedException ошибка прерывания действия
+     * @throws InterruptedException    ошибка прерывания действия
      * @throws EntityNotFoundException ошибка поиска сущности
      */
     @Override
-    public synchronized T update(T t) throws InterruptedException, EntityNotFoundException {
+    public synchronized Optional<T> update(T t) throws InterruptedException, EntityNotFoundException {
         try {
             update(updateExpression, ps -> updateEntity(ps, t));
             return search(selectByUFExpression, st -> fillUniqueField(st, t), this::extractResultCheckingException);
@@ -173,11 +173,11 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
      * @param sql строка с запросом в базу данных
      * @param statementPreparation интерфейс подготовки утверждения
      * @param extractor интерфейс работы с результирующим множеством
-     * @return результирующее множество или null если извлечение не произведено
+     * @return результирующее множество или Optional.empty() если извлечение не произведено
      * @param <R> тип сущности
      * @throws InterruptedException ошибка прерывания действия
      */
-    private <R> R search(String sql, StatementPreparator statementPreparation,
+    private <R> Optional<R> search(String sql, StatementPreparator statementPreparation,
                          ResultSetExtractor<R> extractor) throws InterruptedException {
         try (Connection conn = connectionService.getConnection();
              final PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -185,14 +185,14 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
             final ResultSet resultSet = statement.executeQuery();
             conn.close();
             return resultSet.next()
-                    ? extractor.extract(resultSet)
-                    : null;
+                    ? Optional.of(extractor.extract(resultSet))
+                    : Optional.empty();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "sql exception occurred", e);
         } catch (EntityExtractionFailedException e) {
             logger.log(Level.SEVERE, "could not extract entity", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -203,7 +203,7 @@ public abstract class CommonDao<T extends Entity> implements EntityDao<T> {
      * @param sql строка с запросом в базу данных
      * @param statementPreparation интерфейс подготовки утверждения
      * @param extractor интерфейс работы с результирующим множеством
-     * @return результирующее множество в виде списка или null если извлечение не произведено
+     * @return результирующее множество в виде списка или Optional.empty() если извлечение не произведено
      * @param <R> тип сущности
      * @throws InterruptedException ошибка прерывания действия
      */

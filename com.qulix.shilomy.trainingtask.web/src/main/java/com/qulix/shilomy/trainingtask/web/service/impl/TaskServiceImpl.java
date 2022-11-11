@@ -34,7 +34,7 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
      */
     @Override
     public TaskEntity get(Long id) {
-        return taskDao.read(id).orElse(null);
+        return taskDao.read(id).orElseThrow();
     }
 
     /**
@@ -54,11 +54,11 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     @Override
     public TaskEntity add(TaskEntity taskEntity) {
         try {
-            return taskDao.create(taskEntity);
+            return taskDao.create(taskEntity).orElseThrow();
         } catch (InterruptedException e) {
             LOGGER.severe("Error while adding task: " + e.getMessage());
         }
-        return null;
+        return taskEntity;
     }
 
     /**
@@ -69,14 +69,14 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     @Override
     public TaskEntity update(TaskEntity taskEntity) {
         try {
-            TaskEntity task = taskDao.update(taskEntity);
+            TaskEntity task = taskDao.update(taskEntity).orElseThrow();
             return get(task.getId());
         } catch (InterruptedException e) {
             LOGGER.severe("Error while updating task: " + e.getMessage());
         } catch (EntityNotFoundException e) {
             LOGGER.severe("Task not found " + e.getMessage());
         }
-        return null;
+        return taskEntity;
     }
 
     /**

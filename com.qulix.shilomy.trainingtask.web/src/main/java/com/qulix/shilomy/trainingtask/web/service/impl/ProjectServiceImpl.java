@@ -33,7 +33,7 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public ProjectEntity get(Long id) {
-        return projectDao.read(id).orElse(null);
+        return projectDao.read(id).orElseThrow();
     }
 
     /**
@@ -53,11 +53,11 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     @Override
     public ProjectEntity add(ProjectEntity projectEntity) {
         try {
-            return projectDao.create(projectEntity);
+            return projectDao.create(projectEntity).orElseThrow();
         } catch (InterruptedException e) {
             LOGGER.severe("Error while adding project: " + e.getMessage());
         }
-        return null;
+        return projectEntity;
     }
 
     /**
@@ -68,14 +68,14 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     @Override
     public ProjectEntity update(ProjectEntity projectEntity) {
         try {
-            ProjectEntity project = projectDao.update(projectEntity);
+            ProjectEntity project = projectDao.update(projectEntity).orElseThrow();
             return get(project.getId());
         } catch (InterruptedException e) {
             LOGGER.severe("Error while updating project: " + e.getMessage());
         } catch (EntityNotFoundException e) {
             LOGGER.severe("Project not found " + e.getMessage());
         }
-        return null;
+        return projectEntity;
     }
 
     /**
