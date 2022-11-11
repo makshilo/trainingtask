@@ -1,15 +1,14 @@
 package com.qulix.shilomy.trainingtask.web.service.impl;
 
-import com.qulix.shilomy.trainingtask.web.dao.EmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.exception.EntityNotFoundException;
-import com.qulix.shilomy.trainingtask.web.exception.EntityUpdateException;
-import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     private static EmployeeServiceImpl instance;
 
     private static final Logger LOGGER = Logger.getLogger(EmployeeServiceImpl.class.getName());
@@ -32,7 +31,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param id идентификатор
      * @return сущность работника(EmployeeEntity)
      */
-    @Override
     public EmployeeEntity get(Long id) {
         return employeeDao.read(id).orElse(null);
     }
@@ -55,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeEntity add(EmployeeEntity employeeEntity) {
         try {
             return employeeDao.create(employeeEntity);
-        } catch (EntityUpdateException | InterruptedException e) {
+        } catch (InterruptedException e) {
             LOGGER.severe("Error while adding employee: " + e.getMessage());
         }
         return null;
@@ -71,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             EmployeeEntity employee = employeeDao.update(employeeEntity);
             return get(employee.getId());
-        } catch (EntityUpdateException | InterruptedException e) {
+        } catch (InterruptedException e) {
             LOGGER.severe("Error while updating employee: " + e.getMessage());
         } catch (EntityNotFoundException e) {
             LOGGER.severe("Employee not found " + e.getMessage());

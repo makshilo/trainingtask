@@ -1,15 +1,14 @@
 package com.qulix.shilomy.trainingtask.web.controller.filter;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
-import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
-import com.qulix.shilomy.trainingtask.web.service.ProjectService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
-import com.qulix.shilomy.trainingtask.web.validator.DateValidator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.DateValidatorImpl;
 
 import javax.servlet.*;
@@ -49,8 +48,8 @@ public class TaskValidationFilter implements Filter {
 
     public static final String EDIT_TASK = "/editTask";
 
-    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
-    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
+    private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
+    private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
     /**
      * Метод инициализации
@@ -91,7 +90,7 @@ public class TaskValidationFilter implements Filter {
         String endDay = request.getParameter(ControllerConstants.END_DAY_PARAM_NAME);
         String executorId = request.getParameter(ControllerConstants.EXECUTOR_PARAM_NAME);
 
-        DateValidator dateValidator = DateValidatorImpl.getInstance();
+        DateValidatorImpl dateValidator = DateValidatorImpl.getInstance();
 
         DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR_FORMAT).withResolverStyle(ResolverStyle.STRICT);
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY_FORMAT).withResolverStyle(ResolverStyle.STRICT);
@@ -219,7 +218,7 @@ public class TaskValidationFilter implements Filter {
      * @param day день
      * @return true если дата верна и false если нет.
      */
-    private boolean isDateValid(DateValidator dateValidator, String year, String month, String day) {
+    private boolean isDateValid(DateValidatorImpl dateValidator, String year, String month, String day) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT).withResolverStyle(ResolverStyle.STRICT);
 
         return dateValidator.isValid(dateFormatter, year + ControllerConstants.MINUS_SIGN + month + ControllerConstants.MINUS_SIGN + day);

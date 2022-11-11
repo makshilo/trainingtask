@@ -1,12 +1,12 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.task;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
-import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
-import com.qulix.shilomy.trainingtask.web.service.ProjectService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 
@@ -22,8 +22,8 @@ import java.io.IOException;
  */
 @WebServlet("/createTaskPage")
 public class CreateTaskPageController extends HttpServlet {
-    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
-    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
+    private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
+    private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
     /**
      * Метод обработки GET запроса, который добавляет на страницу необходимые для отображения параметры,

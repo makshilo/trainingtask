@@ -1,17 +1,16 @@
 package com.qulix.shilomy.trainingtask.web.service.impl;
 
-import com.qulix.shilomy.trainingtask.web.dao.TaskDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.exception.EntityNotFoundException;
-import com.qulix.shilomy.trainingtask.web.exception.EntityUpdateException;
-import com.qulix.shilomy.trainingtask.web.service.TaskService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceImpl implements EntityService<TaskEntity> {
     private static TaskServiceImpl instance;
 
     private static final Logger LOGGER = Logger.getLogger(TaskServiceImpl.class.getName());
@@ -56,7 +55,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskEntity add(TaskEntity taskEntity) {
         try {
             return taskDao.create(taskEntity);
-        } catch (InterruptedException | EntityUpdateException e) {
+        } catch (InterruptedException e) {
             LOGGER.severe("Error while adding task: " + e.getMessage());
         }
         return null;
@@ -72,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
         try {
             TaskEntity task = taskDao.update(taskEntity);
             return get(task.getId());
-        } catch (InterruptedException | EntityUpdateException e) {
+        } catch (InterruptedException e) {
             LOGGER.severe("Error while updating task: " + e.getMessage());
         } catch (EntityNotFoundException e) {
             LOGGER.severe("Task not found " + e.getMessage());
@@ -95,7 +94,6 @@ public class TaskServiceImpl implements TaskService {
      * @param projectEntity сущность проекта
      * @return список задач
      */
-    @Override
     public List<TaskEntity> findByProject(ProjectEntity projectEntity) {
         return taskDao.receiveTaskByProject(projectEntity)
                 .stream()

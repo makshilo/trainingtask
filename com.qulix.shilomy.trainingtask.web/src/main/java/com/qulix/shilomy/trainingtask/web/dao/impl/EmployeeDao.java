@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.dao.impl;
 
 import com.qulix.shilomy.trainingtask.web.dao.CommonDao;
-import com.qulix.shilomy.trainingtask.web.dao.EmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 
 import java.sql.PreparedStatement;
@@ -16,8 +16,8 @@ import static java.sql.Types.INTEGER;
 /**
  * Класс реализация объекта доступа к данным для сущности сотрудника.
  */
-public class MethodEmployeeDao extends CommonDao<EmployeeEntity> implements EmployeeDao {
-    private static MethodEmployeeDao instance;
+public class EmployeeDao extends CommonDao<EmployeeEntity> implements EntityDao<EmployeeEntity> {
+    private static EmployeeDao instance;
     private static final String EMPLOYEE_TABLE_NAME = "trainingtaskdb.employee_list";
     private static final String EMPLOYEE_ID_COLUMN = "employee_id";
     private static final String EMPLOYEE_FIRST_NAME_COLUMN = "employee_first_name";
@@ -25,7 +25,7 @@ public class MethodEmployeeDao extends CommonDao<EmployeeEntity> implements Empl
     private static final String EMPLOYEE_PATRONYMIC_COLUMN = "employee_patronymic";
     private static final String EMPLOYEE_POSITION_COLUMN = "employee_position";
     private static final String EMPLOYEE_UNIQUE_HASH = "employee_unique_hash";
-    private static final Logger LOGGER = Logger.getLogger(MethodEmployeeDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
 
     private static final List<String> FIELDS = Arrays.asList(
             EMPLOYEE_ID_COLUMN,
@@ -39,7 +39,7 @@ public class MethodEmployeeDao extends CommonDao<EmployeeEntity> implements Empl
     /**
      * Защищённый конструктор по умолчанию.
      */
-    protected MethodEmployeeDao() {
+    protected EmployeeDao() {
         super(LOGGER);
     }
 
@@ -47,9 +47,9 @@ public class MethodEmployeeDao extends CommonDao<EmployeeEntity> implements Empl
      * Метод получения объекта класса.
      * @return объект MethodEmployeeDao
      */
-    public static synchronized MethodEmployeeDao getInstance() {
+    public static synchronized EmployeeDao getInstance() {
         if (instance == null) {
-            instance = new MethodEmployeeDao();
+            instance = new EmployeeDao();
         }
         return instance;
     }

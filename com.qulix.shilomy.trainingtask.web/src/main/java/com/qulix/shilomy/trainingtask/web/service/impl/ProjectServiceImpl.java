@@ -1,15 +1,14 @@
 package com.qulix.shilomy.trainingtask.web.service.impl;
 
-import com.qulix.shilomy.trainingtask.web.dao.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.exception.EntityNotFoundException;
-import com.qulix.shilomy.trainingtask.web.exception.EntityUpdateException;
-import com.qulix.shilomy.trainingtask.web.service.ProjectService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ProjectServiceImpl implements ProjectService {
+public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     private static ProjectServiceImpl instance;
 
     private static final  Logger LOGGER = Logger.getLogger(ProjectServiceImpl.class.getName());
@@ -55,7 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectEntity add(ProjectEntity projectEntity) {
         try {
             return projectDao.create(projectEntity);
-        } catch (InterruptedException | EntityUpdateException e) {
+        } catch (InterruptedException e) {
             LOGGER.severe("Error while adding project: " + e.getMessage());
         }
         return null;
@@ -71,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
         try {
             ProjectEntity project = projectDao.update(projectEntity);
             return get(project.getId());
-        } catch (InterruptedException | EntityUpdateException e) {
+        } catch (InterruptedException e) {
             LOGGER.severe("Error while updating project: " + e.getMessage());
         } catch (EntityNotFoundException e) {
             LOGGER.severe("Project not found " + e.getMessage());

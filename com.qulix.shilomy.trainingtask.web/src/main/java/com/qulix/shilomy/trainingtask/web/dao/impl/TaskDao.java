@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.dao.impl;
 
 import com.qulix.shilomy.trainingtask.web.dao.CommonDao;
-import com.qulix.shilomy.trainingtask.web.dao.TaskDao;
+import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
@@ -18,8 +18,8 @@ import static java.sql.Types.INTEGER;
 /**
  * Класс реализация объекта доступа к данным для сущности задачи.
  */
-public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
-    private static MethodTaskDao instance;
+public class TaskDao extends CommonDao<TaskEntity> implements EntityDao<TaskEntity> {
+    private static TaskDao instance;
 
     private static final String TASK_TABLE_NAME = "trainingtaskdb.task_list";
     private static final String TASK_NAME_COLUMN = "task_name";
@@ -33,7 +33,7 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
     private static final String TASK_UNIQUE_HASH = "task_unique_hash";
 
 
-    private static final Logger LOGGER = Logger.getLogger(MethodTaskDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TaskDao.class.getName());
 
     private static final List<String> FIELDS = Arrays.asList(
             TASK_ID,
@@ -49,7 +49,7 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
     /**
      * Защищённый конструктор по умолчанию.
      */
-    protected MethodTaskDao() {
+    protected TaskDao() {
         super(LOGGER);
     }
 
@@ -57,9 +57,9 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
      * Метод получения объекта класса.
      * @return объект MethodTaskDao
      */
-    public static synchronized MethodTaskDao getInstance() {
+    public static synchronized TaskDao getInstance() {
         if (instance == null) {
-            instance = new MethodTaskDao();
+            instance = new TaskDao();
         }
         return instance;
     }
@@ -159,7 +159,6 @@ public class MethodTaskDao extends CommonDao<TaskEntity> implements TaskDao {
      * @param project проект который содержит задачу.
      * @return задачи принадлежащие проекту
      */
-    @Override
     public List<TaskEntity> receiveTaskByProject(ProjectEntity project) {
         return receiveEntitiesByParam(TASK_PROJECT_ID_COLUMN, project.getId());
     }

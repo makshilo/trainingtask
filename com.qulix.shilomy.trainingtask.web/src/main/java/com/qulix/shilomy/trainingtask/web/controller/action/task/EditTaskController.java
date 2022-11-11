@@ -1,10 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.controller.action.task;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
-import com.qulix.shilomy.trainingtask.web.service.TaskService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +19,7 @@ import java.sql.Date;
  */
 @WebServlet("/editTask")
 public class EditTaskController extends HttpServlet {
-    private final TaskService taskService = TaskServiceImpl.getInstance(MethodTaskDao.getInstance());
+    private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,

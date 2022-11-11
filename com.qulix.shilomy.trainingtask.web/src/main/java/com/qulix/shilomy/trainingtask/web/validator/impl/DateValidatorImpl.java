@@ -1,14 +1,12 @@
 package com.qulix.shilomy.trainingtask.web.validator.impl;
 
-import com.qulix.shilomy.trainingtask.web.validator.DateValidator;
-
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
  * Класс исполнение валидатора для проверки даты, является синглтоном
  */
-public class DateValidatorImpl implements DateValidator {
+public class DateValidatorImpl  {
 
     private static DateValidatorImpl instance;
 
@@ -31,7 +29,6 @@ public class DateValidatorImpl implements DateValidator {
      * @return true, если строка соответствует правилам форматировщика
      * и false если не соответствует
      */
-    @Override
     public boolean isValid(DateTimeFormatter dateFormatter, String date) {
         try {
             dateFormatter.parse(date);

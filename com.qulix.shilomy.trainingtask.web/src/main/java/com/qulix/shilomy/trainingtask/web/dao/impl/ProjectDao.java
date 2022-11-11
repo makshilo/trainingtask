@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.dao.impl;
 
 import com.qulix.shilomy.trainingtask.web.dao.CommonDao;
-import com.qulix.shilomy.trainingtask.web.dao.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 
 import java.sql.PreparedStatement;
@@ -16,8 +16,8 @@ import static java.sql.Types.INTEGER;
 /**
  * Класс реализация объекта доступа к данным для сущности проекта.
  */
-public class MethodProjectDao extends CommonDao<ProjectEntity> implements ProjectDao {
-    private static MethodProjectDao instance;
+public class ProjectDao extends CommonDao<ProjectEntity> implements EntityDao<ProjectEntity> {
+    private static ProjectDao instance;
     private static final String PROJECT_TABLE_NAME = "trainingtaskdb.project_list";
     private static final String PROJECT_NAME_COLUMN = "project_name";
     private static final String PROJECT_DESCRIPTION = "project_description";
@@ -25,7 +25,7 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
 
     private static final String PROJECT_UNIQUE_HASH = "project_unique_hash";
 
-    private static final Logger LOGGER = Logger.getLogger(MethodProjectDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ProjectDao.class.getName());
 
     private static final List<String> FIELDS = Arrays.asList(
             PROJECT_ID_COLUMN,
@@ -36,7 +36,7 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
     /**
      * Защищённый конструктор по умолчанию.
      */
-    protected MethodProjectDao() {
+    protected ProjectDao() {
         super(LOGGER);
     }
 
@@ -44,9 +44,9 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
      * Метод получения объекта класса.
      * @return объект MethodProjectDao
      */
-    public static synchronized MethodProjectDao getInstance() {
+    public static synchronized ProjectDao getInstance() {
         if (instance == null) {
-            instance = new MethodProjectDao();
+            instance = new ProjectDao();
         }
         return instance;
     }
@@ -120,16 +120,6 @@ public class MethodProjectDao extends CommonDao<ProjectEntity> implements Projec
     @Override
     protected void fillUniqueField(PreparedStatement statement, ProjectEntity entity) throws SQLException {
         statement.setString(1, composeHashCode(entity));
-    }
-
-    /**
-     * Метод получения проекта по имени.
-     * @param name имя проекта
-     * @return сущность проекта
-     */
-    @Override
-    public List<ProjectEntity> receiveProjectByName(String name) {
-        return receiveEntitiesByParam(PROJECT_NAME_COLUMN, name);
     }
 
     /**

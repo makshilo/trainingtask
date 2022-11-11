@@ -1,8 +1,9 @@
 package com.qulix.shilomy.trainingtask.web.controller.action.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
-import com.qulix.shilomy.trainingtask.web.service.ProjectService;
+import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import java.io.IOException;
  */
 @WebServlet("/deleteProject")
 public class DeleteProjectController extends HttpServlet {
-    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
+    private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,

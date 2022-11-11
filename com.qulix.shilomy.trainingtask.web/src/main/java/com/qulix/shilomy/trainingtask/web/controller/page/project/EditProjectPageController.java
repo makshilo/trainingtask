@@ -1,14 +1,12 @@
 package com.qulix.shilomy.trainingtask.web.controller.page.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodEmployeeDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodProjectDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.MethodTaskDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.service.EmployeeService;
-import com.qulix.shilomy.trainingtask.web.service.ProjectService;
-import com.qulix.shilomy.trainingtask.web.service.TaskService;
+import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
@@ -26,9 +24,8 @@ import java.util.HashMap;
  */
 @WebServlet("/editProjectPage")
 public class EditProjectPageController extends HttpServlet {
-    private final ProjectService projectService = ProjectServiceImpl.getInstance(MethodProjectDao.getInstance());
-    private final TaskService taskService = TaskServiceImpl.getInstance(MethodTaskDao.getInstance());
-    private final EmployeeService employeeService = EmployeeServiceImpl.getInstance(MethodEmployeeDao.getInstance());
+    private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
+    private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
     /**
      * Метод обработки GET запроса,
@@ -47,7 +44,8 @@ public class EditProjectPageController extends HttpServlet {
         ProjectEntity project = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME)));
         request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
         request.setAttribute(ControllerConstants.PROJECT_PARAM_NAME, project);
-        request.setAttribute(ControllerConstants.TASKS_PARAM_NAME, taskService.findByProject(project));
+        request.setAttribute(ControllerConstants.TASKS_PARAM_NAME,
+                TaskServiceImpl.getInstance(TaskDao.getInstance()).findByProject(project));
         request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, getEmployeeNames());
         request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
     }
