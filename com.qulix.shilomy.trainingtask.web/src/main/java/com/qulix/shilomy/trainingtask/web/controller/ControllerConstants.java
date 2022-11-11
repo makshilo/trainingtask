@@ -1,5 +1,8 @@
 package com.qulix.shilomy.trainingtask.web.controller;
 
+/**
+ * Класс который хранит константы для использования в пакете контроллеров
+ */
 public class ControllerConstants {
     //Общие константы
     public static final String ID_PARAM_NAME = "id";

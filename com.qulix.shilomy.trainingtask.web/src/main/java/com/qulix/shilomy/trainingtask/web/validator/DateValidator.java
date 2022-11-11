@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.validator.impl;
+package com.qulix.shilomy.trainingtask.web.validator;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -6,19 +6,9 @@ import java.time.format.DateTimeParseException;
 /**
  * Класс исполнение валидатора для проверки даты, является синглтоном
  */
-public class DateValidatorImpl  {
+public class DateValidator {
+    private DateValidator() {
 
-    private static DateValidatorImpl instance;
-
-    private DateValidatorImpl() {
-
-    }
-
-    public static synchronized DateValidatorImpl getInstance() {
-        if (instance == null) {
-            instance = new DateValidatorImpl();
-        }
-        return instance;
     }
 
     /**
@@ -29,7 +19,7 @@ public class DateValidatorImpl  {
      * @return true, если строка соответствует правилам форматировщика
      * и false если не соответствует
      */
-    public boolean isValid(DateTimeFormatter dateFormatter, String date) {
+    public static boolean isValid(DateTimeFormatter dateFormatter, String date) {
         try {
             dateFormatter.parse(date);
         } catch (DateTimeParseException e) {

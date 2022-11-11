@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.filter;
+package com.qulix.shilomy.trainingtask.web.controller;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
