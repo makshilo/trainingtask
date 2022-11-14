@@ -61,6 +61,5 @@ public class CreateProjectController extends HttpServlet {
         } else {
             request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
         }
-
     }
 }

@@ -10,5 +10,10 @@ import java.sql.SQLException;
 @FunctionalInterface
 public interface StatementPreparator {
 
+    /**
+     * Метод принимающий подготовленное выражение
+     * @param preparedStatement подготовленное выражение
+     * @throws SQLException ошибка базы данных
+     */
     void accept(PreparedStatement preparedStatement) throws SQLException;
 }

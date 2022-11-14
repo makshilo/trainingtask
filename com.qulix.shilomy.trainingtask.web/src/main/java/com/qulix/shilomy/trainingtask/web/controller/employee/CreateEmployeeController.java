@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.qulix.shilomy.trainingtask.web.controller.ControllerConstants.CREATE_MODE;
-import static com.qulix.shilomy.trainingtask.web.controller.ControllerConstants.PAGE_MODE_PARAM_NAME;
-
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по созданию работника
  */
@@ -37,7 +34,7 @@ public class CreateEmployeeController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(PAGE_MODE_PARAM_NAME, CREATE_MODE);
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.CREATE_MODE);
         request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE).forward(request, response);
     }
 

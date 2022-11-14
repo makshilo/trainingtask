@@ -8,6 +8,9 @@ import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Класс сервис реализующий методы сервиса для сущности проекта
+ */
 public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     private static ProjectServiceImpl instance;
 

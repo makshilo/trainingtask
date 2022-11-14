@@ -35,6 +35,10 @@ public enum TaskStatus {
         }
     }
 
+    /**
+     * Метод получения строки из объекта
+     * @return поле статуса
+     */
     public String getStatus() {
         return status;
     }

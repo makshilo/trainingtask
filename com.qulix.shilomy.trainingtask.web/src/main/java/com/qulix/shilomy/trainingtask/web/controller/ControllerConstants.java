@@ -9,6 +9,9 @@ public class ControllerConstants {
     public static final String MINUS_SIGN = "-";
     public static final String SPACE_SIGN = " ";
     public static final String EMPTY_STRING = "";
+    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
+    public static final String CREATE_MODE = "create";
+    public static final String EDIT_MODE = "edit";
 
     //Параметры сущности работника
     public static final String EMPLOYEE_PARAM_NAME = "employee";
@@ -44,9 +47,6 @@ public class ControllerConstants {
     public static final String COMMAND_TASK_LIST = "/tasks";
 
 
-    public static final String PAGE_MODE_PARAM_NAME = "pageMode";
-    public static final String CREATE_MODE = "create";
-    public static final String EDIT_MODE = "edit";
 
     public static final String EMPLOYEES_PAGE = "/jsp/employeeList.jsp";
     public static final String EDIT_EMPLOYEE_PAGE = "/jsp/editEmployee.jsp";

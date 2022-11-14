@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Класс исполнение валидатора для проверки даты, является синглтоном
+ * Класс валидатора для проверки даты
  */
 public class DateValidator {
     private DateValidator() {

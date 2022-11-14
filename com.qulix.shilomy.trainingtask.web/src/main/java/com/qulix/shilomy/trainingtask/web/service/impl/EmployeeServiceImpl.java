@@ -8,6 +8,9 @@ import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Класс сервис реализующий методы сервиса для сущности работника
+ */
 public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     private static EmployeeServiceImpl instance;
 

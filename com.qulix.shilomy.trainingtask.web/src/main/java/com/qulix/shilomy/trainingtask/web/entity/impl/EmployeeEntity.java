@@ -3,7 +3,13 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
 /**
- * POJO класс для сущности работника
+ * Класс сущности работника
+ * содержит поля:
+ * <li>имя</li>
+ * <li>фамилия</li>
+ * <li>отчество</li>
+ * <li>должность</li>
+ * <li>идентификатор</li>
  */
 public class EmployeeEntity implements Entity {
     private final String firstName;
@@ -12,6 +18,14 @@ public class EmployeeEntity implements Entity {
     private final String position;
     private final Long id;
 
+    /**
+     * Основной конструктор
+     * @param firstName имя
+     * @param lastName фамилия
+     * @param patronymic отчество
+     * @param position должность
+     * @param id идентификатор
+     */
     public EmployeeEntity(String firstName, String lastName, String patronymic, String position, Long id) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,30 +34,62 @@ public class EmployeeEntity implements Entity {
         this.id = id;
     }
 
+    /**
+     * Конструктор без идентификатора
+     * @param firstName имя
+     * @param lastName фамилия
+     * @param patronymic отчество
+     * @param position должность
+     */
     public EmployeeEntity(String firstName, String lastName, String patronymic, String position) {
         this(firstName, lastName, patronymic, position, null);
     }
 
+    /**
+     * Метод получения имени
+     * @return поле имени
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Метод получения фамилии
+     * @return поле фамилии
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Метод получения отчества
+     * @return поле отчества
+     */
     public String getPatronymic() {
         return patronymic;
     }
 
+    /**
+     * Метод получения должности
+     * @return поле должности
+     */
     public String getPosition() {
         return position;
     }
 
+    /**
+     * Метод получения идентификатора
+     * @return поле идентификатора
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Переопределение метода сравнения объекта
+     * @param o объект для сравнения
+     * @return результат сравнения
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +104,10 @@ public class EmployeeEntity implements Entity {
         return id.equals(that.id);
     }
 
+    /**
+     * Переопределение метода создания уникального хеш кода объекта
+     * @return хеш код
+     */
     @Override
     public int hashCode() {
         int result = firstName.hashCode();
@@ -68,6 +118,10 @@ public class EmployeeEntity implements Entity {
         return result;
     }
 
+    /**
+     * Переопределение метода строкового представления объекта
+     * @return строка с данными объекта
+     */
     @Override
     public String toString() {
         return "EmployeeEntity{" +

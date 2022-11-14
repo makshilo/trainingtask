@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * Класс сервис реализующий методы сервиса для сущности задачи
+ */
 public class TaskServiceImpl implements EntityService<TaskEntity> {
     private static TaskServiceImpl instance;
 

@@ -4,6 +4,9 @@ import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Класс валидатор который выполняет проверку параметров сущности работника на корректность
+ */
 public class EmployeeValidator {
     public static final String FIRST_NAME_NULL = "Имя не заполнено";
     public static final String LAST_NAME_NULL = "Фамилмя не заполнена";

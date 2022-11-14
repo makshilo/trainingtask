@@ -4,6 +4,9 @@ import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Класс валидатор который выполняет проверку параметров сущности проекта на корректность
+ */
 public class ProjectValidator {
     private static final String PROJECT_NAME_NULL = "Наименование проекта не заполнено";
     private static final String PROJECT_DESCRIPTION_NULL = "Описание проекта не заполнено";

@@ -9,6 +9,9 @@ import java.sql.Date;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
+/**
+ * Класс валидатор который выполняет проверку параметров сущности задачи на корректность
+ */
 public class TaskValidator {
     public static final String DATE_FORMAT = "uuuu-MM-dd";
     public static final String YEAR_FORMAT = "uuuu";
