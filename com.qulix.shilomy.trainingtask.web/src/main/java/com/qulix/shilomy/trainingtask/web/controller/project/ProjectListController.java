@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.page.project;
+package com.qulix.shilomy.trainingtask.web.controller.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;

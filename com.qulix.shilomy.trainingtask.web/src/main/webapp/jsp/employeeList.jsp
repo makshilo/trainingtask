@@ -26,7 +26,7 @@
             <td><c:out value="${employee.firstName}"/></td>
             <td><c:out value="${employee.patronymic}"/></td>
             <td><c:out value="${employee.position}"/></td>
-            <td><a class="table-button" href="${pageContext.request.contextPath}/editEmployeePage?id=${employee.id}">Изменить</a></td>
+            <td><a class="table-button" href="${pageContext.request.contextPath}/editEmployee?id=${employee.id}">Изменить</a></td>
             <td>
                 <form action="${pageContext.request.contextPath}/deleteEmployee?id=${employee.id}" method="post">
                     <button class="table-button" name="delete" type="submit">Удалить</button>
@@ -35,6 +35,6 @@
         </tr>
     </c:forEach>
 </table>
-<a class="add-button" href="${pageContext.request.contextPath}/createEmployeePage">Добавить</a>
+<a class="add-button" href="${pageContext.request.contextPath}/createEmployee">Добавить</a>
 </body>
 </html>

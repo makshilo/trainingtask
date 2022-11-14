@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.action.employee;
+package com.qulix.shilomy.trainingtask.web.controller.employee;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
@@ -14,12 +14,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.qulix.shilomy.trainingtask.web.controller.ControllerConstants.CREATE_MODE;
+import static com.qulix.shilomy.trainingtask.web.controller.ControllerConstants.PAGE_MODE_PARAM_NAME;
+
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по созданию работника
  */
 @WebServlet("/createEmployee")
 public class CreateEmployeeController extends HttpServlet {
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
+
+    /**
+     * Метод обработки GET запроса, который добавляет на страницу параметр режима формы,
+     * а затем перенаправляет на неё.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(PAGE_MODE_PARAM_NAME, CREATE_MODE);
+        request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE).forward(request, response);
+    }
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, добавляет новую сущность в базу,

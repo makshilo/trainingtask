@@ -1,10 +1,10 @@
-package com.qulix.shilomy.trainingtask.web.controller.action.employee;
+package com.qulix.shilomy.trainingtask.web.controller.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
-import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
+import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,17 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по удалению работника.
+ * Класс HTTP сервлета, который отвечает за обработку запроса по удалению проекта.
  */
-@WebServlet("/deleteEmployee")
-public class DeleteEmployeeController extends HttpServlet {
-    private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
-
-    private static final String COMMAND_EMPLOYEE_LIST = "/employees";
+@WebServlet("/deleteProject")
+public class DeleteProjectController extends HttpServlet {
+    private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,
-     * а потом перенаправляет на страницу со списком сотрудников.
+     * а потом перенаправляет на страницу со списком проектов.
      * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
      *                  полученный от сервлета
      *
@@ -34,8 +32,8 @@ public class DeleteEmployeeController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long employeeId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
-        employeeService.delete(employeeId);
-        response.sendRedirect(COMMAND_EMPLOYEE_LIST);
+        Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+        projectService.delete(projectId);
+        response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
     }
 }

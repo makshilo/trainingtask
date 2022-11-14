@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.page.employee;
+package com.qulix.shilomy.trainingtask.web.controller.employee;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;

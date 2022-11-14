@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.page.project;
+package com.qulix.shilomy.trainingtask.web.controller.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
@@ -10,6 +10,7 @@ import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
+import com.qulix.shilomy.trainingtask.web.validator.ProjectValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,10 +21,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по отображению страницы редактирования проекта.
+ * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию проекта.
  */
-@WebServlet("/editProjectPage")
-public class EditProjectPageController extends HttpServlet {
+@WebServlet("/editProject")
+public class EditProjectController extends HttpServlet {
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
@@ -61,5 +62,30 @@ public class EditProjectPageController extends HttpServlet {
             employeeNames.put(employee.getId(), employee.getLastName() + ControllerConstants.SPACE_SIGN + employee.getFirstName());
         }
         return employeeNames;
+    }
+
+    /**
+     * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,
+     * а потом перенаправляет на страницу со списком проектов.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     * @throws ServletException если в работе сервлета возникают проблемы при перенаправлении
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (ProjectValidator.isValid(request)) {
+            String projectName = request.getParameter(ControllerConstants.PROJECT_NAME_PARAM);
+            String description = request.getParameter(ControllerConstants.DESCRIPTION_PARAM_NAME);
+            Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+            projectService.update(new ProjectEntity(projectName, description, projectId));
+            response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
+        } else {
+            request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.action.project;
+package com.qulix.shilomy.trainingtask.web.controller.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
@@ -20,6 +20,23 @@ import java.io.IOException;
 @WebServlet("/createProject")
 public class CreateProjectController extends HttpServlet {
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
+
+    /**
+     * Метод обработки GET запроса, который добавляет на страницу параметр режима формы,
+     * а затем перенаправляет на неё.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.CREATE_MODE);
+        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
+    }
 
     /**
      * Метод обработки POST запроса, который получает данные из запроса, добавляет новую сущность в базу,

@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.action.task;
+package com.qulix.shilomy.trainingtask.web.controller.task;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
@@ -24,16 +24,34 @@ import java.io.IOException;
 import java.sql.Date;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию задачи.
+ * Класс HTTP сервлета, который отвечает за обработку запроса по созданию задачи.
  */
-@WebServlet("/editTask")
-public class EditTaskController extends HttpServlet {
+@WebServlet("/createTask")
+public class CreateTaskController extends HttpServlet {
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
     private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
 
     /**
-     * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,
+     * Метод обработки GET запроса, который добавляет на страницу необходимые для отображения параметры,
+     * а затем перенаправляет на неё.
+     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
+     *                  полученный от сервлета
+     *
+     * @param response  объект {@link HttpServletResponse} который хранит ответ,
+     *                  отправляемый сервлетом клиенту
+     *
+     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.CREATE_MODE);
+        fillPage(request);
+        request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+    }
+
+    /**
+     * Метод обработки POST запроса, который получает данные из запроса, добавляет новую сущность в базу,
      * а потом перенаправляет на страницу со списком задач.
      * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
      *                  полученный от сервлета
@@ -46,7 +64,7 @@ public class EditTaskController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (TaskValidator.isValid(request)) {
+        if(TaskValidator.isValid(request)) {
             TaskStatus status = TaskStatus.of(request.getParameter(ControllerConstants.STATUS_PARAM_NAME));
             String taskName = request.getParameter(ControllerConstants.TASK_NAME_PARAM);
             String projectId = request.getParameter(ControllerConstants.PROJECT_PARAM_NAME);
@@ -58,19 +76,18 @@ public class EditTaskController extends HttpServlet {
             String endMonth = request.getParameter(ControllerConstants.END_MONTH_PARAM_NAME);
             String endDay = request.getParameter(ControllerConstants.END_DAY_PARAM_NAME);
             String executorId = request.getParameter(ControllerConstants.EXECUTOR_PARAM_NAME);
-            Long id = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
 
             Date startDate = Date.valueOf(startYear + ControllerConstants.MINUS_SIGN + startMonth + ControllerConstants.MINUS_SIGN + startDay);
             Date endDate = Date.valueOf(endYear + ControllerConstants.MINUS_SIGN + endMonth + ControllerConstants.MINUS_SIGN + endDay);
 
-            TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId), id);
-            taskService.update(newTask);
+            TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId));
+
+            taskService.add(newTask);
             response.sendRedirect(ControllerConstants.COMMAND_TASK_LIST);
         } else {
             fillPage(request);
             request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         }
-
     }
 
     /**
