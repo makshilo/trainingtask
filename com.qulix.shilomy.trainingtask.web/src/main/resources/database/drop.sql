@@ -1,1 +1,2 @@
-drop schema trainingtaskdb cascade
+-- Удаление схемы проекта
+DROP SCHEMA trainingtaskdb CASCADE

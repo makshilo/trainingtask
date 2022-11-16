@@ -19,12 +19,12 @@ import static java.sql.Types.INTEGER;
 public class EmployeeDao extends CommonDao<EmployeeEntity> implements EntityDao<EmployeeEntity> {
     private static EmployeeDao instance;
     private static final String EMPLOYEE_TABLE_NAME = "trainingtaskdb.employee_list";
-    private static final String EMPLOYEE_ID_COLUMN = "employee_id";
-    private static final String EMPLOYEE_FIRST_NAME_COLUMN = "employee_first_name";
-    private static final String EMPLOYEE_LAST_NAME_COLUMN = "employee_last_name";
-    private static final String EMPLOYEE_PATRONYMIC_COLUMN = "employee_patronymic";
+    private static final String EMPLOYEE_ID_COLUMN = "id";
+    private static final String EMPLOYEE_FIRST_NAME_COLUMN = "first_name";
+    private static final String EMPLOYEE_LAST_NAME_COLUMN = "last_name";
+    private static final String EMPLOYEE_PATRONYMIC_COLUMN = "patronymic";
     private static final String EMPLOYEE_POSITION_COLUMN = "employee_position";
-    private static final String EMPLOYEE_UNIQUE_HASH = "employee_unique_hash";
+    private static final String EMPLOYEE_UNIQUE_HASH = "unique_hash";
     private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
 
     private static final List<String> FIELDS = Arrays.asList(

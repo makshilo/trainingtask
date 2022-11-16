@@ -1,41 +1,45 @@
-create schema TRAININGTASKDB
+-- Создание схемы проекта
+CREATE SCHEMA trainingtaskdb
 
-    create table TRAININGTASKDB.EMPLOYEE_LIST
+    -- создание таблицы сотрудников
+    CREATE TABLE trainingtaskdb.employee_list
     (
-        EMPLOYEE_LAST_NAME   VARCHAR(50),
-        EMPLOYEE_FIRST_NAME  VARCHAR(50) not null,
-        EMPLOYEE_PATRONYMIC  VARCHAR(50),
-        EMPLOYEE_POSITION    VARCHAR(50) not null,
-        EMPLOYEE_ID          INTEGER identity,
-        EMPLOYEE_UNIQUE_HASH VARCHAR(200),
-        primary key (EMPLOYEE_ID)
+        last_name   VARCHAR(50),
+        first_name  VARCHAR(50) NOT NULL,
+        patronymic  VARCHAR(50),
+        employee_position    VARCHAR(50) NOT NULL,
+        id          INTEGER identity,
+        unique_hash VARCHAR(200),
+        PRIMARY KEY (id)
     )
 
-    create table TRAININGTASKDB.PROJECT_LIST
+    -- создание таблицы проектов
+    CREATE TABLE trainingtaskdb.project_list
     (
-        PROJECT_NAME        VARCHAR(100) not null,
-        PROJECT_DESCRIPTION VARCHAR(1000),
-        PROJECT_ID          INTEGER identity,
-        PROJECT_UNIQUE_HASH VARCHAR(1100),
-        primary key (PROJECT_ID)
+        project_name        VARCHAR(100) NOT NULL,
+        description VARCHAR(1000),
+        id          INTEGER identity,
+        unique_hash VARCHAR(1100),
+        PRIMARY KEY (id)
     )
 
-    create table TRAININGTASKDB.TASK_LIST
+    -- создание таблицы задач
+    CREATE TABLE trainingtaskdb.task_list
     (
-        TASK_STATUS      VARCHAR(20) not null,
-        TASK_NAME        VARCHAR(50) not null,
-        TASK_PROJECT_ID  INTEGER,
-        TASK_WORK        INTEGER,
-        TASK_START_DATE  DATE,
-        TASK_END_DATE    DATE,
-        TASK_EXECUTOR_ID INTEGER,
-        TASK_ID          INTEGER identity,
-        TASK_UNIQUE_HASH VARCHAR(70),
-        primary key (TASK_ID),
-        constraint TASK_LIST_EMPLOYEE_LIST_EMPLOYEE_ID_FK
-            foreign key (TASK_EXECUTOR_ID) references TRAININGTASKDB.EMPLOYEE_LIST
-                on update cascade on delete set null,
-        constraint TASK_LIST_PROJECT_LIST_PROJECT_ID_FK
-            foreign key (TASK_PROJECT_ID) references TRAININGTASKDB.PROJECT_LIST
-                on update cascade on delete cascade
+        status      VARCHAR(20) NOT NULL,
+        task_name        VARCHAR(50) NOT NULL,
+        project  INTEGER, -- идентификатор проекта которому принадлежит задача
+        task_work        INTEGER,
+        start_date  DATE,
+        end_date    DATE,
+        executor INTEGER, -- идентификатор работника
+        id          INTEGER identity,
+        unique_hash VARCHAR(70),
+        PRIMARY KEY (id),
+        CONSTRAINT task_list_employee_list_employee_id_fk
+            FOREIGN KEY (executor) REFERENCES trainingtaskdb.employee_list -- ключ получения идентификатора работника
+                ON UPDATE CASCADE ON DELETE SET NULL,
+        CONSTRAINT task_list_project_list_project_id_fk
+            FOREIGN KEY (project) REFERENCES trainingtaskdb.project_list -- ключ получения идентификатора проекта
+                ON UPDATE CASCADE ON DELETE CASCADE
     )

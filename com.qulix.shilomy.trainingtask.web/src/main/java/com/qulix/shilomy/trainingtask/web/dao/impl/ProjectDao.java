@@ -20,10 +20,10 @@ public class ProjectDao extends CommonDao<ProjectEntity> implements EntityDao<Pr
     private static ProjectDao instance;
     private static final String PROJECT_TABLE_NAME = "trainingtaskdb.project_list";
     private static final String PROJECT_NAME_COLUMN = "project_name";
-    private static final String PROJECT_DESCRIPTION = "project_description";
-    private static final String PROJECT_ID_COLUMN = "project_id";
+    private static final String PROJECT_DESCRIPTION = "description";
+    private static final String PROJECT_ID_COLUMN = "id";
 
-    private static final String PROJECT_UNIQUE_HASH = "project_unique_hash";
+    private static final String PROJECT_UNIQUE_HASH = "unique_hash";
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDao.class.getName());
 

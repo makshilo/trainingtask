@@ -23,14 +23,14 @@ public class TaskDao extends CommonDao<TaskEntity> implements EntityDao<TaskEnti
 
     private static final String TASK_TABLE_NAME = "trainingtaskdb.task_list";
     private static final String TASK_NAME_COLUMN = "task_name";
-    private static final String TASK_PROJECT_ID_COLUMN = "task_project_id";
+    private static final String TASK_PROJECT_ID_COLUMN = "project";
     private static final String TASK_WORK_COLUMN = "task_work";
-    private static final String TASK_START_DATE_COLUMN = "task_start_date";
-    private static final String TASK_END_DATE_COLUMN = "task_end_date";
-    private static final String TASK_STATUS_COLUMN = "task_status";
-    private static final String TASK_EXECUTOR_ID_COLUMN = "task_executor_id";
-    private static final String TASK_ID = "task_id";
-    private static final String TASK_UNIQUE_HASH = "task_unique_hash";
+    private static final String TASK_START_DATE_COLUMN = "start_date";
+    private static final String TASK_END_DATE_COLUMN = "end_date";
+    private static final String TASK_STATUS_COLUMN = "status";
+    private static final String TASK_EXECUTOR_ID_COLUMN = "executor";
+    private static final String TASK_ID = "id";
+    private static final String TASK_UNIQUE_HASH = "unique_hash";
 
 
     private static final Logger LOGGER = Logger.getLogger(TaskDao.class.getName());
