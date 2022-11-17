@@ -26,7 +26,10 @@
 
     <c:set var="taskName" value="${requestScope.task.name != null ? requestScope.task.name : param.taskName}"/>
 
-    <input maxlength="50" type="text" id="taskName" name="taskName" value="${fn:escapeXml(taskName)}"><br><br>
+    <input maxlength="50" type="text" id="taskName" name="taskName" value="${fn:escapeXml(taskName)}">
+
+    <c:out value="${requestScope.errorMessages.get('nameNull')}"/><br><br>
+
     <label for="project">Наименование проекта:</label><br>
 
     <c:choose>
@@ -34,7 +37,7 @@
             <select disabled name="project" id="project">
                 <option selected
                         value="${requestScope.currentProject.id}">${requestScope.currentProject.name}</option>
-            </select><br><br>
+            </select>
             <input type="hidden" name="project" value="${requestScope.currentProject.id}">
         </c:when>
         <c:otherwise>
@@ -46,15 +49,21 @@
                             ${project.name}
                     </option>
                 </c:forEach>
-            </select><br><br>
+            </select>
         </c:otherwise>
     </c:choose>
+
+    <c:out value="${requestScope.errorMessages.get('projectNull')}"/><br><br>
 
     <label for="work">Работа:</label><br>
 
     <c:set var="work" value="${requestScope.task.name != null ? requestScope.task.work : param.work}"/>
 
-    <input style="width: 100px;" type="text" id="work" name="work" value="${fn:escapeXml(work)}"><br><br>
+    <input style="width: 100px;" type="text" id="work" name="work" value="${fn:escapeXml(work)}">
+
+    <c:out value="${requestScope.errorMessages.get('workNull')}"/>
+    <c:out value="${requestScope.errorMessages.get('workNotInt')}"/>
+    <c:out value="${requestScope.errorMessages.get('workNegative')}"/><br><br>
 
     <label>Дата начала</label><br>
 
@@ -75,6 +84,9 @@
 
     <input style="width: 100px;" value="${fn:escapeXml(startYear)}" type="text" id="startYear" name="startYear">
 
+    <c:out value="${requestScope.errorMessages.get('startYearNull')}"/>
+    <c:out value="${requestScope.errorMessages.get('startYearInvalid')}"/>
+
     <label for="startMonth">Месяц:</label>
 
     <select class="month-select" id="startMonth" name="startMonth">
@@ -92,9 +104,15 @@
         <option <c:if test="${startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
 
+    <c:out value="${requestScope.errorMessages.get('startMonthNull')}"/>
+
     <label for="startDay">День:</label>
 
-    <input style="width: 100px;" value="${fn:escapeXml(startDay)}" type="text" id="startDay" name="startDay"><br><br>
+    <input style="width: 100px;" value="${fn:escapeXml(startDay)}" type="text" id="startDay" name="startDay">
+
+    <c:out value="${requestScope.errorMessages.get('startDayNull')}"/>
+    <c:out value="${requestScope.errorMessages.get('startDayInvalid')}"/>
+    <c:out value="${requestScope.errorMessages.get('startDateInvalid')}"/><br><br>
 
     <label>Дата окончания</label><br>
 
@@ -115,6 +133,9 @@
 
     <input style="width: 100px;" value="${fn:escapeXml(endYear)}" type="text" id="endYear" name="endYear">
 
+    <c:out value="${requestScope.errorMessages.get('endYearNull')}"/>
+    <c:out value="${requestScope.errorMessages.get('endYearInvalid')}"/>
+
     <label for="endMonth">Месяц:</label>
 
     <select class="month-select" id="endMonth" name="endMonth">
@@ -132,9 +153,16 @@
         <option <c:if test="${endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
 
+    <c:out value="${requestScope.errorMessages.get('endMonthNull')}"/>
+
     <label for="endDay">День:</label>
 
-    <input style="width: 100px;" value="${fn:escapeXml(endDay)}" type="text" id="endDay" name="endDay"><br><br>
+    <input style="width: 100px;" value="${fn:escapeXml(endDay)}" type="text" id="endDay" name="endDay">
+
+    <c:out value="${requestScope.errorMessages.get('endDayNull')}"/>
+    <c:out value="${requestScope.errorMessages.get('endDayInvalid')}"/><br><br>
+    <c:out value="${requestScope.errorMessages.get('endDateInvalid')}"/>
+    <c:out value="${requestScope.errorMessages.get('dateCollision')}"/>
 
     <label for="status">Статус:</label><br>
 
@@ -146,7 +174,9 @@
                     ${status.getStatus()}
             </option>
         </c:forEach>
-    </select><br><br>
+    </select>
+
+    <c:out value="${requestScope.errorMessages.get('statusNull')}"/><br><br>
 
     <label for="executor">Исполнитель:</label><br>
 
@@ -161,7 +191,9 @@
                     ${employee.patronymic}
             </option>
         </c:forEach>
-    </select><br><br>
+    </select>
+
+    <c:out value="${requestScope.errorMessages.get('executorNull')}"/><br><br>
 
     <a style="margin-left: 10px"><c:out value="${requestScope.validationError}"/></a><br><br>
 

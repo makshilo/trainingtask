@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию работника.
@@ -55,7 +56,8 @@ public class EditEmployeeController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (EmployeeValidator.isValid(request)) {
+        Map<String, String> errors = EmployeeValidator.isValid(request);
+        if (errors.isEmpty()) {
             String firstName = request.getParameter(ControllerConstants.FIRST_NAME_PARAM_NAME);
             String lastName = request.getParameter(ControllerConstants.LAST_NAME_PARAM_NAME);
             String patronymic = request.getParameter(ControllerConstants.PATRONYMIC_PARAM_NAME);
@@ -65,6 +67,7 @@ public class EditEmployeeController extends HttpServlet {
             employeeService.update(new EmployeeEntity(firstName, lastName, patronymic, position, id));
             response.sendRedirect(ControllerConstants.COMMAND_EMPLOYEE_LIST);
         } else {
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
             request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE).forward(request, response);
         }
     }

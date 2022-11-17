@@ -28,14 +28,17 @@
 
     <c:set var="projectName" value="${requestScope.project.name != null ? requestScope.project.name : param.projectName}"/>
 
-    <input maxlength="100" type="text" id="projectName" name="projectName" value="${fn:escapeXml(projectName)}"><br><br>
+    <input maxlength="100" type="text" id="projectName" name="projectName" value="${fn:escapeXml(projectName)}">
+
+    <c:out value="${requestScope.errorMessages.get('nameNull')}"/><br><br>
+
     <label for="description">Описание:</label><br>
 
     <c:set var="description" value="${requestScope.project.description != null ? requestScope.project.description : param.description}"/>
 
-    <textarea maxlength="1000" id="description" name="description" rows="4" cols="50">${fn:escapeXml(description)}</textarea><br><br>
+    <textarea maxlength="1000" id="description" name="description" rows="4" cols="50">${fn:escapeXml(description)}</textarea>
 
-    <a style="margin-left: 10px"><c:out value="${requestScope.validationError}"/></a><br><br>
+    <c:out value="${requestScope.errorMessages.get('descriptionNull')}"/><br><br>
 
     <input type="submit" value="Сохранить">
 </form>
@@ -65,7 +68,7 @@
                 <td><c:out value="${task.endDate}"/></td>
                 <td><c:out value="${requestScope.employees.get(task.executorId)}"/></td>
                 <td>
-                    <a class="table-button" href="${pageContext.request.contextPath}/editTaskPage?id=${task.id}&currentProject=${requestScope.project.id}&projectLock">Изменить</a>
+                    <a class="table-button" href="${pageContext.request.contextPath}/editTask?id=${task.id}&currentProject=${requestScope.project.id}&projectLock">Изменить</a>
                 </td>
                 <td>
                     <form action="${pageContext.request.contextPath}/deleteTask?id=${task.id}" method="post">
@@ -75,7 +78,7 @@
             </tr>
         </c:forEach>
     </table>
-    <a class="add-button" href="${pageContext.request.contextPath}/createTaskPage?currentProject=${requestScope.project.id}&projectLock">Добавить</a>
+    <a class="add-button" href="${pageContext.request.contextPath}/createTask?currentProject=${requestScope.project.id}&projectLock">Добавить</a>
 </c:if>
 </body>
 </html>

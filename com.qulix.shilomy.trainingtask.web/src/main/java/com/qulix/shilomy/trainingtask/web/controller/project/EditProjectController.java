@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию проекта.
@@ -78,13 +79,15 @@ public class EditProjectController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (ProjectValidator.isValid(request)) {
+        Map<String, String> errors = ProjectValidator.isValid(request);
+        if (errors.isEmpty()) {
             String projectName = request.getParameter(ControllerConstants.PROJECT_NAME_PARAM);
             String description = request.getParameter(ControllerConstants.DESCRIPTION_PARAM_NAME);
             Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
             projectService.update(new ProjectEntity(projectName, description, projectId));
             response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
         } else {
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
             request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
         }
     }

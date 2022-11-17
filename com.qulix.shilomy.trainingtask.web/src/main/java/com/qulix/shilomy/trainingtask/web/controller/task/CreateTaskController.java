@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Map;
 
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по созданию задачи.
@@ -64,7 +65,8 @@ public class CreateTaskController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(TaskValidator.isValid(request)) {
+        Map<String, String> errors = TaskValidator.isValid(request);
+        if(errors.isEmpty()) {
             TaskStatus status = TaskStatus.of(request.getParameter(ControllerConstants.STATUS_PARAM_NAME));
             String taskName = request.getParameter(ControllerConstants.TASK_NAME_PARAM);
             String projectId = request.getParameter(ControllerConstants.PROJECT_PARAM_NAME);
@@ -86,6 +88,7 @@ public class CreateTaskController extends HttpServlet {
             response.sendRedirect(ControllerConstants.COMMAND_TASK_LIST);
         } else {
             fillPage(request);
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
             request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
         }
     }

@@ -3,15 +3,22 @@ package com.qulix.shilomy.trainingtask.web.validator;
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Класс валидатор который выполняет проверку параметров сущности работника на корректность
  */
 public class EmployeeValidator {
-    public static final String FIRST_NAME_NULL = "Имя не заполнено";
-    public static final String LAST_NAME_NULL = "Фамилмя не заполнена";
-    public static final String PATRONYMIC_NULL = "Отчество не заполнено";
-    public static final String POSITION_NULL = "Должность не заполнена";
+    public static final String FIRST_NAME_NULL_MESSAGE = "Имя не заполнено";
+    public static final String LAST_NAME_NULL_MESSAGE = "Фамилмя не заполнена";
+    public static final String PATRONYMIC_NULL_MESSAGE = "Отчество не заполнено";
+    public static final String POSITION_NULL_MESSAGE = "Должность не заполнена";
+
+    public static final String FIRST_NAME_NULL = "firstNameNull";
+    public static final String LAST_NAME_NULL = "lastNameNull";
+    public static final String PATRONYMIC_NULL = "patronymicNull";
+    public static final String POSITION_NULL = "positionNull";
 
     public static final String EDIT_EMPLOYEE = "/editEmployee";
 
@@ -24,7 +31,7 @@ public class EmployeeValidator {
      * @param request <code>ServletRequest</code> обЪект который хранит запрос пользователя
      * @return true если все параметры проходят проверку, в остальных случаях false
      */
-    public static boolean isValid(HttpServletRequest request) {
+    public static Map<String, String> isValid(HttpServletRequest request) {
         String page = request.getRequestURI();
         if (page.equals(EDIT_EMPLOYEE)) {
             request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
@@ -35,20 +42,21 @@ public class EmployeeValidator {
         String patronymic = request.getParameter(ControllerConstants.PATRONYMIC_PARAM_NAME);
         String position = request.getParameter(ControllerConstants.POSITION_PARAM_NAME);
 
+        Map<String, String> errors = new HashMap<>();
+
         if (firstName == null || firstName.equals(ControllerConstants.EMPTY_STRING)) {
-            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, FIRST_NAME_NULL);
-            return false;
-        } else if (lastName == null || lastName.equals(ControllerConstants.EMPTY_STRING)) {
-            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, LAST_NAME_NULL);
-            return false;
-        } else if (patronymic == null || patronymic.equals(ControllerConstants.EMPTY_STRING)) {
-            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, PATRONYMIC_NULL);
-            return false;
-        } else if (position == null || position.equals(ControllerConstants.EMPTY_STRING)) {
-            request.setAttribute(ControllerConstants.VALIDATION_ERROR_PARAM_NAME, POSITION_NULL);
-            return false;
-        } else {
-            return true;
+            errors.put(FIRST_NAME_NULL, FIRST_NAME_NULL_MESSAGE);
         }
+        if (lastName == null || lastName.equals(ControllerConstants.EMPTY_STRING)) {
+            errors.put(LAST_NAME_NULL, LAST_NAME_NULL_MESSAGE);
+        }
+        if (patronymic == null || patronymic.equals(ControllerConstants.EMPTY_STRING)) {
+            errors.put(PATRONYMIC_NULL, PATRONYMIC_NULL_MESSAGE);
+        }
+        if (position == null || position.equals(ControllerConstants.EMPTY_STRING)) {
+            errors.put(POSITION_NULL, POSITION_NULL_MESSAGE);
+        }
+
+        return errors;
     }
 }

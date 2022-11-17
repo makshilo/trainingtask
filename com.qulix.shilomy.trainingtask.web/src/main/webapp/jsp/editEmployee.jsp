@@ -27,23 +27,34 @@
 
     <c:set var="firstName" value="${requestScope.employee.firstName != null ? requestScope.employee.firstName : param.firstName}"/>
 
-    <input maxlength="50" type="text" id="firstName" name="firstName" value="${fn:escapeXml(firstName)}"><br><br>
+    <input maxlength="50" type="text" id="firstName" name="firstName" value="${fn:escapeXml(firstName)}">
+
+    <c:out value="${requestScope.errorMessages.get('firstNameNull')}"/><br><br>
+
     <label for="lastName">Фамилия:</label><br>
 
     <c:set var="lastName" value="${requestScope.employee.lastName != null ? requestScope.employee.lastName : param.lastName}"/>
 
-    <input maxlength="50" type="text" id="lastName" name="lastName" value="${fn:escapeXml(lastName)}"><br><br>
+    <input maxlength="50" type="text" id="lastName" name="lastName" value="${fn:escapeXml(lastName)}">
+
+    <c:out value="${requestScope.errorMessages.get('lastNameNull')}"/><br><br>
+
     <label for="patronymic">Отчество:</label><br>
 
     <c:set var="patronymic" value="${requestScope.employee.patronymic != null ? requestScope.employee.patronymic : param.patronymic}"/>
 
-    <input maxlength="50" type="text" id="patronymic" name="patronymic" value="${fn:escapeXml(patronymic)}"><br><br>
+    <input maxlength="50" type="text" id="patronymic" name="patronymic" value="${fn:escapeXml(patronymic)}">
+
+    <c:out value="${requestScope.errorMessages.get('patronymicNull')}"/><br><br>
+
     <label for="position">Должность:</label><br>
 
     <c:set var="position" value="${requestScope.employee.position != null ? requestScope.employee.position : param.position}"/>
 
-    <input maxlength="50" type="text" id="position" name="position" value="${fn:escapeXml(position)}"><br><br>
-    <a style="margin-left: 10px"><c:out value="${requestScope.validationError}"/></a><br><br>
+    <input maxlength="50" type="text" id="position" name="position" value="${fn:escapeXml(position)}">
+
+    <c:out value="${requestScope.errorMessages.get('positionNull')}"/><br><br>
+
     <input type="submit" value="Сохранить">
 </form>
 </body>

@@ -13,12 +13,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по созданию проекта.
  */
 @WebServlet("/createProject")
 public class CreateProjectController extends HttpServlet {
+
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
 
     /**
@@ -52,13 +54,15 @@ public class CreateProjectController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (ProjectValidator.isValid(request)){
+        Map<String, String> errors = ProjectValidator.isValid(request);
+        if (errors.isEmpty()){
             String projectName = request.getParameter(ControllerConstants.PROJECT_NAME_PARAM);
             String description = request.getParameter(ControllerConstants.DESCRIPTION_PARAM_NAME);
             ProjectEntity newProject = new ProjectEntity(projectName, description);
             projectService.add(newProject);
             response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
         } else {
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
             request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
         }
     }

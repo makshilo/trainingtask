@@ -57,5 +57,5 @@ public class ControllerConstants {
     public static final String TASK_LIST_PAGE = "/jsp/taskList.jsp";
     public static final String EDIT_TASK_PAGE = "/jsp/editTask.jsp";
 
-    public static final String VALIDATION_ERROR_PARAM_NAME = "validationError";
+    public static final String ERROR_MESSAGES_PARAM = "errorMessages";
 }
