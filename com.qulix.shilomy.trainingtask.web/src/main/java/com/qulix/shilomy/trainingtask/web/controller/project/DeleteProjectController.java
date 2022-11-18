@@ -32,8 +32,8 @@ public class DeleteProjectController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+        Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
         projectService.delete(projectId);
-        response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
+        response.sendRedirect(ControllerConstants.PROJECT_LIST.get());
     }
 }

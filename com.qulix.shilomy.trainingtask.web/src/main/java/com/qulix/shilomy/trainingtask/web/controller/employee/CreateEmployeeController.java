@@ -35,8 +35,8 @@ public class CreateEmployeeController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.CREATE_MODE);
-        request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.CREATE_MODE.get());
+        request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -55,16 +55,16 @@ public class CreateEmployeeController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Map<String, String> errors = EmployeeValidator.isValid(request);
         if (errors.isEmpty()) {
-            String firstName = request.getParameter(ControllerConstants.FIRST_NAME_PARAM_NAME);
-            String lastName = request.getParameter(ControllerConstants.LAST_NAME_PARAM_NAME);
-            String patronymic = request.getParameter(ControllerConstants.PATRONYMIC_PARAM_NAME);
-            String position = request.getParameter(ControllerConstants.POSITION_PARAM_NAME);
+            String firstName = request.getParameter(EmployeeFormParams.EMPLOYEE_FIRST_NAME.get());
+            String lastName = request.getParameter(EmployeeFormParams.EMPLOYEE_LAST_NAME.get());
+            String patronymic = request.getParameter(EmployeeFormParams.PATRONYMIC_PARAM.get());
+            String position = request.getParameter(EmployeeFormParams.POSITION_PARAM.get());
 
             employeeService.add(new EmployeeEntity(firstName, lastName, patronymic, position));
-            response.sendRedirect(ControllerConstants.COMMAND_EMPLOYEE_LIST);
+            response.sendRedirect(ControllerConstants.EMPLOYEE_LIST.get());
         } else {
-            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
-            request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE).forward(request, response);
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM.get(), errors);
+            request.getRequestDispatcher(ControllerConstants.EDIT_EMPLOYEE_PAGE.get()).forward(request, response);
         }
     }
 }

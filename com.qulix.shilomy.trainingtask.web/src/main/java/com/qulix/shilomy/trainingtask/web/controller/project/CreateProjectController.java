@@ -36,8 +36,8 @@ public class CreateProjectController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.CREATE_MODE);
-        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.CREATE_MODE.get());
+        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -56,14 +56,14 @@ public class CreateProjectController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Map<String, String> errors = ProjectValidator.isValid(request);
         if (errors.isEmpty()){
-            String projectName = request.getParameter(ControllerConstants.PROJECT_NAME_PARAM);
-            String description = request.getParameter(ControllerConstants.DESCRIPTION_PARAM_NAME);
+            String projectName = request.getParameter(ProjectFormParams.PROJECT_NAME_PARAM.get());
+            String description = request.getParameter(ProjectFormParams.DESCRIPTION_PARAM.get());
             ProjectEntity newProject = new ProjectEntity(projectName, description);
             projectService.add(newProject);
-            response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
+            response.sendRedirect(ControllerConstants.PROJECT_LIST.get());
         } else {
-            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
-            request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM.get(), errors);
+            request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE.get()).forward(request, response);
         }
     }
 }

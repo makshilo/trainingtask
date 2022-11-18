@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.controller.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParams;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParams;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -26,6 +27,8 @@ import java.util.HashMap;
  */
 @WebServlet("/tasks")
 public class TaskListController extends HttpServlet {
+    private static final String TASK_LIST_PAGE = "/jsp/taskList.jsp";
+
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
     private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
@@ -44,11 +47,11 @@ public class TaskListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstants.TASKS_PARAM_NAME, taskService.findAll());
-        request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, getEmployeeNames());
-        request.setAttribute(ControllerConstants.PROJECTS_PARAM_NAME, getProjectNames());
-        request.setAttribute(ControllerConstants.STATUS_PARAM_NAME, TaskStatus.values());
-        request.getRequestDispatcher(ControllerConstants.TASK_LIST_PAGE).forward(request, response);
+        request.setAttribute(TaskFormParams.TASKS_PARAM.get(), taskService.findAll());
+        request.setAttribute(EmployeeFormParams.EMPLOYEES_PARAM.get(), getEmployeeNames());
+        request.setAttribute(ProjectFormParams.PROJECTS_PARAM.get(), getProjectNames());
+        request.setAttribute(TaskFormParams.STATUS_PARAM.get(), TaskStatus.values());
+        request.getRequestDispatcher(TASK_LIST_PAGE).forward(request, response);
     }
 
     /**

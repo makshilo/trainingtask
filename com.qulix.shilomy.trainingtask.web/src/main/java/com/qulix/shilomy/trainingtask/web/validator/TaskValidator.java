@@ -1,6 +1,8 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParams;
+import com.qulix.shilomy.trainingtask.web.controller.task.TaskFormParams;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 
 
@@ -75,20 +77,20 @@ public class TaskValidator {
     public static Map<String, String> isValid(HttpServletRequest request) {
         String page = request.getRequestURI();
         if (page.equals(EDIT_TASK)) {
-            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
+            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.EDIT_MODE.get());
         }
 
-        TaskStatus status = TaskStatus.of(request.getParameter(ControllerConstants.STATUS_PARAM_NAME));
-        String taskName = request.getParameter(ControllerConstants.TASK_NAME_PARAM);
-        String projectId = request.getParameter(ControllerConstants.PROJECT_PARAM_NAME);
-        String work = request.getParameter(ControllerConstants.WORK_PARAM_NAME);
-        String startYear = request.getParameter(ControllerConstants.START_YEAR_PARAM_NAME);
-        String startMonth = request.getParameter(ControllerConstants.START_MONTH_PARAM_NAME);
-        String startDay = request.getParameter(ControllerConstants.START_DAY_PARAM_NAME);
-        String endYear = request.getParameter(ControllerConstants.END_YEAR_PARAM_NAME);
-        String endMonth = request.getParameter(ControllerConstants.END_MONTH_PARAM_NAME);
-        String endDay = request.getParameter(ControllerConstants.END_DAY_PARAM_NAME);
-        String executorId = request.getParameter(ControllerConstants.EXECUTOR_PARAM_NAME);
+        TaskStatus status = TaskStatus.of(request.getParameter(TaskFormParams.STATUS_PARAM.get()));
+        String taskName = request.getParameter(TaskFormParams.TASK_NAME.get());
+        String projectId = request.getParameter(ProjectFormParams.PROJECT_PARAM.get());
+        String work = request.getParameter(TaskFormParams.WORK_PARAM.get());
+        String startYear = request.getParameter(TaskFormParams.START_YEAR_PARAM.get());
+        String startMonth = request.getParameter(TaskFormParams.START_MONTH_PARAM.get());
+        String startDay = request.getParameter(TaskFormParams.START_DAY_PARAM.get());
+        String endYear = request.getParameter(TaskFormParams.END_YEAR_PARAM.get());
+        String endMonth = request.getParameter(TaskFormParams.END_MONTH_PARAM.get());
+        String endDay = request.getParameter(TaskFormParams.END_DAY_PARAM.get());
+        String executorId = request.getParameter(TaskFormParams.EXECUTOR_PARAM.get());
 
         DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern(YEAR_FORMAT).withResolverStyle(ResolverStyle.STRICT);
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(DAY_FORMAT).withResolverStyle(ResolverStyle.STRICT);
@@ -96,55 +98,53 @@ public class TaskValidator {
 
         Map<String, String> errors = new HashMap<>();
 
-        if (taskName == null || taskName.equals(ControllerConstants.EMPTY_STRING)) {
+        if (taskName == null || taskName.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(NAME_NULL, TASK_NAME_NULL_MESSAGE);
         }
-        if (projectId == null || projectId.equals(ControllerConstants.EMPTY_STRING)) {
+        if (projectId == null || projectId.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(PROJECT_NULL, PROJECT_NULL_MESSAGE);
         }
-        if (work == null || work.equals(ControllerConstants.EMPTY_STRING)) {
+        if (work == null || work.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(WORK_NULL, WORK_NULL_MESSAGE);
-        }else if(!isInt(work)) {
+        } else if(!isInt(work)) {
             errors.put(WORK_NOT_INT, WORK_NOT_INTEGER_MESSAGE);
-        } else if (work.matches("^-[1-9]\\d*$")) {
+        } else if (Integer.parseInt(work) < 0) {
             errors.put(WORK_NEGATIVE, WORK_NEGATIVE_MESSAGE);
         }
-        if (startYear == null || startYear.equals(ControllerConstants.EMPTY_STRING)) {
+
+        if (startYear == null || startYear.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(START_YEAR_NULL, START_YEAR_NULL_MESSAGE);
         } else if (!DateValidator.isValid(yearFormatter, startYear)) {
             errors.put(START_YEAR_INVALID, INVALID_START_YEAR_MESSAGE);
-        }
-        if (startMonth == null || startMonth.equals(ControllerConstants.EMPTY_STRING)) {
+        } else if (startMonth == null || startMonth.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(START_MONTH_NULL, START_MONTH_NULL_MESSAGE);
-        }
-        if (startDay == null || startDay.equals(ControllerConstants.EMPTY_STRING)) {
+        } else if (startDay == null || startDay.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(START_DAY_NULL, START_DAY_NULL_MESSAGE);
         } else if (!DateValidator.isValid(dayFormatter, startDay)) {
             errors.put(START_DAY_INVALID, INVALID_START_DAY_MESSAGE);
-        } else if (!DateValidator.isValid(dateFormatter, startYear + ControllerConstants.MINUS_SIGN +
-                startMonth + ControllerConstants.MINUS_SIGN + startDay)) {
+        } else if (!DateValidator.isValid(dateFormatter, startYear + ControllerConstants.MINUS_SIGN.get() +
+                startMonth + ControllerConstants.MINUS_SIGN.get() + startDay)) {
             errors.put(START_DATE_INVALID, WRONG_START_DATE_MESSAGE);
         }
-        if (endYear == null || endYear.equals(ControllerConstants.EMPTY_STRING)) {
+
+        if (endYear == null || endYear.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(END_YEAR_NULL, END_YEAR_NULL_MESSAGE);
         } else if (!DateValidator.isValid(yearFormatter, endYear)) {
             errors.put(END_YEAR_INVALID, INVALID_END_YEAR_MESSAGE);
-        }
-        if (endMonth == null || endMonth.equals(ControllerConstants.EMPTY_STRING)) {
+        } else if (endMonth == null || endMonth.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(END_MONTH_NULL, END_MONTH_NULL_MESSAGE);
-        }
-        if (endDay == null || endDay.equals(ControllerConstants.EMPTY_STRING)) {
+        } else if (endDay == null || endDay.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(END_DAY_NULL, END_DAY_NULL_MESSAGE);
         } else if (!DateValidator.isValid(dayFormatter, endDay)) {
             errors.put(END_DAY_INVALID, INVALID_END_DAY_MESSAGE);
-        } else if (!DateValidator.isValid(dateFormatter, endYear + ControllerConstants.MINUS_SIGN +
-                endMonth + ControllerConstants.MINUS_SIGN + endDay)) {
+        } else if (!DateValidator.isValid(dateFormatter, endYear + ControllerConstants.MINUS_SIGN.get() +
+                endMonth + ControllerConstants.MINUS_SIGN.get() + endDay)) {
             errors.put(END_DATE_INVALID, WRONG_END_DATE_MESSAGE);
-        } else if (checkDateCollision(startYear + ControllerConstants.MINUS_SIGN + startMonth + ControllerConstants.MINUS_SIGN + startDay,
-                endYear + ControllerConstants.MINUS_SIGN + endMonth + ControllerConstants.MINUS_SIGN + endDay)) {
+        } else if (checkDateCollision(startYear + ControllerConstants.MINUS_SIGN.get() + startMonth + ControllerConstants.MINUS_SIGN.get() + startDay,
+                endYear + ControllerConstants.MINUS_SIGN.get() + endMonth + ControllerConstants.MINUS_SIGN.get() + endDay)) {
             errors.put(DATE_COLLISION, DATE_COLLISION_MESSAGE);
         }
-        if (executorId == null || executorId.equals(ControllerConstants.EMPTY_STRING)) {
+        if (executorId == null || executorId.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(EXECUTOR_NULL, EXECUTOR_NULL_MESSAGE);
         }
         if (status == null) {

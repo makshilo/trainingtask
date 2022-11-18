@@ -32,8 +32,8 @@ public class DeleteTaskController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long taskId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+        Long taskId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
         taskService.delete(taskId);
-        response.sendRedirect(ControllerConstants.COMMAND_TASK_LIST);
+        response.sendRedirect(ControllerConstants.TASK_LIST.get());
     }
 }

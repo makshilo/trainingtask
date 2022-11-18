@@ -1,6 +1,8 @@
 package com.qulix.shilomy.trainingtask.web.controller.task;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParams;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParams;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -46,11 +48,11 @@ public class EditTaskController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        TaskEntity task = taskService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME)));
-        request.setAttribute(ControllerConstants.TASK_PARAM_NAME, task);
-        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
+        TaskEntity task = taskService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get())));
+        request.setAttribute(TaskFormParams.TASK_PARAM.get(), task);
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.EDIT_MODE.get());
         fillPage(request);
-        request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+        request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -69,29 +71,29 @@ public class EditTaskController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Map<String, String> errors = TaskValidator.isValid(request);
         if (errors.isEmpty()) {
-            TaskStatus status = TaskStatus.of(request.getParameter(ControllerConstants.STATUS_PARAM_NAME));
-            String taskName = request.getParameter(ControllerConstants.TASK_NAME_PARAM);
-            String projectId = request.getParameter(ControllerConstants.PROJECT_PARAM_NAME);
-            String work = request.getParameter(ControllerConstants.WORK_PARAM_NAME);
-            String startYear = request.getParameter(ControllerConstants.START_YEAR_PARAM_NAME);
-            String startMonth = request.getParameter(ControllerConstants.START_MONTH_PARAM_NAME);
-            String startDay = request.getParameter(ControllerConstants.START_DAY_PARAM_NAME);
-            String endYear = request.getParameter(ControllerConstants.END_YEAR_PARAM_NAME);
-            String endMonth = request.getParameter(ControllerConstants.END_MONTH_PARAM_NAME);
-            String endDay = request.getParameter(ControllerConstants.END_DAY_PARAM_NAME);
-            String executorId = request.getParameter(ControllerConstants.EXECUTOR_PARAM_NAME);
-            Long id = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+            TaskStatus status = TaskStatus.of(request.getParameter(TaskFormParams.STATUS_PARAM.get()));
+            String taskName = request.getParameter(TaskFormParams.TASK_NAME.get());
+            String projectId = request.getParameter(ProjectFormParams.PROJECT_PARAM.get());
+            String work = request.getParameter(TaskFormParams.WORK_PARAM.get());
+            String startYear = request.getParameter(TaskFormParams.START_YEAR_PARAM.get());
+            String startMonth = request.getParameter(TaskFormParams.START_MONTH_PARAM.get());
+            String startDay = request.getParameter(TaskFormParams.START_DAY_PARAM.get());
+            String endYear = request.getParameter(TaskFormParams.END_YEAR_PARAM.get());
+            String endMonth = request.getParameter(TaskFormParams.END_MONTH_PARAM.get());
+            String endDay = request.getParameter(TaskFormParams.END_DAY_PARAM.get());
+            String executorId = request.getParameter(TaskFormParams.EXECUTOR_PARAM.get());
+            Long id = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
 
             Date startDate = Date.valueOf(startYear + ControllerConstants.MINUS_SIGN + startMonth + ControllerConstants.MINUS_SIGN + startDay);
             Date endDate = Date.valueOf(endYear + ControllerConstants.MINUS_SIGN + endMonth + ControllerConstants.MINUS_SIGN + endDay);
 
             TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId), id);
             taskService.update(newTask);
-            response.sendRedirect(ControllerConstants.COMMAND_TASK_LIST);
+            response.sendRedirect(ControllerConstants.TASK_LIST.get());
         } else {
             fillPage(request);
-            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
-            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE).forward(request, response);
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM.get(), errors);
+            request.getRequestDispatcher(ControllerConstants.EDIT_TASK_PAGE.get()).forward(request, response);
         }
 
     }
@@ -102,13 +104,13 @@ public class EditTaskController extends HttpServlet {
      * @param request объект {@link ServletRequest} который хранит запрос клиента, полученный от сервлета
      */
     public void fillPage(HttpServletRequest request) {
-        request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, employeeService.findAll());
-        request.setAttribute(ControllerConstants.PROJECTS_PARAM_NAME, projectService.findAll());
-        request.setAttribute(ControllerConstants.STATUS_PARAM_NAME, TaskStatus.values());
-        if (request.getParameter(ControllerConstants.PROJECT_LOCK_PARAM) != null) {
-            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.CURRENT_PROJECT_PARAM_NAME)));
-            request.setAttribute(ControllerConstants.PROJECT_LOCK_PARAM, true);
-            request.setAttribute(ControllerConstants.CURRENT_PROJECT_PARAM_NAME, currentProject);
+        request.setAttribute(EmployeeFormParams.EMPLOYEES_PARAM.get(), employeeService.findAll());
+        request.setAttribute(ProjectFormParams.PROJECTS_PARAM.get(), projectService.findAll());
+        request.setAttribute(TaskFormParams.STATUS_PARAM.get(), TaskStatus.values());
+        if (request.getParameter(ControllerConstants.PROJECT_LOCK_PARAM.get()) != null) {
+            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.CURRENT_PROJECT_PARAM.get())));
+            request.setAttribute(ControllerConstants.PROJECT_LOCK_PARAM.get(), true);
+            request.setAttribute(ControllerConstants.CURRENT_PROJECT_PARAM.get(), currentProject);
         }
     }
 }

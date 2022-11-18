@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParams;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -29,18 +30,18 @@ public class ProjectValidator {
     public static Map<String, String> isValid(HttpServletRequest request) {
         String page = request.getRequestURI();
         if (page.equals(EDIT_PROJECT)) {
-            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
+            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.EDIT_MODE.get());
         }
 
-        String projectName = request.getParameter(ControllerConstants.PROJECT_NAME_PARAM);
-        String description = request.getParameter(ControllerConstants.DESCRIPTION_PARAM_NAME);
+        String projectName = request.getParameter(ProjectFormParams.PROJECT_NAME_PARAM.get());
+        String description = request.getParameter(ProjectFormParams.DESCRIPTION_PARAM.get());
 
         Map<String, String> errors = new HashMap<>();
 
-        if (projectName == null || projectName.equals(ControllerConstants.EMPTY_STRING)) {
+        if (projectName == null || projectName.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(NAME_NULL, PROJECT_NAME_NULL_MESSAGE);
         }
-        if (description == null || description.equals(ControllerConstants.EMPTY_STRING)) {
+        if (description == null || description.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(DESCRIPTION_NULL, PROJECT_DESCRIPTION_NULL_MESSAGE);
         }
         return errors;

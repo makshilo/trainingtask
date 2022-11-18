@@ -1,6 +1,8 @@
 package com.qulix.shilomy.trainingtask.web.controller.project;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParams;
+import com.qulix.shilomy.trainingtask.web.controller.task.TaskFormParams;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -43,13 +45,13 @@ public class EditProjectController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProjectEntity project = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME)));
-        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
-        request.setAttribute(ControllerConstants.PROJECT_PARAM_NAME, project);
-        request.setAttribute(ControllerConstants.TASKS_PARAM_NAME,
+        ProjectEntity project = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get())));
+        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.EDIT_MODE.get());
+        request.setAttribute(ProjectFormParams.PROJECT_PARAM.get(), project);
+        request.setAttribute(TaskFormParams.TASKS_PARAM.get(),
                 TaskServiceImpl.getInstance(TaskDao.getInstance()).findByProject(project));
-        request.setAttribute(ControllerConstants.EMPLOYEES_PARAM_NAME, getEmployeeNames());
-        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
+        request.setAttribute(EmployeeFormParams.EMPLOYEES_PARAM.get(), getEmployeeNames());
+        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -60,7 +62,7 @@ public class EditProjectController extends HttpServlet {
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {
-            employeeNames.put(employee.getId(), employee.getLastName() + ControllerConstants.SPACE_SIGN + employee.getFirstName());
+            employeeNames.put(employee.getId(), employee.getLastName() + ControllerConstants.SPACE_SIGN.get() + employee.getFirstName());
         }
         return employeeNames;
     }
@@ -81,14 +83,14 @@ public class EditProjectController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Map<String, String> errors = ProjectValidator.isValid(request);
         if (errors.isEmpty()) {
-            String projectName = request.getParameter(ControllerConstants.PROJECT_NAME_PARAM);
-            String description = request.getParameter(ControllerConstants.DESCRIPTION_PARAM_NAME);
-            Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+            String projectName = request.getParameter(ProjectFormParams.PROJECT_NAME_PARAM.get());
+            String description = request.getParameter(ProjectFormParams.DESCRIPTION_PARAM.get());
+            Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
             projectService.update(new ProjectEntity(projectName, description, projectId));
-            response.sendRedirect(ControllerConstants.COMMAND_PROJECT_LIST);
+            response.sendRedirect(ControllerConstants.PROJECT_LIST.get());
         } else {
-            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM, errors);
-            request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE).forward(request, response);
+            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM.get(), errors);
+            request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE.get()).forward(request, response);
         }
     }
 }

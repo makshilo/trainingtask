@@ -19,8 +19,6 @@ import java.io.IOException;
 public class DeleteEmployeeController extends HttpServlet {
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
-    private static final String COMMAND_EMPLOYEE_LIST = "/employees";
-
     /**
      * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,
      * а потом перенаправляет на страницу со списком сотрудников.
@@ -34,8 +32,8 @@ public class DeleteEmployeeController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long employeeId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM_NAME));
+        Long employeeId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
         employeeService.delete(employeeId);
-        response.sendRedirect(COMMAND_EMPLOYEE_LIST);
+        response.sendRedirect(ControllerConstants.EMPLOYEE_LIST.get());
     }
 }

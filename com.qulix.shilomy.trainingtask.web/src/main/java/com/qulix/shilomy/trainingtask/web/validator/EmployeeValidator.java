@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
 import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParams;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -34,26 +35,26 @@ public class EmployeeValidator {
     public static Map<String, String> isValid(HttpServletRequest request) {
         String page = request.getRequestURI();
         if (page.equals(EDIT_EMPLOYEE)) {
-            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME, ControllerConstants.EDIT_MODE);
+            request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.EDIT_MODE.get());
         }
 
-        String firstName = request.getParameter(ControllerConstants.FIRST_NAME_PARAM_NAME);
-        String lastName = request.getParameter(ControllerConstants.LAST_NAME_PARAM_NAME);
-        String patronymic = request.getParameter(ControllerConstants.PATRONYMIC_PARAM_NAME);
-        String position = request.getParameter(ControllerConstants.POSITION_PARAM_NAME);
+        String firstName = request.getParameter(EmployeeFormParams.EMPLOYEE_FIRST_NAME.get());
+        String lastName = request.getParameter(EmployeeFormParams.EMPLOYEE_LAST_NAME.get());
+        String patronymic = request.getParameter(EmployeeFormParams.PATRONYMIC_PARAM.get());
+        String position = request.getParameter(EmployeeFormParams.POSITION_PARAM.get());
 
         Map<String, String> errors = new HashMap<>();
 
-        if (firstName == null || firstName.equals(ControllerConstants.EMPTY_STRING)) {
+        if (firstName == null || firstName.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(FIRST_NAME_NULL, FIRST_NAME_NULL_MESSAGE);
         }
-        if (lastName == null || lastName.equals(ControllerConstants.EMPTY_STRING)) {
+        if (lastName == null || lastName.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(LAST_NAME_NULL, LAST_NAME_NULL_MESSAGE);
         }
-        if (patronymic == null || patronymic.equals(ControllerConstants.EMPTY_STRING)) {
+        if (patronymic == null || patronymic.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(PATRONYMIC_NULL, PATRONYMIC_NULL_MESSAGE);
         }
-        if (position == null || position.equals(ControllerConstants.EMPTY_STRING)) {
+        if (position == null || position.equals(ControllerConstants.EMPTY_STRING.get())) {
             errors.put(POSITION_NULL, POSITION_NULL_MESSAGE);
         }
 
