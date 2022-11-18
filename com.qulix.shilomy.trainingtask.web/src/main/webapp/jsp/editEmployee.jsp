@@ -15,7 +15,6 @@
     <a class="home-button" href=".."></a>
 </header>
 <a class="button" href="${pageContext.request.contextPath}/employees">Отмена</a><br>
-<h1>Страница изменения сотрудника</h1>
 
 <c:set scope="request" var="id" value="${requestScope.employee.id}"/>
 
