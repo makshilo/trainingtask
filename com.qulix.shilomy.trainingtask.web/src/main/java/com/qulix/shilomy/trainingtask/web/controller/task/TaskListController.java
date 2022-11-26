@@ -1,7 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParams;
-import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParams;
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -47,10 +46,10 @@ public class TaskListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(TaskFormParams.TASKS_PARAM.get(), taskService.findAll());
-        request.setAttribute(EmployeeFormParams.EMPLOYEES_PARAM.get(), getEmployeeNames());
-        request.setAttribute(ProjectFormParams.PROJECTS_PARAM.get(), getProjectNames());
-        request.setAttribute(TaskFormParams.STATUS_PARAM.get(), TaskStatus.values());
+        request.setAttribute(ControllerConstant.TASKS_PARAM.get(), taskService.findAll());
+        request.setAttribute(ControllerConstant.EMPLOYEES_PARAM.get(), getEmployeeNames());
+        request.setAttribute(ControllerConstant.PROJECTS_PARAM.get(), getProjectNames());
+        request.setAttribute(TaskFormParam.STATUS_PARAM.get(), TaskStatus.values());
         request.getRequestDispatcher(TASK_LIST_PAGE).forward(request, response);
     }
 

@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
@@ -32,8 +32,8 @@ public class DeleteTaskController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long taskId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
+        Long taskId = Long.parseLong(request.getParameter(ControllerConstant.ID_PARAM.get()));
         taskService.delete(taskId);
-        response.sendRedirect(ControllerConstants.TASK_LIST.get());
+        response.sendRedirect(ControllerConstant.TASK_LIST.get());
     }
 }

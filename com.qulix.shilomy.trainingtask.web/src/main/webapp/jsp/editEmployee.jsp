@@ -28,7 +28,7 @@
 
     <input maxlength="50" type="text" id="firstName" name="firstName" value="${fn:escapeXml(firstName)}">
 
-    <c:out value="${requestScope.errorMessages.get('firstNameNull')}"/><br><br>
+    ${requestScope.firstNameError}<br><br>
 
     <label for="lastName">Фамилия:</label><br>
 
@@ -36,7 +36,7 @@
 
     <input maxlength="50" type="text" id="lastName" name="lastName" value="${fn:escapeXml(lastName)}">
 
-    <c:out value="${requestScope.errorMessages.get('lastNameNull')}"/><br><br>
+    ${requestScope.lastNameError}<br><br>
 
     <label for="patronymic">Отчество:</label><br>
 
@@ -44,7 +44,7 @@
 
     <input maxlength="50" type="text" id="patronymic" name="patronymic" value="${fn:escapeXml(patronymic)}">
 
-    <c:out value="${requestScope.errorMessages.get('patronymicNull')}"/><br><br>
+    ${requestScope.patronymicError}<br><br>
 
     <label for="position">Должность:</label><br>
 
@@ -52,7 +52,7 @@
 
     <input maxlength="50" type="text" id="position" name="position" value="${fn:escapeXml(position)}">
 
-    <c:out value="${requestScope.errorMessages.get('positionNull')}"/><br><br>
+    ${requestScope.positionError}<br><br>
 
     <input type="submit" value="Сохранить">
 </form>

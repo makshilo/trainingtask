@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.employee;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
@@ -32,8 +32,8 @@ public class DeleteEmployeeController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long employeeId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
+        Long employeeId = Long.parseLong(request.getParameter(ControllerConstant.ID_PARAM.get()));
         employeeService.delete(employeeId);
-        response.sendRedirect(ControllerConstants.EMPLOYEE_LIST.get());
+        response.sendRedirect(ControllerConstant.EMPLOYEE_LIST.get());
     }
 }

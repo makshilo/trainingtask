@@ -30,7 +30,7 @@
 
     <input maxlength="100" type="text" id="projectName" name="projectName" value="${fn:escapeXml(projectName)}">
 
-    <c:out value="${requestScope.errorMessages.get('nameNull')}"/><br><br>
+    ${requestScope.projectNameError}<br><br>
 
     <label for="description">Описание:</label><br>
 
@@ -38,7 +38,7 @@
 
     <textarea maxlength="1000" id="description" name="description" rows="4" cols="50">${fn:escapeXml(description)}</textarea>
 
-    <c:out value="${requestScope.errorMessages.get('descriptionNull')}"/><br><br>
+    ${requestScope.descriptionError}<br><br>
 
     <input type="submit" value="Сохранить">
 </form>

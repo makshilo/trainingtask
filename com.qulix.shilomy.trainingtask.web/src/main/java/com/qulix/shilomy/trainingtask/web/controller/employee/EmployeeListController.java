@@ -1,5 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.employee;
 
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
@@ -34,7 +35,7 @@ public class EmployeeListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(EmployeeFormParams.EMPLOYEES_PARAM.get(), employeeService.findAll());
+        request.setAttribute(ControllerConstant.EMPLOYEES_PARAM.get(), employeeService.findAll());
         request.getRequestDispatcher(EMPLOYEES_PAGE).forward(request, response);
     }
 }

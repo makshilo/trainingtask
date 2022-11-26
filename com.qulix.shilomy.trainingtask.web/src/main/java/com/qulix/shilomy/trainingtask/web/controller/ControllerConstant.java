@@ -3,7 +3,14 @@ package com.qulix.shilomy.trainingtask.web.controller;
 /**
  * Класс который хранит константы для использования в пакете контроллеров
  */
-public enum ControllerConstants {
+public enum ControllerConstant {
+    PROJECT_PARAM("project"),
+    PROJECTS_PARAM("projects"),
+    EMPLOYEE_PARAM("employee"),
+    EMPLOYEES_PARAM("employees"),
+    TASK_PARAM("task"),
+    TASKS_PARAM("tasks"),
+
     //Общие константы
     MINUS_SIGN("-"),
     SPACE_SIGN(" "),
@@ -23,11 +30,11 @@ public enum ControllerConstants {
     TASK_LIST("/tasks"),
     EDIT_TASK_PAGE("/jsp/editTask.jsp"),
 
-    ERROR_MESSAGES_PARAM("errorMessages");
+    ERROR_MESSAGES_PARAM("Error");
 
     private final String param;
 
-    ControllerConstants(String controllerParam) {
+    ControllerConstant(String controllerParam) {
         this.param = controllerParam;
     }
 

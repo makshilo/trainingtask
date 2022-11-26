@@ -1,8 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.project;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParams;
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskFormParams;
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию проекта.
@@ -45,13 +42,13 @@ public class EditProjectController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ProjectEntity project = projectService.get(Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get())));
-        request.setAttribute(ControllerConstants.PAGE_MODE_PARAM_NAME.get(), ControllerConstants.EDIT_MODE.get());
-        request.setAttribute(ProjectFormParams.PROJECT_PARAM.get(), project);
-        request.setAttribute(TaskFormParams.TASKS_PARAM.get(),
+        ProjectEntity project = projectService.get(Long.parseLong(request.getParameter(ControllerConstant.ID_PARAM.get())));
+        request.setAttribute(ControllerConstant.PAGE_MODE_PARAM_NAME.get(), ControllerConstant.EDIT_MODE.get());
+        request.setAttribute(ControllerConstant.PROJECT_PARAM.get(), project);
+        request.setAttribute(ControllerConstant.TASKS_PARAM.get(),
                 TaskServiceImpl.getInstance(TaskDao.getInstance()).findByProject(project));
-        request.setAttribute(EmployeeFormParams.EMPLOYEES_PARAM.get(), getEmployeeNames());
-        request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE.get()).forward(request, response);
+        request.setAttribute(ControllerConstant.EMPLOYEES_PARAM.get(), getEmployeeNames());
+        request.getRequestDispatcher(ControllerConstant.EDIT_PROJECT_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -62,7 +59,7 @@ public class EditProjectController extends HttpServlet {
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {
-            employeeNames.put(employee.getId(), employee.getLastName() + ControllerConstants.SPACE_SIGN.get() + employee.getFirstName());
+            employeeNames.put(employee.getId(), employee.getLastName() + ControllerConstant.SPACE_SIGN.get() + employee.getFirstName());
         }
         return employeeNames;
     }
@@ -81,16 +78,14 @@ public class EditProjectController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        Map<String, String> errors = ProjectValidator.isValid(request);
-        if (errors.isEmpty()) {
-            String projectName = request.getParameter(ProjectFormParams.PROJECT_NAME_PARAM.get());
-            String description = request.getParameter(ProjectFormParams.DESCRIPTION_PARAM.get());
-            Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
+        if (ProjectValidator.validate(request)) {
+            String projectName = request.getParameter(ProjectFormParam.PROJECT_NAME_PARAM.get());
+            String description = request.getParameter(ProjectFormParam.DESCRIPTION_PARAM.get());
+            Long projectId = Long.parseLong(request.getParameter(ControllerConstant.ID_PARAM.get()));
             projectService.update(new ProjectEntity(projectName, description, projectId));
-            response.sendRedirect(ControllerConstants.PROJECT_LIST.get());
+            response.sendRedirect(ControllerConstant.PROJECT_LIST.get());
         } else {
-            request.setAttribute(ControllerConstants.ERROR_MESSAGES_PARAM.get(), errors);
-            request.getRequestDispatcher(ControllerConstants.EDIT_PROJECT_PAGE.get()).forward(request, response);
+            request.getRequestDispatcher(ControllerConstant.EDIT_PROJECT_PAGE.get()).forward(request, response);
         }
     }
 }

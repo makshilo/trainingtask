@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.controller.project;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstants;
+import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
@@ -32,8 +32,8 @@ public class DeleteProjectController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long projectId = Long.parseLong(request.getParameter(ControllerConstants.ID_PARAM.get()));
+        Long projectId = Long.parseLong(request.getParameter(ControllerConstant.ID_PARAM.get()));
         projectService.delete(projectId);
-        response.sendRedirect(ControllerConstants.PROJECT_LIST.get());
+        response.sendRedirect(ControllerConstant.PROJECT_LIST.get());
     }
 }

@@ -28,7 +28,7 @@
 
     <input maxlength="50" type="text" id="taskName" name="taskName" value="${fn:escapeXml(taskName)}">
 
-    <c:out value="${requestScope.errorMessages.get('nameNull')}"/><br><br>
+    ${requestScope.taskNameError}<br><br>
 
     <label for="project">Наименование проекта:</label><br>
 
@@ -51,9 +51,7 @@
                 </c:forEach>
             </select>
         </c:otherwise>
-    </c:choose>
-
-    <c:out value="${requestScope.errorMessages.get('projectNull')}"/><br><br>
+    </c:choose><br><br>
 
     <label for="work">Работа:</label><br>
 
@@ -61,9 +59,7 @@
 
     <input style="width: 100px;" type="text" id="work" name="work" value="${fn:escapeXml(work)}">
 
-    <c:out value="${requestScope.errorMessages.get('workNull')}"/>
-    <c:out value="${requestScope.errorMessages.get('workNotInt')}"/>
-    <c:out value="${requestScope.errorMessages.get('workNegative')}"/><br><br>
+    ${requestScope.workError}<br><br>
 
     <label>Дата начала</label><br>
 
@@ -84,8 +80,7 @@
 
     <input style="width: 100px;" value="${fn:escapeXml(startYear)}" type="text" id="startYear" name="startYear">
 
-    <c:out value="${requestScope.errorMessages.get('startYearNull')}"/>
-    <c:out value="${requestScope.errorMessages.get('startYearInvalid')}"/>
+    ${requestScope.startYearError}
 
     <label for="startMonth">Месяц:</label>
 
@@ -104,15 +99,14 @@
         <option <c:if test="${startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
 
-    <c:out value="${requestScope.errorMessages.get('startMonthNull')}"/>
+    ${requestScope.startMonthError}
 
     <label for="startDay">День:</label>
 
     <input style="width: 100px;" value="${fn:escapeXml(startDay)}" type="text" id="startDay" name="startDay">
 
-    <c:out value="${requestScope.errorMessages.get('startDayNull')}"/>
-    <c:out value="${requestScope.errorMessages.get('startDayInvalid')}"/>
-    <c:out value="${requestScope.errorMessages.get('startDateInvalid')}"/><br><br>
+    ${requestScope.startDayError}
+    ${requestScope.startDateError}<br><br>
 
     <label>Дата окончания</label><br>
 
@@ -133,8 +127,7 @@
 
     <input style="width: 100px;" value="${fn:escapeXml(endYear)}" type="text" id="endYear" name="endYear">
 
-    <c:out value="${requestScope.errorMessages.get('endYearNull')}"/>
-    <c:out value="${requestScope.errorMessages.get('endYearInvalid')}"/>
+    ${requestScope.endYearError}
 
     <label for="endMonth">Месяц:</label>
 
@@ -153,16 +146,15 @@
         <option <c:if test="${endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
 
-    <c:out value="${requestScope.errorMessages.get('endMonthNull')}"/>
+    ${requestScope.endMonthError}
 
     <label for="endDay">День:</label>
 
     <input style="width: 100px;" value="${fn:escapeXml(endDay)}" type="text" id="endDay" name="endDay">
 
-    <c:out value="${requestScope.errorMessages.get('endDayNull')}"/>
-    <c:out value="${requestScope.errorMessages.get('endDayInvalid')}"/><br><br>
-    <c:out value="${requestScope.errorMessages.get('endDateInvalid')}"/>
-    <c:out value="${requestScope.errorMessages.get('dateCollision')}"/>
+    ${requestScope.endDayError}<br><br>
+    ${requestScope.endDateError}
+    ${requestScope.dateCollisionError}<br><br>
 
     <label for="status">Статус:</label><br>
 
@@ -174,9 +166,7 @@
                     ${status.getStatus()}
             </option>
         </c:forEach>
-    </select>
-
-    <c:out value="${requestScope.errorMessages.get('statusNull')}"/><br><br>
+    </select><br><br>
 
     <label for="executor">Исполнитель:</label><br>
 
@@ -191,11 +181,7 @@
                     ${employee.patronymic}
             </option>
         </c:forEach>
-    </select>
-
-    <c:out value="${requestScope.errorMessages.get('executorNull')}"/><br><br>
-
-    <a style="margin-left: 10px"><c:out value="${requestScope.validationError}"/></a><br><br>
+    </select><br><br>
 
     <input type="submit" value="Сохранить">
 </form>
