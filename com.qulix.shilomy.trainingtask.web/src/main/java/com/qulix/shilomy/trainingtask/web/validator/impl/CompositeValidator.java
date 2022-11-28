@@ -27,7 +27,7 @@ public class CompositeValidator implements Validator {
     public void add(Validator validator) {
         this.validators.add(validator);
     }
-    
+
     public void clear() {
         validators.clear();
     }

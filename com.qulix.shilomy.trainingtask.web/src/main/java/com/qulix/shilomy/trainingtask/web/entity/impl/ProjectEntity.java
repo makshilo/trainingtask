@@ -94,10 +94,11 @@ public class ProjectEntity implements Entity {
      */
     @Override
     public String toString() {
-        return "ProjectEntity{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                '}';
+        final StringBuilder sb = new StringBuilder("ProjectEntity{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -77,8 +77,8 @@ public class CreateTaskController extends HttpServlet {
             String endDay = request.getParameter(TaskFormParam.END_DAY_PARAM.get());
             String executorId = request.getParameter(TaskFormParam.EXECUTOR_PARAM.get());
 
-            Date startDate = Date.valueOf(startYear + ControllerConstant.MINUS_SIGN.get() + startMonth + ControllerConstant.MINUS_SIGN.get() + startDay);
-            Date endDate = Date.valueOf(endYear + ControllerConstant.MINUS_SIGN.get() + endMonth + ControllerConstant.MINUS_SIGN.get() + endDay);
+            Date startDate = Date.valueOf(String.join(ControllerConstant.MINUS_SIGN.get(), startYear, startMonth, startDay));
+            Date endDate = Date.valueOf(String.join(ControllerConstant.MINUS_SIGN.get(), endYear, endMonth, endDay));
 
             TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId));
 

@@ -124,12 +124,13 @@ public class EmployeeEntity implements Entity {
      */
     @Override
     public String toString() {
-        return "EmployeeEntity{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", position='" + position + '\'' +
-                ", id=" + id +
-                '}';
+        final StringBuilder sb = new StringBuilder("EmployeeEntity{");
+        sb.append("firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", patronymic='").append(patronymic).append('\'');
+        sb.append(", position='").append(position).append('\'');
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
     }
 }

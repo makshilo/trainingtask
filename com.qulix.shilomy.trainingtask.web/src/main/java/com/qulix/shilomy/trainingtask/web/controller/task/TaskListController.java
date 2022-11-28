@@ -61,7 +61,8 @@ public class TaskListController extends HttpServlet {
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {
-            employeeNames.put(employee.getId(), employee.getLastName() + " " + employee.getFirstName());
+            employeeNames.put(employee.getId(), String.join(ControllerConstant.SPACE_SIGN.get(),
+                    employee.getLastName(), employee.getFirstName()));
         }
         return employeeNames;
     }

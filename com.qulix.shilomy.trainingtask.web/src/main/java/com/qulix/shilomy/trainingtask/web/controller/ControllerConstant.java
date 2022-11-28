@@ -14,7 +14,6 @@ public enum ControllerConstant {
     //Общие константы
     MINUS_SIGN("-"),
     SPACE_SIGN(" "),
-    EMPTY_STRING(""),
     ID_PARAM("id"),
     PAGE_MODE_PARAM_NAME("pageMode"),
     CREATE_MODE("create"),

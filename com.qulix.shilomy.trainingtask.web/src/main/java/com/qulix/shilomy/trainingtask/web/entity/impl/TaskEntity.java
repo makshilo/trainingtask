@@ -171,15 +171,16 @@ public class TaskEntity implements Entity {
      */
     @Override
     public String toString() {
-        return "TaskEntity{" +
-                "status=" + status +
-                ", name='" + name + '\'' +
-                ", projectId=" + projectId +
-                ", work='" + work + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", executorId=" + executorId +
-                ", id=" + id +
-                '}';
+        final StringBuilder sb = new StringBuilder("TaskEntity{");
+        sb.append("status=").append(status);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", projectId=").append(projectId);
+        sb.append(", work='").append(work).append('\'');
+        sb.append(", startDate=").append(startDate);
+        sb.append(", endDate=").append(endDate);
+        sb.append(", executorId=").append(executorId);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
     }
 }
