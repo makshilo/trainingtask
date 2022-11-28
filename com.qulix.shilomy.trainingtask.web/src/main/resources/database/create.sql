@@ -9,7 +9,6 @@ CREATE SCHEMA trainingtaskdb
         patronymic  VARCHAR(50),
         employee_position    VARCHAR(50) NOT NULL,
         id          INTEGER identity,
-        unique_hash VARCHAR(200),
         PRIMARY KEY (id)
     )
 
@@ -19,7 +18,6 @@ CREATE SCHEMA trainingtaskdb
         project_name        VARCHAR(100) NOT NULL,
         description VARCHAR(1000),
         id          INTEGER identity,
-        unique_hash VARCHAR(1100),
         PRIMARY KEY (id)
     )
 
@@ -34,7 +32,6 @@ CREATE SCHEMA trainingtaskdb
         end_date    DATE,
         executor INTEGER, -- идентификатор работника
         id          INTEGER identity,
-        unique_hash VARCHAR(70),
         PRIMARY KEY (id),
         CONSTRAINT task_list_employee_list_employee_id_fk
             FOREIGN KEY (executor) REFERENCES trainingtaskdb.employee_list -- ключ получения идентификатора работника

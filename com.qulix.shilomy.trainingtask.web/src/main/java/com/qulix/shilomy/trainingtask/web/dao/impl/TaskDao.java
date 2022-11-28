@@ -1,62 +1,42 @@
 package com.qulix.shilomy.trainingtask.web.dao.impl;
 
-import com.qulix.shilomy.trainingtask.web.dao.CommonDao;
 import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.web.db.ConnectionService;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static java.sql.Types.INTEGER;
 
 /**
- * Класс реализация объекта доступа к данным для сущности задачи.
+ * Реализация объекта доступа к данным для задачи.
  */
-public class TaskDao extends CommonDao<TaskEntity> implements EntityDao<TaskEntity> {
+public class TaskDao implements EntityDao<TaskEntity> {
     private static TaskDao instance;
+    protected ConnectionService connectionService = ConnectionService.getInstance();
+    private final Logger logger = Logger.getLogger(TaskDao.class.getName());
+    private static final String TABLE_NAME = "trainingtaskdb.task_list";
+    private static final List<String> COLUMNS = Arrays.asList("status", "task_name", "project", "task_work", "start_date", "end_date", "executor");
+    private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
+    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size()+1, "?"));
+    private static final String SQL_INSERT = String.format("INSERT INTO %s VALUES(%s)", TABLE_NAME, placeholders);
+    private static final String SQL_SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
+    private static final String SQL_SELECT_BY_ID = String.format("SELECT * FROM %s WHERE id=?", TABLE_NAME);
+    private static final String SQL_UPDATE = String.format("UPDATE %s SET %s WHERE id=?", TABLE_NAME, String.join(", ", fields));
+    private static final String SQL_DELETE_BY_ID = String.format("DELETE FROM %s WHERE id=?", TABLE_NAME);
 
-    private static final String TASK_TABLE_NAME = "trainingtaskdb.task_list";
-    private static final String TASK_NAME_COLUMN = "task_name";
-    private static final String TASK_PROJECT_ID_COLUMN = "project";
-    private static final String TASK_WORK_COLUMN = "task_work";
-    private static final String TASK_START_DATE_COLUMN = "start_date";
-    private static final String TASK_END_DATE_COLUMN = "end_date";
-    private static final String TASK_STATUS_COLUMN = "status";
-    private static final String TASK_EXECUTOR_ID_COLUMN = "executor";
-    private static final String TASK_ID = "id";
-    private static final String TASK_UNIQUE_HASH = "unique_hash";
-
-
-    private static final Logger LOGGER = Logger.getLogger(TaskDao.class.getName());
-
-    private static final List<String> FIELDS = Arrays.asList(
-            TASK_ID,
-            TASK_NAME_COLUMN,
-            TASK_PROJECT_ID_COLUMN,
-            TASK_WORK_COLUMN,
-            TASK_START_DATE_COLUMN,
-            TASK_END_DATE_COLUMN,
-            TASK_STATUS_COLUMN,
-            TASK_EXECUTOR_ID_COLUMN,
-            TASK_UNIQUE_HASH);
-
-    /**
-     * Защищённый конструктор по умолчанию.
-     */
     protected TaskDao() {
-        super(LOGGER);
+        
     }
 
-    /**
-     * Метод получения объекта класса.
-     * @return объект MethodTaskDao
-     */
     public static synchronized TaskDao getInstance() {
         if (instance == null) {
             instance = new TaskDao();
@@ -65,128 +45,128 @@ public class TaskDao extends CommonDao<TaskEntity> implements EntityDao<TaskEnti
     }
 
     /**
-     * Метод получения имени таблицы.
-     * @return TASK_TABLE_NAME
+     * Создание задачи
+     * @param entity сущность для создания
      */
     @Override
-    protected String getTableName() {
-        return TASK_TABLE_NAME;
+    public void create(TaskEntity entity) {
+        logger.log(Level.INFO, "creating task");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
+            statement.setString(1, entity.getStatus().name());
+            statement.setString(2, entity.getName());
+            statement.setLong(3, entity.getProjectId());
+            statement.setString(4, entity.getWork());
+            statement.setDate(5, entity.getStartDate());
+            statement.setDate(6, entity.getEndDate());
+            statement.setLong(7, entity.getExecutorId());
+            statement.setNull(8, INTEGER);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while creating task", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Метод получения имени поля идентификатора.
-     * @return TASK_ID
+     * Поиск задачи
+     * @param id идентификатор
+     * @return найденная задача
      */
     @Override
-    protected String getIdFieldName() {
-        return TASK_ID;
+    public TaskEntity read(Long id) {
+        logger.log(Level.INFO, "searching task");
+        TaskEntity entity = null;
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                entity = new TaskEntity(
+                        TaskStatus.of(resultSet.getString(1)),
+                        resultSet.getString(2),
+                        resultSet.getLong(3),
+                        resultSet.getString(4),
+                        resultSet.getDate(5),
+                        resultSet.getDate(6),
+                        resultSet.getLong(7),
+                        id);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while searching task", e);
+            throw new RuntimeException(e);
+        }
+        return entity;
     }
 
     /**
-     * Метод получения уникального поля.
-     * @return TASK_UNIQUE_HASH
+     * Поиск всех задач
+     * @return список найденных задач
      */
     @Override
-    protected String getUniqueFieldName() {
-        return TASK_UNIQUE_HASH;
+    public List<TaskEntity> readAll() {
+        logger.log(Level.INFO, "searching all tasks");
+        List<TaskEntity> entities = new ArrayList<>();
+        try (Connection connection = connectionService.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL);
+            while (resultSet.next()) {
+                entities.add(new TaskEntity(
+                        TaskStatus.of(resultSet.getString(1)),
+                        resultSet.getString(2),
+                        resultSet.getLong(3),
+                        resultSet.getString(4),
+                        resultSet.getDate(5),
+                        resultSet.getDate(6),
+                        resultSet.getLong(7),
+                        resultSet.getLong(8))
+                );
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while searching all tasks", e);
+            throw new RuntimeException(e);
+        }
+        return entities;
     }
 
     /**
-     * Метод получения списка полей.
-     * @return FIELDS
+     * Обновление задачи
+     * @param entity задача для обновления
      */
     @Override
-    protected List<String> getFields() {
-        return FIELDS;
+    public void update(TaskEntity entity) {
+        logger.log(Level.INFO, "updating task");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+            statement.setString(1, entity.getStatus().name());
+            statement.setString(2, entity.getName());
+            statement.setLong(3, entity.getProjectId());
+            statement.setString(4, entity.getWork());
+            statement.setDate(5, entity.getStartDate());
+            statement.setDate(6, entity.getEndDate());
+            statement.setLong(7, entity.getExecutorId());
+            statement.setLong(8, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while updating task", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Метод заполнения сущности.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
+     * Удаление задачи по идентификатору
+     * @param id идентификатор
      */
     @Override
-    protected void fillEntity(PreparedStatement statement, TaskEntity entity) throws SQLException {
-        fillFields(statement, entity);
-    }
-
-    /**
-     * Метод обновления сущности.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected void updateEntity(PreparedStatement statement, TaskEntity entity) throws SQLException {
-        fillFields(statement, entity);
-        statement.setLong(1, entity.getId());
-        statement.setLong(10, entity.getId());
-    }
-
-    /**
-     * Метод заполнения уникального поля.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected void fillUniqueField(PreparedStatement statement, TaskEntity entity) throws SQLException {
-        statement.setString(1, composeHashCode(entity));
-    }
-
-    /**
-     * Метод заполнения результрирующего множества.
-     * @param resultSet результирующее множество
-     * @return сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected TaskEntity extractResultSet(ResultSet resultSet) throws SQLException {
-        return new TaskEntity(
-                TaskStatus.of(resultSet.getString(TASK_STATUS_COLUMN)),
-                resultSet.getString(TASK_NAME_COLUMN),
-                resultSet.getLong(TASK_PROJECT_ID_COLUMN),
-                resultSet.getString(TASK_WORK_COLUMN),
-                resultSet.getDate(TASK_START_DATE_COLUMN),
-                resultSet.getDate(TASK_END_DATE_COLUMN),
-                resultSet.getLong(TASK_EXECUTOR_ID_COLUMN),
-                resultSet.getLong(TASK_ID));
-    }
-
-    /**
-     * Метод получения задачи по проекту.
-     * @param project проект который содержит задачу.
-     * @return задачи принадлежащие проекту
-     */
-    public List<TaskEntity> receiveTaskByProject(ProjectEntity project) {
-        return receiveEntitiesByParam(TASK_PROJECT_ID_COLUMN, project.getId());
-    }
-
-    /**
-     * Метод заполнения полей.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    private void fillFields(PreparedStatement statement, TaskEntity entity) throws SQLException {
-        statement.setNull(1, INTEGER);
-        statement.setString(2, entity.getName());
-        statement.setLong(3, entity.getProjectId());
-        statement.setString(4, entity.getWork());
-        statement.setDate(5, entity.getStartDate());
-        statement.setDate(6, entity.getEndDate());
-        statement.setString(7, entity.getStatus().name());
-        statement.setLong(8, entity.getExecutorId());
-        statement.setString(9, composeHashCode(entity));
-    }
-
-    /**
-     * Метод создания уникальной строки для работника
-     * @param taskEntity сущность работника
-     * @return уникальная строка
-     */
-    private String composeHashCode(TaskEntity taskEntity) {
-        return taskEntity.getName() + taskEntity.getExecutorId() + taskEntity.getStartDate() + taskEntity.getEndDate();
+    public void delete(Long id) {
+        logger.log(Level.INFO, "deleting task");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while deleting task", e);
+            throw new RuntimeException(e);
+        }
     }
 }

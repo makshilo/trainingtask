@@ -1,158 +1,149 @@
 package com.qulix.shilomy.trainingtask.web.dao.impl;
 
-import com.qulix.shilomy.trainingtask.web.dao.CommonDao;
 import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
+import com.qulix.shilomy.trainingtask.web.db.ConnectionService;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.util.stream.Collectors;
 import static java.sql.Types.INTEGER;
 
 /**
- * Класс реализация объекта доступа к данным для сущности проекта.
+ * Реализация объекта доступа к данным для проекта
  */
-public class ProjectDao extends CommonDao<ProjectEntity> implements EntityDao<ProjectEntity> {
+public class ProjectDao implements EntityDao<ProjectEntity> {
     private static ProjectDao instance;
-    private static final String PROJECT_TABLE_NAME = "trainingtaskdb.project_list";
-    private static final String PROJECT_NAME_COLUMN = "project_name";
-    private static final String PROJECT_DESCRIPTION = "description";
-    private static final String PROJECT_ID_COLUMN = "id";
+    protected ConnectionService connectionService = ConnectionService.getInstance();
+    private final Logger logger = Logger.getLogger(TaskDao.class.getName());
+    private static final String TABLE_NAME = "trainingtaskdb.project_list";
+    private static final List<String> COLUMNS = Arrays.asList("project_name", "description");
+    private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
+    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size()+1, "?"));
+    private static final String SQL_INSERT = String.format("INSERT INTO %s VALUES(%s)", TABLE_NAME, placeholders);
+    private static final String SQL_SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
+    private static final String SQL_SELECT_BY_ID = String.format("SELECT * FROM %s WHERE id=?", TABLE_NAME);
+    private static final String SQL_UPDATE = String.format("UPDATE %s SET %s WHERE id=?", TABLE_NAME, String.join(", ", fields));
+    private static final String SQL_DELETE_BY_ID = String.format("DELETE FROM %s WHERE id=?", TABLE_NAME);
 
-    private static final String PROJECT_UNIQUE_HASH = "unique_hash";
-
-    private static final Logger LOGGER = Logger.getLogger(ProjectDao.class.getName());
-
-    private static final List<String> FIELDS = Arrays.asList(
-            PROJECT_ID_COLUMN,
-            PROJECT_NAME_COLUMN,
-            PROJECT_DESCRIPTION,
-            PROJECT_UNIQUE_HASH);
-
-    /**
-     * Защищённый конструктор по умолчанию.
-     */
-    protected ProjectDao() {
-        super(LOGGER);
-    }
-
-    /**
-     * Метод получения объекта класса.
-     * @return объект MethodProjectDao
-     */
     public static synchronized ProjectDao getInstance() {
         if (instance == null) {
             instance = new ProjectDao();
         }
         return instance;
     }
+    public ProjectDao() {
+
+    }
 
     /**
-     * Метод получения имени таблицы.
-     * @return PROJECT_TABLE_NAME
+     * Добавление проекта
+     * @param entity проект с данными
      */
     @Override
-    protected String getTableName() {
-        return PROJECT_TABLE_NAME;
+    public void create(ProjectEntity entity) {
+        logger.log(Level.INFO, "creating project");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getDescription());
+            statement.setNull(3, INTEGER);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while creating project", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Метод получения имени поля идентификатора.
-     * @return PROJECT_ID_COLUMN
+     * Поиск проекта
+     * @param id идентификатор
+     * @return найденный проект
      */
     @Override
-    protected String getIdFieldName() {
-        return PROJECT_ID_COLUMN;
+    public ProjectEntity read(Long id) {
+        logger.log(Level.INFO, "searching project");
+        ProjectEntity entity = null;
+        try (Connection connection = connectionService.getConnection();
+        PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                entity = new ProjectEntity(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        id);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while searching project", e);
+            throw new RuntimeException(e);
+        }
+        return entity;
     }
 
     /**
-     * Метод получения уникального поля.
-     * @return PROJECT_UNIQUE_HASH
+     * Поиск всех проектов
+     * @return список найденных проектов
      */
     @Override
-    protected String getUniqueFieldName() {
-        return PROJECT_UNIQUE_HASH;
+    public List<ProjectEntity> readAll() {
+        logger.log(Level.INFO, "searching all projects");
+        List<ProjectEntity> entities = new ArrayList<>();
+        try (Connection connection = connectionService.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL);
+            while (resultSet.next()) {
+                entities.add(new ProjectEntity(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getLong(3)
+                ));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while searching all projects", e);
+            throw new RuntimeException(e);
+        }
+        return entities;
     }
 
     /**
-     * Метод получения списка полей.
-     * @return FIELDS
+     * Обновление проекта
+     * @param entity проект с данными
      */
     @Override
-    protected List<String> getFields() {
-        return FIELDS;
+    public void update(ProjectEntity entity) {
+        logger.log(Level.INFO, "updating project");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getDescription());
+            statement.setLong(3, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while updating project", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Метод заполнения сущности.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
+     * Удаление проекта по идентификатору
+     * @param id идентификатор
      */
     @Override
-    protected void fillEntity(PreparedStatement statement, ProjectEntity entity) throws SQLException {
-        fillFields(statement, entity);
+    public void delete(Long id) {
+        logger.log(Level.INFO, "deleting project");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while deleting project", e);
+            throw new RuntimeException(e);
+        }
     }
-
-    /**
-     * Метод обновления сущности.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected void updateEntity(PreparedStatement statement, ProjectEntity entity) throws SQLException {
-        fillFields(statement, entity);
-        statement.setLong(1, entity.getId());
-        statement.setLong(5, entity.getId());
-    }
-
-    /**
-     * Метод заполнения уникального поля.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected void fillUniqueField(PreparedStatement statement, ProjectEntity entity) throws SQLException {
-        statement.setString(1, composeHashCode(entity));
-    }
-
-    /**
-     * Метод заполнения результрирующего множества.
-     * @param resultSet результирующее множество
-     * @return сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected ProjectEntity extractResultSet(ResultSet resultSet) throws SQLException {
-        return new ProjectEntity(
-                resultSet.getString(PROJECT_NAME_COLUMN),
-                resultSet.getString(PROJECT_DESCRIPTION),
-                resultSet.getLong(PROJECT_ID_COLUMN));
-    }
-
-    /**
-     * Метод заполнения полей.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    private void fillFields(PreparedStatement statement, ProjectEntity entity) throws SQLException {
-        statement.setNull(1, INTEGER);
-        statement.setString(2, entity.getName());
-        statement.setString(3, entity.getDescription());
-        statement.setString(4, composeHashCode(entity));
-    }
-
-    /**
-     * Метод создания уникальной строки для работника
-     * @param projectEntity сущность работника
-     * @return уникальная строка
-     */
-    private String composeHashCode(ProjectEntity projectEntity){return projectEntity.getName() + projectEntity.getDescription();}
 }

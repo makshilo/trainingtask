@@ -1,11 +1,8 @@
 package com.qulix.shilomy.trainingtask.web.dao;
 
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
-import com.qulix.shilomy.trainingtask.web.exception.EntityNotFoundException;
-import com.qulix.shilomy.trainingtask.web.exception.EntityUpdateException;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Общий интерфейс дао сущностей,
@@ -22,18 +19,15 @@ public interface EntityDao<T extends Entity> {
      * Описание метода создания сущности.
      *
      * @param entity сущность для создания
-     * @return объект сущности
-     * @throws EntityUpdateException ошибка обновления сущности.
-     * @throws InterruptedException  ошибка прерывания действия.
      */
-    Optional<T> create(T entity) throws EntityUpdateException, InterruptedException;
+    void create(T entity);
 
     /**
      * Описание метода поиска по идентификатору.
      * @param id идентификатор
      * @return найденная сущность
      */
-    Optional<T> read(Long id);
+    T read(Long id);
 
     /**
      * Описание метода поиска всех сущностей.
@@ -45,17 +39,12 @@ public interface EntityDao<T extends Entity> {
      * Описание метода обновления сущности.
      *
      * @param entity сущность для обновления.
-     * @return обновлённая сущность
-     * @throws EntityUpdateException   ошибка обновления сущности.
-     * @throws InterruptedException    ошибка прерывания действия.
-     * @throws EntityNotFoundException ошибка поиска сущности.
      */
-    Optional<T> update(T entity) throws EntityUpdateException, InterruptedException, EntityNotFoundException;
+    void update(T entity);
 
     /**
      * Описание метода удаления сущности.
      * @param id идентификатор
-     * @return результат удаления
      */
-    boolean delete(Long id);
+    void delete(Long id);
 }

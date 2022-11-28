@@ -1,52 +1,41 @@
 package com.qulix.shilomy.trainingtask.web.dao.impl;
 
-import com.qulix.shilomy.trainingtask.web.dao.CommonDao;
 import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
+import com.qulix.shilomy.trainingtask.web.db.ConnectionService;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static java.sql.Types.INTEGER;
 
 /**
- * Класс реализация объекта доступа к данным для сущности сотрудника.
+ * Реализация объекта доступа к данным для сотрудника.
  */
-public class EmployeeDao extends CommonDao<EmployeeEntity> implements EntityDao<EmployeeEntity> {
+public class EmployeeDao implements EntityDao<EmployeeEntity> {
     private static EmployeeDao instance;
-    private static final String EMPLOYEE_TABLE_NAME = "trainingtaskdb.employee_list";
-    private static final String EMPLOYEE_ID_COLUMN = "id";
-    private static final String EMPLOYEE_FIRST_NAME_COLUMN = "first_name";
-    private static final String EMPLOYEE_LAST_NAME_COLUMN = "last_name";
-    private static final String EMPLOYEE_PATRONYMIC_COLUMN = "patronymic";
-    private static final String EMPLOYEE_POSITION_COLUMN = "employee_position";
-    private static final String EMPLOYEE_UNIQUE_HASH = "unique_hash";
-    private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
+    protected ConnectionService connectionService = ConnectionService.getInstance();
+    private final Logger logger = Logger.getLogger(TaskDao.class.getName());
+    private static final String TABLE_NAME = "trainingtaskdb.employee_list";
+    private static final List<String> COLUMNS = Arrays.asList("last_name", "first_name", "patronymic", "employee_position");
+    private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
+    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size()+1, "?"));
+    private static final String SQL_INSERT = String.format("INSERT INTO %s VALUES(%s)", TABLE_NAME, placeholders);
+    private static final String SQL_SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
+    private static final String SQL_SELECT_BY_ID = String.format("SELECT * FROM %s WHERE id=?", TABLE_NAME);
+    private static final String SQL_UPDATE = String.format("UPDATE %s SET %s WHERE id=?", TABLE_NAME, String.join(", ", fields));
+    private static final String SQL_DELETE_BY_ID = String.format("DELETE FROM %s WHERE id=?", TABLE_NAME);
 
-    private static final List<String> FIELDS = Arrays.asList(
-            EMPLOYEE_ID_COLUMN,
-            EMPLOYEE_FIRST_NAME_COLUMN,
-            EMPLOYEE_LAST_NAME_COLUMN,
-            EMPLOYEE_PATRONYMIC_COLUMN,
-            EMPLOYEE_POSITION_COLUMN,
-            EMPLOYEE_UNIQUE_HASH
-    );
-
-    /**
-     * Защищённый конструктор по умолчанию.
-     */
     protected EmployeeDao() {
-        super(LOGGER);
+
     }
 
-    /**
-     * Метод получения объекта класса.
-     * @return объект MethodEmployeeDao
-     */
     public static synchronized EmployeeDao getInstance() {
         if (instance == null) {
             instance = new EmployeeDao();
@@ -55,114 +44,116 @@ public class EmployeeDao extends CommonDao<EmployeeEntity> implements EntityDao<
     }
 
     /**
-     * Метод получения имени таблицы.
-     * @return EMPLOYEE_TABLE_NAME
+     * Создание работника
+     * @param entity работник с данными
      */
     @Override
-    protected String getTableName() {
-        return EMPLOYEE_TABLE_NAME;
+    public void create(EmployeeEntity entity) {
+        logger.log(Level.INFO, "creating employee");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
+            statement.setString(1, entity.getLastName());
+            statement.setString(2, entity.getFirstName());
+            statement.setString(3, entity.getPatronymic());
+            statement.setString(4, entity.getPosition());
+            statement.setNull(5, INTEGER);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while creating employee", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Метод получения имени поля идентификатора.
-     * @return EMPLOYEE_ID_COLUMN
+     * Поиск работника
+     * @param id идентификатор
+     * @return найденный работник
      */
     @Override
-    protected String getIdFieldName() {
-        return EMPLOYEE_ID_COLUMN;
+    public EmployeeEntity read(Long id) {
+        logger.log(Level.INFO, "searching employee");
+        EmployeeEntity entity = null;
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                entity = new EmployeeEntity(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        id);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while searching employee", e);
+            throw new RuntimeException(e);
+        }
+        return entity;
     }
 
     /**
-     * Метод получения уникального поля.
-     * @return EMPLOYEE_UNIQUE_HASH
+     * Поиск всех работников
+     * @return список найденных работников
      */
     @Override
-    protected String getUniqueFieldName() {
-        return EMPLOYEE_UNIQUE_HASH;
+    public List<EmployeeEntity> readAll() {
+        logger.log(Level.INFO, "searching all employees");
+        List<EmployeeEntity> entities = new ArrayList<>();
+        try (Connection connection = connectionService.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL);
+            while (resultSet.next()) {
+                entities.add(new EmployeeEntity(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getLong(5))
+                );
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while searching all employees", e);
+            throw new RuntimeException(e);
+        }
+        return entities;
     }
 
     /**
-     * Метод получения списка полей.
-     * @return FIELDS
+     * Обновление работника
+     * @param entity работник с данными
      */
     @Override
-    protected List<String> getFields() {
-        return FIELDS;
+    public void update(EmployeeEntity entity) {
+        logger.log(Level.INFO, "updating employee");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+            statement.setString(1, entity.getLastName());
+            statement.setString(2, entity.getFirstName());
+            statement.setString(3, entity.getPatronymic());
+            statement.setString(4, entity.getPosition());
+            statement.setLong(5, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while updating employee", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Метод заполнения работника.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
+     * Удаление работника по идентификатору
+     * @param id идентификатор
      */
     @Override
-    protected void fillEntity(PreparedStatement statement, EmployeeEntity entity) throws SQLException {
-        fillFields(statement, entity);
-    }
-
-    /**
-     * Метод обновления сущности.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected void updateEntity(PreparedStatement statement, EmployeeEntity entity) throws SQLException {
-        fillFields(statement, entity);
-        statement.setLong(1, entity.getId());
-        statement.setLong(7, entity.getId());
-    }
-
-    /**
-     * Метод заполнения уникального поля.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected void fillUniqueField(PreparedStatement statement, EmployeeEntity entity) throws SQLException {
-        statement.setString(1, composeHashCode(entity));
-    }
-
-    /**
-     * Метод заполнения результрирующего множества.
-     * @param resultSet результирующее множество
-     * @return сущность
-     * @throws SQLException ошибка базы данных
-     */
-    @Override
-    protected EmployeeEntity extractResultSet(ResultSet resultSet) throws SQLException {
-        return new EmployeeEntity(
-                resultSet.getString(EMPLOYEE_FIRST_NAME_COLUMN),
-                resultSet.getString(EMPLOYEE_LAST_NAME_COLUMN),
-                resultSet.getString(EMPLOYEE_PATRONYMIC_COLUMN),
-                resultSet.getString(EMPLOYEE_POSITION_COLUMN),
-                resultSet.getLong(EMPLOYEE_ID_COLUMN)
-        );
-    }
-
-    /**
-     * Метод заполнения полей.
-     * @param statement утверждение
-     * @param entity сущность
-     * @throws SQLException ошибка базы данных
-     */
-    private void fillFields(PreparedStatement statement, EmployeeEntity entity) throws SQLException {
-        statement.setNull(1, INTEGER);
-        statement.setString(2, entity.getFirstName());
-        statement.setString(3, entity.getLastName());
-        statement.setString(4, entity.getPatronymic());
-        statement.setString(5, entity.getPosition());
-        statement.setString(6, composeHashCode(entity));
-    }
-
-    /**
-     * Метод создания уникальной строки для работника
-     * @param employee сущность работника
-     * @return уникальная строка
-     */
-    private String composeHashCode(EmployeeEntity employee) {
-        return employee.getFirstName() + employee.getLastName() + employee.getPatronymic() + employee.getPosition();
+    public void delete(Long id) {
+        logger.log(Level.INFO, "deleting employee");
+        try (Connection connection = connectionService.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "sql exception while deleting employee", e);
+            throw new RuntimeException(e);
+        }
     }
 }

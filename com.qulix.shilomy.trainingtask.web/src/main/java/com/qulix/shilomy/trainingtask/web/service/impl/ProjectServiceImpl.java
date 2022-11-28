@@ -2,19 +2,15 @@ package com.qulix.shilomy.trainingtask.web.service.impl;
 
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.exception.EntityNotFoundException;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Класс сервис реализующий методы сервиса для сущности проекта
  */
 public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     private static ProjectServiceImpl instance;
-
-    private static final  Logger LOGGER = Logger.getLogger(ProjectServiceImpl.class.getName());
 
     private final ProjectDao projectDao;
 
@@ -36,7 +32,7 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public ProjectEntity get(Long id) {
-        return projectDao.read(id).orElseThrow();
+        return projectDao.read(id);
     }
 
     /**
@@ -51,43 +47,28 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     /**
      * Метод добавления сущности проекта.
      * @param projectEntity сущность проекта для добавления
-     * @return добавленная сущность
      */
     @Override
-    public ProjectEntity add(ProjectEntity projectEntity) {
-        try {
-            return projectDao.create(projectEntity).orElseThrow();
-        } catch (InterruptedException e) {
-            LOGGER.severe("Error while adding project: " + e.getMessage());
-        }
-        return projectEntity;
+    public void add(ProjectEntity projectEntity) {
+        projectDao.create(projectEntity);
     }
 
     /**
      * Метод обновления сущности проекта.
      * @param projectEntity сущность которя содержит параметры для обновления
-     * @return обновлённая сущность
      */
     @Override
-    public ProjectEntity update(ProjectEntity projectEntity) {
-        try {
-            ProjectEntity project = projectDao.update(projectEntity).orElseThrow();
-            return get(project.getId());
-        } catch (InterruptedException e) {
-            LOGGER.severe("Error while updating project: " + e.getMessage());
-        } catch (EntityNotFoundException e) {
-            LOGGER.severe("Project not found " + e.getMessage());
-        }
-        return projectEntity;
+    public void update(ProjectEntity projectEntity) {
+        projectDao.update(projectEntity);
     }
 
     /**
      * Метод удаления сущности по идентификатору.
+     *
      * @param id идентификатор
-     * @return результат
      */
     @Override
-    public boolean delete(Long id) {
-        return projectDao.delete(id);
+    public void delete(Long id) {
+        projectDao.delete(id);
     }
 }
