@@ -16,11 +16,16 @@ import java.util.stream.Collectors;
 import static java.sql.Types.INTEGER;
 
 /**
- * Реализация объекта доступа к данным для сотрудника.
+ * Объект доступа к данным для сотрудника
  */
 public class EmployeeDao implements EntityDao<EmployeeEntity> {
+
+    // Объект одиночка
     private static EmployeeDao instance;
+
+    // Объект сервиса подключений
     protected ConnectionService connectionService = ConnectionService.getInstance();
+
     private final Logger logger = Logger.getLogger(TaskDao.class.getName());
     private static final String TABLE_NAME = "trainingtaskdb.employee_list";
     private static final List<String> COLUMNS = Arrays.asList("last_name", "first_name", "patronymic", "employee_position");

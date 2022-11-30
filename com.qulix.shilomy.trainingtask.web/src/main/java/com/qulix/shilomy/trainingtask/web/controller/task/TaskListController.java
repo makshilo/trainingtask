@@ -22,27 +22,29 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * HTTP сервлет для отображения страницы списка проектов.
+ * Сервлет обрабатывающий запросы страницы списка задач
  */
 @WebServlet("/tasks")
 public class TaskListController extends HttpServlet {
     private static final String TASK_LIST_PAGE = "/jsp/taskList.jsp";
 
+    //Сервис работы с проектами
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
-    private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
+
+    //Сервис работы с сотрудниками
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
+    //Сервис работы с задачами
+    private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
+
     /**
-     * Метод обработки GET запросов, который добавляет на страницу необходимые для её работы данные,
-     * а затем перенаправляет на неё.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                       полученный от сервлета
+     * Обработка GET запроса по отображению списка задач
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                        отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
      * @throws ServletException если в работе сервлета возникают проблемы.
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления.
+     * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,9 +56,8 @@ public class TaskListController extends HttpServlet {
     }
 
     /**
-     * Метод который создаёт таблицу, в которой ключ это идентификатор работника,
-     * а значение полное имя
-     * @return таблица идентификаторов и имён работников
+     * Создание таблицы идентификаторов и полных имён сотрудников
+     * @return таблица соответствия идентификаторов и имён сотрудников
      */
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
@@ -68,9 +69,8 @@ public class TaskListController extends HttpServlet {
     }
 
     /**
-     * Метод который создаёт таблицу, в которой ключ это идентификатор проекта,
-     * а значение наименование проекта
-     * @return таблица идентификаторов и наименований проектов
+     * Создание таблицы идентификаторов и имён проектов
+     * @return таблица идентификаторов и имён проектов
      */
     private HashMap<Long, String> getProjectNames() {
         final HashMap<Long, String> projectNames = new HashMap<>();

@@ -8,13 +8,21 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessValidator;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * Хранилище проверок проекта
+ */
 public class ProjectComposite {
+
+    // Таблица соответствия параметров и их валидаторов
+    private final Map<String, Validator> projectValidators;
+
     private static final String NAME_NULL_MESSAGE = "Наименование проекта не заполнено";
     private static final String DESCRIPTION_NULL_MESSAGE = "Описание проекта не заполнено";
 
-
-    private final Map<String, Validator> projectValidators;
-
+    /**
+     * Конструктор с заполнением таблицы валидаторов
+     * @param req запрос клиента
+     */
     public ProjectComposite(HttpServletRequest req) {
         projectValidators = Map.of(
 
@@ -28,6 +36,11 @@ public class ProjectComposite {
         );
     }
 
+    /**
+     * Метод валидации
+     * @param paramName имя параметра
+     * @return строка ошибки или пустая строка если параметр верен
+     */
     public String validate(String paramName) {
         Validator validator = projectValidators.get(paramName);
 

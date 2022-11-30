@@ -3,6 +3,9 @@ package com.qulix.shilomy.trainingtask.web.controller.employee;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Хранилище параметров формы сотрудника
+ */
 public enum EmployeeFormParam {
     EMPLOYEE_FIRST_NAME("firstName"),
     EMPLOYEE_LAST_NAME("lastName"),
@@ -25,7 +28,6 @@ public enum EmployeeFormParam {
                 EmployeeFormParam.values()) {
             list.add(value.get());
         }
-
         return list;
     }
 }

@@ -3,6 +3,9 @@ package com.qulix.shilomy.trainingtask.web.controller.task;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Хранилище параметров формы задачи
+ */
 public enum TaskFormParam {
     STATUS_PARAM("status"),
     TASK_NAME("taskName"),

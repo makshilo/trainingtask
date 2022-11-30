@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.entity.impl;
 
 /**
- * Перечисление возможных статусов для сущноти задачи.
+ * Статусы модели задачи
  */
 public enum TaskStatus {
     NOT_STARTED("Не начата"),
@@ -16,7 +16,7 @@ public enum TaskStatus {
     }
 
     /**
-     * Метод получения статуса по имени.
+     * Метод получения статуса по имени
      * @param name имя статуса
      * @return status
      */

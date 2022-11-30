@@ -17,11 +17,16 @@ import java.util.stream.Collectors;
 import static java.sql.Types.INTEGER;
 
 /**
- * Реализация объекта доступа к данным для задачи.
+ * Объекта доступа к данным для задачи
  */
 public class TaskDao implements EntityDao<TaskEntity> {
+
+    // Объект одиночка
     private static TaskDao instance;
+
+    // Объект сервиса подключений
     protected ConnectionService connectionService = ConnectionService.getInstance();
+
     private final Logger logger = Logger.getLogger(TaskDao.class.getName());
     private static final String TABLE_NAME = "trainingtaskdb.task_list";
     private static final List<String> COLUMNS = Arrays.asList("status", "task_name", "project", "task_work", "start_date", "end_date", "executor");

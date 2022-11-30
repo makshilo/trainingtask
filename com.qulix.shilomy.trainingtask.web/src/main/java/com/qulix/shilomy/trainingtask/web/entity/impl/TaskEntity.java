@@ -5,7 +5,7 @@ import com.qulix.shilomy.trainingtask.web.entity.Entity;
 import java.sql.Date;
 
 /**
- * Класс сущности задачи
+ * Модель задачи
  * содержит поля:
  * <li>статус</li>
  * <li>наименование</li>
@@ -27,7 +27,7 @@ public class TaskEntity implements Entity {
     private final Long id;
 
     /**
-     * Основной конструктор
+     * Конструктор с заполнением всех полей
      * @param status статус
      * @param name наименование
      * @param projectId идентификатор проекта
@@ -62,75 +62,38 @@ public class TaskEntity implements Entity {
         this(status, name, projectId, work, startDate, endDate, executorId, null);
     }
 
-    /**
-     * Метод получения статуса
-     * @return поле статуса
-     */
     public TaskStatus getStatus() {
         return status;
     }
 
-    /**
-     * Метод получения наименования
-     * @return поле наименования
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Метод получения идентификатора проекта
-     * @return поле идентификатора проекта
-     */
     public Long getProjectId() {
         return projectId;
     }
 
-    /**
-     * Метод получения работы
-     * @return поле работы
-     */
     public String getWork() {
         return work;
     }
 
-    /**
-     * Метод получения даты начала
-     * @return поле даты начала
-     */
     public Date getStartDate() {
         return startDate;
     }
 
-    /**
-     * Метод получения даты окончания
-     * @return поле даты окончания
-     */
     public Date getEndDate() {
         return endDate;
     }
 
-    /**
-     * Метод получения идентификатора работника
-     * @return поле идентификатора работника
-     */
     public Long getExecutorId() {
         return executorId;
     }
 
-    /**
-     * Метод получения идентификатора
-     * @return поле идентификатора
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * Переопределение метода сравнения объекта
-     * @param o объект для сравнения
-     * @return результат сравнения
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -148,10 +111,6 @@ public class TaskEntity implements Entity {
         return id.equals(that.id);
     }
 
-    /**
-     * Переопределение метода создания уникального хеш кода объекта
-     * @return хеш код
-     */
     @Override
     public int hashCode() {
         int result = status.hashCode();
@@ -165,10 +124,6 @@ public class TaskEntity implements Entity {
         return result;
     }
 
-    /**
-     * Переопределение метода строкового представления объекта
-     * @return строка с данными объекта
-     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("TaskEntity{");

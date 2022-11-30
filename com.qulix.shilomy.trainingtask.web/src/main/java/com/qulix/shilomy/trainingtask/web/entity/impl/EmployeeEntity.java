@@ -3,7 +3,7 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
 /**
- * Класс сущности работника
+ * Модель сотрудника
  * содержит поля:
  * <li>имя</li>
  * <li>фамилия</li>
@@ -19,7 +19,7 @@ public class EmployeeEntity implements Entity {
     private final Long id;
 
     /**
-     * Основной конструктор
+     * Конструктор с заполнением всех полей
      * @param firstName имя
      * @param lastName фамилия
      * @param patronymic отчество
@@ -45,51 +45,26 @@ public class EmployeeEntity implements Entity {
         this(firstName, lastName, patronymic, position, null);
     }
 
-    /**
-     * Метод получения имени
-     * @return поле имени
-     */
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * Метод получения фамилии
-     * @return поле фамилии
-     */
     public String getLastName() {
         return lastName;
     }
 
-    /**
-     * Метод получения отчества
-     * @return поле отчества
-     */
     public String getPatronymic() {
         return patronymic;
     }
 
-    /**
-     * Метод получения должности
-     * @return поле должности
-     */
     public String getPosition() {
         return position;
     }
 
-    /**
-     * Метод получения идентификатора
-     * @return поле идентификатора
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * Переопределение метода сравнения объекта
-     * @param o объект для сравнения
-     * @return результат сравнения
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,10 +79,6 @@ public class EmployeeEntity implements Entity {
         return id.equals(that.id);
     }
 
-    /**
-     * Переопределение метода создания уникального хеш кода объекта
-     * @return хеш код
-     */
     @Override
     public int hashCode() {
         int result = firstName.hashCode();
@@ -118,10 +89,6 @@ public class EmployeeEntity implements Entity {
         return result;
     }
 
-    /**
-     * Переопределение метода строкового представления объекта
-     * @return строка с данными объекта
-     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("EmployeeEntity{");

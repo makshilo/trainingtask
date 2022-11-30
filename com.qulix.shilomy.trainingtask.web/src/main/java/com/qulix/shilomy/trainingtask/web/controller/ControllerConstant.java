@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.controller;
 
 /**
- * Класс который хранит константы для использования в пакете контроллеров
+ * Хранилище общих констант
  */
 public enum ControllerConstant {
     PROJECT_PARAM("project"),

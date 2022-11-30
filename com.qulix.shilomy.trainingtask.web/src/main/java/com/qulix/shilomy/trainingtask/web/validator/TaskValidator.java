@@ -7,7 +7,7 @@ import com.qulix.shilomy.trainingtask.web.validator.composite.TaskComposite;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Класс валидатор который выполняет проверку параметров сущности задачи на корректность
+ * Валидатор параметров задачи
  */
 public class TaskValidator {
     public static final String EDIT_TASK = "/editTask";
@@ -17,9 +17,9 @@ public class TaskValidator {
     }
 
     /**
-     * Метод который получает данные сущности задачи из запроса и проверяет их корректность.
-     * @param req <code>ServletRequest</code> обЪект который хранит запрос пользователя
-     * @return true если все параметры проходят проверку, в остальных случаях false
+     * Проверка параметров и добавление ошибок на страницу
+     * @param req <code>ServletRequest</code> запрос пользователя
+     * @return true когда все параметры корректны, в остальных случаях false
      */
     public static boolean isValid(HttpServletRequest req) {
         String page = req.getRequestURI();

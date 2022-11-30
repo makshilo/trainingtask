@@ -3,7 +3,7 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
 /**
- * Класс сущности проекта
+ * Модель проекта
  * содержит поля:
  * <li>Наименование</li>
  * <li>Описание</li>
@@ -15,7 +15,7 @@ public class ProjectEntity implements Entity {
     private final Long id;
 
     /**
-     * Основной конструктор
+     * Конструктор с заполнением всех полей
      * @param name Наименование
      * @param description Описание
      * @param id Идентификатор
@@ -35,35 +35,18 @@ public class ProjectEntity implements Entity {
         this(name, description, null);
     }
 
-    /**
-     * Метод получения наименования
-     * @return поле наименования
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Метод получения описания
-     * @return поле описания
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Метод получения идентификатора
-     * @return поле идентификатора
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * Переопределение метода сравнения объекта
-     * @param o объект для сравнения
-     * @return результат сравнения
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,10 +59,6 @@ public class ProjectEntity implements Entity {
         return id.equals(that.id);
     }
 
-    /**
-     * Переопределение метода создания уникального хеш кода объекта
-     * @return хеш код
-     */
     @Override
     public int hashCode() {
         int result = name.hashCode();
@@ -88,10 +67,6 @@ public class ProjectEntity implements Entity {
         return result;
     }
 
-    /**
-     * Переопределение метода строкового представления объекта
-     * @return строка с данными объекта
-     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ProjectEntity{");

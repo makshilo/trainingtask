@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Класс сервис реализующий методы сервиса для сущности задачи
+ * Сервис для модели задачи
  */
 public class TaskServiceImpl implements EntityService<TaskEntity> {
+
+    // Объект одиночка
     private static TaskServiceImpl instance;
 
+    // Объект дао для модели задачи
     private final TaskDao taskDao;
+
     private TaskServiceImpl(TaskDao taskDao) {
         this.taskDao = taskDao;
     }
@@ -27,9 +31,9 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     }
 
     /**
-     * Метод получения сущности задачи по идентификатору.
+     * Получение задачи по идентификатору.
      * @param id идентификатор
-     * @return сущность работника(EmployeeEntity)
+     * @return модель задачи
      */
     @Override
     public TaskEntity get(Long id) {
@@ -37,8 +41,8 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     }
 
     /**
-     * Метод поиска всех сущностей задач.
-     * @return список найденных сущностей
+     * Поиск всех задач
+     * @return список задач
      */
     @Override
     public List<TaskEntity> findAll() {
@@ -46,9 +50,9 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     }
 
     /**
-     * Метод добавления сущности задачи.
+     * Добавление задачи.
      *
-     * @param taskEntity сущность задачи для добавления
+     * @param taskEntity модель задачи
      */
     @Override
     public void add(TaskEntity taskEntity) {
@@ -56,9 +60,9 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     }
 
     /**
-     * Метод обновления сущности задачи.
+     * Обновление задачи.
      *
-     * @param taskEntity сущность которя содержит параметры для обновления.
+     * @param taskEntity модель задачи
      */
     @Override
     public void update(TaskEntity taskEntity) {
@@ -66,7 +70,7 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     }
 
     /**
-     * Метод удаления сущности по идентификатору.
+     * Удаление задачи по идентификатору.
      *
      * @param id идентификатор
      */
@@ -76,8 +80,8 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
     }
 
     /**
-     * Метод поиска сущностей задач принадлежащих проекту.
-     * @param projectEntity сущность проекта
+     * Поиск задач по проекту
+     * @param projectEntity модель проекта
      * @return список задач
      */
     public List<TaskEntity> findByProject(ProjectEntity projectEntity) {

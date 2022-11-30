@@ -14,24 +14,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * HTTP сервлет для отображения страницы списка проектов.
+ * Сервлет обрабатывающий запросы страницы списка проектов
  */
 @WebServlet("/projects")
 public class ProjectListController extends HttpServlet {
     private static final String PROJECT_LIST_PAGE = "/jsp/projectList.jsp";
+
+    //Сервис для работы с проектами
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
 
     /**
-     * Метод обработки GET запросов, который добавляет на страницу необходимые для её работы данные,
-     * а затем перенаправляет на неё.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                       полученный от сервлета
+     * Обработка GET запроса по отображению списка проектов
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                        отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
      * @throws ServletException если в работе сервлета возникают проблемы.
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления.
+     * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

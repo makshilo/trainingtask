@@ -15,22 +15,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по созданию работника
+ * Сервлет обрабатывающий запросы по созданию работника
  */
 @WebServlet("/createEmployee")
 public class CreateEmployeeController extends HttpServlet {
+
+    //Сервис работы с работниками
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
     /**
-     * Метод обработки GET запроса, который добавляет на страницу параметр режима формы,
-     * а затем перенаправляет на неё.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                  полученный от сервлета
+     * Обработка GET запроса по перенаправлению на форму работника
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                  отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,16 +38,13 @@ public class CreateEmployeeController extends HttpServlet {
     }
 
     /**
-     * Метод обработки POST запроса, который получает данные из запроса, добавляет новую сущность в базу,
-     * а потом перенаправляет на страницу со списком сотрудников.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                  полученный от сервлета
+     * Обработка POST запроса по добавлению работника
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                  отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления
-     * @throws ServletException если в работе сервлета возникают проблемы при перенаправлении
+     * @throws IOException проблема с получением строки для перенаправления
+     * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

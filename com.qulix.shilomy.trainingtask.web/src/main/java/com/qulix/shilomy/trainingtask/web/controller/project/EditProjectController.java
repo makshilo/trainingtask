@@ -21,24 +21,24 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по редактированию проекта.
+ * Сервлет обрабатывающий запросы по редактированию проекта
  */
 @WebServlet("/editProject")
 public class EditProjectController extends HttpServlet {
+
+    //Сервис работы с проектами
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
+
+    //Сервис работы с сотрудниками
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
     /**
-     * Метод обработки GET запроса,
-     * который добавляет на страницу параметр режима формы и сущность для редактирования,
-     * а затем перенаправляет на неё.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                  полученный от сервлета
+     * Обработка GET запроса перенаправления на форму проекта для редактирования
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                  отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,9 +52,8 @@ public class EditProjectController extends HttpServlet {
     }
 
     /**
-     * Метод который создаёт таблицу, в которой ключ это идентификатор работника,
-     * а значение полное имя
-     * @return таблица идентификаторов и имён работников
+     * Создание таблицы идентификаторов и полных имён работников
+     * @return таблица соответствия идентификаторов и имён работников
      */
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
@@ -65,16 +64,13 @@ public class EditProjectController extends HttpServlet {
     }
 
     /**
-     * Метод обработки POST запроса, который получает данные из запроса, обновляет сущность в базе,
-     * а потом перенаправляет на страницу со списком проектов.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                  полученный от сервлета
+     * Обработка POST запроса изменения проекта
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                  отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления
-     * @throws ServletException если в работе сервлета возникают проблемы при перенаправлении
+     * @throws IOException ошибка получения строки для перенаправления
+     * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

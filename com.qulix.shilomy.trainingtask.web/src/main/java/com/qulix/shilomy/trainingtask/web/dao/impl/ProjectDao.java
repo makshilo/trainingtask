@@ -15,11 +15,16 @@ import java.util.stream.Collectors;
 import static java.sql.Types.INTEGER;
 
 /**
- * Реализация объекта доступа к данным для проекта
+ * Объект доступа к данным для проекта
  */
 public class ProjectDao implements EntityDao<ProjectEntity> {
+
+    // Объект одиночка
     private static ProjectDao instance;
+
+    // Объект сервиса подключений
     protected ConnectionService connectionService = ConnectionService.getInstance();
+
     private final Logger logger = Logger.getLogger(TaskDao.class.getName());
     private static final String TABLE_NAME = "trainingtaskdb.project_list";
     private static final List<String> COLUMNS = Arrays.asList("project_name", "description");

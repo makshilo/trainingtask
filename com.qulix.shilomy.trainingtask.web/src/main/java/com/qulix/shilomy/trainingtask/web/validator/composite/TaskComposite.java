@@ -8,7 +8,14 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * Хранилище проверок задачи
+ */
 public class TaskComposite {
+
+    // Таблица соответствия параметров и их валидаторов
+    private final Map<String, Validator> taskValidators;
+
     public static final String NAME_NULL_MESSAGE = "Наименование задачи не заполнено";
     public static final String WORK_NULL_MESSAGE = "Работа не заполнена";
     public static final String WORK_INVALID_MESSAGE = "Значение работы должно быть целым, положительным числом";
@@ -29,8 +36,10 @@ public class TaskComposite {
     public static final String DAY_REGEX = "^(0[1-9]|[12][0-9]|3[01])";
     public static final String DATE_REGEX = "^(((\\d{4}-((0[13578]-|1[02]-)(0[1-9]|[12]\\d|3[01])|(0[13456789]-|1[012]-)(0[1-9]|[12]\\d|30)|02-(0[1-9]|1\\d|2[0-8])))|((([02468][048]|[13579][26])00|\\d{2}([13579][26]|0[48]|[2468][048])))-02-29)){0,10}$";
 
-    private final Map<String, Validator> taskValidators;
-
+    /**
+     * Конструктор с заполнением таблицы валидаторов
+     * @param req запрос клиента
+     */
     public TaskComposite(HttpServletRequest req) {
         taskValidators = Map.of(
 
@@ -96,10 +105,22 @@ public class TaskComposite {
         );
     }
 
+    /**
+     * Объединение даты в одну строку
+     * @param year год
+     * @param month месяц
+     * @param day день
+     * @return дата в формате гггг-мм-дд
+     */
     private String composeDate(String year, String month, String day) {
         return String.join(ControllerConstant.MINUS_SIGN.get(), year, month, day);
     }
 
+    /**
+     * Метод валидации
+     * @param paramName имя параметра
+     * @return строка ошибки или пустая строка если параметр верен
+     */
     public String validate(String paramName) {
         Validator validator = taskValidators.get(paramName);
 

@@ -13,22 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по удалению проекта.
+ * Сервлет обрабатывающий запросы по удалению проекта
  */
 @WebServlet("/deleteProject")
 public class DeleteProjectController extends HttpServlet {
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
 
     /**
-     * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,
-     * а потом перенаправляет на страницу со списком проектов.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                  полученный от сервлета
+     * Обработка POST запроса по удалению проекта
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                  отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

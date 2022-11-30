@@ -7,11 +7,14 @@ import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import java.util.List;
 
 /**
- * Класс сервис реализующий методы сервиса для сущности проекта
+ * Сервис для модели проекта
  */
 public class ProjectServiceImpl implements EntityService<ProjectEntity> {
+
+    // Объект одиночка
     private static ProjectServiceImpl instance;
 
+    // Объект дао для модели проекта
     private final ProjectDao projectDao;
 
     private ProjectServiceImpl(ProjectDao projectDao) {
@@ -26,9 +29,9 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     }
 
     /**
-     * Метод получения сущности проекта по идентификатору.
+     * Получение проекта по идентификатору.
      * @param id идентификатор
-     * @return сущность работника(EmployeeEntity)
+     * @return модель проекта
      */
     @Override
     public ProjectEntity get(Long id) {
@@ -36,8 +39,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     }
 
     /**
-     * Метод поиска всех сущностей проекта.
-     * @return список найденных сущностей
+     * Поиск всех проектов
+     * @return список найденных проектов
      */
     @Override
     public List<ProjectEntity> findAll() {
@@ -45,8 +48,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     }
 
     /**
-     * Метод добавления сущности проекта.
-     * @param projectEntity сущность проекта для добавления
+     * Добавление проекта
+     * @param projectEntity модель проекта
      */
     @Override
     public void add(ProjectEntity projectEntity) {
@@ -54,8 +57,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     }
 
     /**
-     * Метод обновления сущности проекта.
-     * @param projectEntity сущность которя содержит параметры для обновления
+     * Обновление проекта
+     * @param projectEntity модель проекта
      */
     @Override
     public void update(ProjectEntity projectEntity) {
@@ -63,7 +66,7 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
     }
 
     /**
-     * Метод удаления сущности по идентификатору.
+     * Удаление проекта по идентификатору.
      *
      * @param id идентификатор
      */

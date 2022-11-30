@@ -13,22 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Класс HTTP сервлета, который отвечает за обработку запроса по удалению задачи.
+ * Сервлет обрабатывающий запросы по удалению проекта
  */
 @WebServlet("/deleteTask")
 public class DeleteTaskController extends HttpServlet {
     private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
 
     /**
-     * Метод обработки POST запроса, который получает данные из запроса, удаляет сущность из базы,
-     * а потом перенаправляет на страницу со списком задач.
-     * @param request   объект {@link HttpServletRequest} который хранит запрос клиента,
-     *                  полученный от сервлета
+     * Обработка POST запроса по удалению задачи
+     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} который хранит ответ,
-     *                  отправляемый сервлетом клиенту
+     * @param response  объект {@link HttpServletResponse} ответ сервлета
      *
-     * @throws IOException возникает в случае проблем с получением строки для перенаправления
+     * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

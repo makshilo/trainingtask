@@ -7,7 +7,7 @@ import com.qulix.shilomy.trainingtask.web.validator.composite.EmployeeComposite;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Класс валидатор который выполняет проверку параметров сущности работника на корректность
+ * Валидатор сотрудника
  */
 public class EmployeeValidator {
     public static final String EDIT_EMPLOYEE = "/editEmployee";
@@ -17,8 +17,8 @@ public class EmployeeValidator {
     }
 
     /**
-     * Метод который получает данные сущности работника из запроса и проверяет их корректность.
-     * @param req <code>ServletRequest</code> обЪект который хранит запрос пользователя
+     * Проверка параметров и добавление ошибок на страницу
+     * @param req <code>ServletRequest</code> запрос пользователя
      * @return true если все параметры проходят проверку, в остальных случаях false
      */
     public static boolean isValid(HttpServletRequest req) {

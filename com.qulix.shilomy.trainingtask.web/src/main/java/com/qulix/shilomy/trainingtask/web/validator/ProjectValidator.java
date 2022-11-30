@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ProjectValidator {
 
-
     public static final String EDIT_PROJECT = "/editProject";
 
     private ProjectValidator() {
@@ -19,10 +18,9 @@ public class ProjectValidator {
     }
 
     /**
-     * Получение и проверка корректности данных из запроса.
-     *
+     * Проверка параметров и добавление ошибок на страницу
      * @param req <code>ServletRequest</code> запрос пользователя
-     * @return таблица имён параметров с ошибками
+     * @return true когда все параметры корректны, в остальных случаях false
      */
     public static boolean validate(HttpServletRequest req) {
         String page = req.getRequestURI();

@@ -3,6 +3,9 @@ package com.qulix.shilomy.trainingtask.web.controller.project;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Хранилище параметров формы сотрудника
+ */
 public enum ProjectFormParam {
     PROJECT_NAME_PARAM("projectName"),
     DESCRIPTION_PARAM("description");
@@ -23,7 +26,6 @@ public enum ProjectFormParam {
                 ProjectFormParam.values()) {
             list.add(value.get());
         }
-
         return list;
     }
 }

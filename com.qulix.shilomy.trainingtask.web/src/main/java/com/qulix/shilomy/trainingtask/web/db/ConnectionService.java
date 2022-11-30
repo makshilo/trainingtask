@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * Класс, который предназначен для выдачи соединений с базой данных
+ * Сервис выдачи соединений в базу данных
  */
 public class ConnectionService {
     public static final String DB_URL_PROPERTY_NAME = "dbUrl";
@@ -19,27 +19,22 @@ public class ConnectionService {
     public static final String DB_PASSWORD_PROPERTY_NAME = "dbPassword";
 
     private final String APP_CONFIG_PATH = "../gradle.properties";
-    private final Properties appProperties;
+    private final Properties appProperties = new Properties();
 
     private static final Logger LOGGER = Logger.getLogger(ConnectionService.class.getName());
 
     private static ConnectionService instance;
 
     /**
-     * Приватный конструктор, который получает файл с параметрами и рагистрирует драйвер базы данных.
+     * Конструктор с регистрацией драйвера
      * @throws ConnectionServiceInitializationFailed ошибка инициализации сервиса подключений
      * @throws IOException ошибка чтения файла с параметрами
      */
     private ConnectionService() throws ConnectionServiceInitializationFailed, IOException {
-        appProperties = new Properties();
         appProperties.load(new FileInputStream(APP_CONFIG_PATH));
         registerDrivers();
     }
 
-    /**
-     * Метод получения единственного объекта этого класса
-     * @return объект ConnectionService
-     */
     public static synchronized ConnectionService getInstance() {
         if (instance == null) {
             try {
@@ -52,7 +47,7 @@ public class ConnectionService {
     }
 
     /**
-     * Метод который создаёт соединение
+     * Получение соединения
      * @return Connection
      * @throws SQLException если при открытии соединения,
      * возникают ошибки со стороны базы данных
@@ -66,8 +61,8 @@ public class ConnectionService {
     }
 
     /**
-     * Метод регистрации драйвера базы данных
-     * @throws ConnectionServiceInitializationFailed если ошибка возникает при регистрации драйвера
+     * Регистрация сервера базы данных
+     * @throws ConnectionServiceInitializationFailed ошибка при регистрации драйвера
      */
     public void registerDrivers() throws ConnectionServiceInitializationFailed {
         LOGGER.finest("driver registration");

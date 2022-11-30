@@ -7,11 +7,14 @@ import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import java.util.List;
 
 /**
- * Класс сервис реализующий методы сервиса для сущности работника
+ * Сервис для модели сотрудника
  */
 public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
+
+    // Объект одиночка
     private static EmployeeServiceImpl instance;
 
+    // Объект дао для модели сотрудников
     private final EmployeeDao employeeDao;
 
     private EmployeeServiceImpl(EmployeeDao employeeDao) {
@@ -26,17 +29,17 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     }
 
     /**
-     * Метод получения сущности работника по идентификатору.
+     * Получение сотрудника по идентификатору
      * @param id идентификатор
-     * @return сущность работника(EmployeeEntity)
+     * @return модель сотрудника
      */
     public EmployeeEntity get(Long id) {
         return employeeDao.read(id);
     }
 
     /**
-     * Метод поиска всех сущностей работника.
-     * @return список найденных сущностей
+     * Поиск всех сотрудников
+     * @return список найденных сотрудников
      */
     @Override
     public List<EmployeeEntity> findAll() {
@@ -44,9 +47,9 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     }
 
     /**
-     * Метод добавления сущности работника.
+     * Добавление сотрудника
      *
-     * @param employeeEntity сущность работника для добавления
+     * @param employeeEntity модель сотрудника
      */
     @Override
     public void add(EmployeeEntity employeeEntity) {
@@ -54,9 +57,9 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     }
 
     /**
-     * Метод обновления сущности работника.
+     * Обновление сотрудника.
      *
-     * @param employeeEntity сущность которя содержит параметры для обновления
+     * @param employeeEntity модель сотрудника
      */
     @Override
     public void update(EmployeeEntity employeeEntity) {
@@ -64,7 +67,7 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     }
 
     /**
-     * Метод удаления сущности по идентификатору.
+     * Метод удаления сотрудника по идентификатору.
      *
      * @param id идентификатор
      */
