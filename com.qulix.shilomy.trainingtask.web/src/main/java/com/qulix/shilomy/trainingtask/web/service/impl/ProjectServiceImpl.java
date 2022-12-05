@@ -2,9 +2,14 @@ package com.qulix.shilomy.trainingtask.web.service.impl;
 
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Сервис для модели проекта
@@ -16,6 +21,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
 
     // Объект дао для модели проекта
     private final ProjectDao projectDao;
+
+    private final Logger logger = Logger.getLogger(ProjectServiceImpl.class.getName());
 
     private ProjectServiceImpl(ProjectDao projectDao) {
         this.projectDao = projectDao;
@@ -35,7 +42,13 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public ProjectEntity get(Long id) {
-        return projectDao.read(id);
+        Optional<ProjectEntity> project = Optional.empty();
+        try {
+            project = projectDao.read(id);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
+        return project.orElseThrow();
     }
 
     /**
@@ -44,7 +57,12 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public List<ProjectEntity> findAll() {
-        return projectDao.readAll();
+        try {
+            return projectDao.readAll();
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
+        return Collections.emptyList();
     }
 
     /**
@@ -53,7 +71,11 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public void add(ProjectEntity projectEntity) {
-        projectDao.create(projectEntity);
+        try {
+            projectDao.create(projectEntity);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
     }
 
     /**
@@ -62,7 +84,11 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public void update(ProjectEntity projectEntity) {
-        projectDao.update(projectEntity);
+        try {
+            projectDao.update(projectEntity);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
     }
 
     /**
@@ -72,6 +98,10 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
      */
     @Override
     public void delete(Long id) {
-        projectDao.delete(id);
+        try {
+            projectDao.delete(id);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
     }
 }

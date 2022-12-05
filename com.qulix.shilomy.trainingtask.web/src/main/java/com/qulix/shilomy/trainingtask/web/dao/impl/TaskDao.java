@@ -4,14 +4,10 @@ import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
 import com.qulix.shilomy.trainingtask.web.db.ConnectionService;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
+import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.sql.Types.INTEGER;
@@ -27,7 +23,6 @@ public class TaskDao implements EntityDao<TaskEntity> {
     // Объект сервиса подключений
     protected ConnectionService connectionService = ConnectionService.getInstance();
 
-    private final Logger logger = Logger.getLogger(TaskDao.class.getName());
     private static final String TABLE_NAME = "trainingtaskdb.task_list";
     private static final List<String> COLUMNS = Arrays.asList("status", "task_name", "project", "task_work", "start_date", "end_date", "executor");
     private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
@@ -54,8 +49,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
      * @param entity сущность для создания
      */
     @Override
-    public void create(TaskEntity entity) {
-        logger.log(Level.INFO, "creating task");
+    public void create(TaskEntity entity) throws DatabaseAccessException {
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
             statement.setString(1, entity.getStatus().name());
@@ -68,26 +62,25 @@ public class TaskDao implements EntityDao<TaskEntity> {
             statement.setNull(8, INTEGER);
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while creating task", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, creating task record", e);
         }
     }
 
     /**
      * Поиск задачи
+     *
      * @param id идентификатор
      * @return найденная задача
      */
     @Override
-    public TaskEntity read(Long id) {
-        logger.log(Level.INFO, "searching task");
-        TaskEntity entity = null;
+    public Optional<TaskEntity> read(Long id) throws DatabaseAccessException {
+        Optional<TaskEntity> entity = Optional.empty();
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                entity = new TaskEntity(
+                entity = Optional.of(new TaskEntity(
                         TaskStatus.of(resultSet.getString(1)),
                         resultSet.getString(2),
                         resultSet.getLong(3),
@@ -95,11 +88,10 @@ public class TaskDao implements EntityDao<TaskEntity> {
                         resultSet.getDate(5),
                         resultSet.getDate(6),
                         resultSet.getLong(7),
-                        id);
+                        id));
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while searching task", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, searching task record", e);
         }
         return entity;
     }
@@ -109,8 +101,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
      * @return список найденных задач
      */
     @Override
-    public List<TaskEntity> readAll() {
-        logger.log(Level.INFO, "searching all tasks");
+    public List<TaskEntity> readAll() throws DatabaseAccessException {
         List<TaskEntity> entities = new ArrayList<>();
         try (Connection connection = connectionService.getConnection();
              Statement statement = connection.createStatement()) {
@@ -128,8 +119,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
                 );
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while searching all tasks", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, searching all task records", e);
         }
         return entities;
     }
@@ -139,8 +129,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
      * @param entity задача для обновления
      */
     @Override
-    public void update(TaskEntity entity) {
-        logger.log(Level.INFO, "updating task");
+    public void update(TaskEntity entity) throws DatabaseAccessException {
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             statement.setString(1, entity.getStatus().name());
@@ -153,8 +142,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
             statement.setLong(8, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while updating task", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, searching task record", e);
         }
     }
 
@@ -163,15 +151,13 @@ public class TaskDao implements EntityDao<TaskEntity> {
      * @param id идентификатор
      */
     @Override
-    public void delete(Long id) {
-        logger.log(Level.INFO, "deleting task");
+    public void delete(Long id) throws DatabaseAccessException {
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while deleting task", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, deleting task record", e);
         }
     }
 }

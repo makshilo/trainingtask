@@ -1,8 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.dao;
 
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
+import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Интерфейс дао сущностей,
@@ -20,31 +22,32 @@ public interface EntityDao<T extends Entity> {
      *
      * @param entity модель для создания
      */
-    void create(T entity);
+    void create(T entity) throws DatabaseAccessException;
 
     /**
      * Поиск по идентификатору.
+     *
      * @param id идентификатор
      * @return найденная сущность
      */
-    T read(Long id);
+    Optional<T> read(Long id) throws DatabaseAccessException;
 
     /**
      * Поиска всех моделей заданного типа
      * @return список найденных моделей.
      */
-    List<T> readAll();
+    List<T> readAll() throws DatabaseAccessException;
 
     /**
      * Обновления модели
      *
      * @param entity модель для обновления.
      */
-    void update(T entity);
+    void update(T entity) throws DatabaseAccessException;
 
     /**
      * Удаления модели
      * @param id идентификатор
      */
-    void delete(Long id);
+    void delete(Long id) throws DatabaseAccessException;
 }

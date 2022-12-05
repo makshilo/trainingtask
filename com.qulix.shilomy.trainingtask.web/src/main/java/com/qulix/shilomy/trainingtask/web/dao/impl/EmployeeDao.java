@@ -3,14 +3,10 @@ package com.qulix.shilomy.trainingtask.web.dao.impl;
 import com.qulix.shilomy.trainingtask.web.dao.EntityDao;
 import com.qulix.shilomy.trainingtask.web.db.ConnectionService;
 import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.sql.Types.INTEGER;
@@ -26,7 +22,6 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
     // Объект сервиса подключений
     protected ConnectionService connectionService = ConnectionService.getInstance();
 
-    private final Logger logger = Logger.getLogger(TaskDao.class.getName());
     private static final String TABLE_NAME = "trainingtaskdb.employee_list";
     private static final List<String> COLUMNS = Arrays.asList("last_name", "first_name", "patronymic", "employee_position");
     private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
@@ -53,8 +48,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
      * @param entity работник с данными
      */
     @Override
-    public void create(EmployeeEntity entity) {
-        logger.log(Level.INFO, "creating employee");
+    public void create(EmployeeEntity entity) throws DatabaseAccessException {
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
             statement.setString(1, entity.getLastName());
@@ -64,35 +58,33 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
             statement.setNull(5, INTEGER);
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while creating employee", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, creating employee record", e);
         }
     }
 
     /**
      * Поиск работника
+     *
      * @param id идентификатор
      * @return найденный работник
      */
     @Override
-    public EmployeeEntity read(Long id) {
-        logger.log(Level.INFO, "searching employee");
-        EmployeeEntity entity = null;
+    public Optional<EmployeeEntity> read(Long id) throws DatabaseAccessException {
+        Optional<EmployeeEntity> entity = Optional.empty();
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                entity = new EmployeeEntity(
+                entity = Optional.of(new EmployeeEntity(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
-                        id);
+                        id));
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while searching employee", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, searching employee record", e);
         }
         return entity;
     }
@@ -102,8 +94,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
      * @return список найденных работников
      */
     @Override
-    public List<EmployeeEntity> readAll() {
-        logger.log(Level.INFO, "searching all employees");
+    public List<EmployeeEntity> readAll() throws DatabaseAccessException {
         List<EmployeeEntity> entities = new ArrayList<>();
         try (Connection connection = connectionService.getConnection();
              Statement statement = connection.createStatement()) {
@@ -118,8 +109,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
                 );
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while searching all employees", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, searching all employee records", e);
         }
         return entities;
     }
@@ -129,8 +119,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
      * @param entity работник с данными
      */
     @Override
-    public void update(EmployeeEntity entity) {
-        logger.log(Level.INFO, "updating employee");
+    public void update(EmployeeEntity entity) throws DatabaseAccessException {
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             statement.setString(1, entity.getLastName());
@@ -140,8 +129,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
             statement.setLong(5, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while updating employee", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, updating employee record", e);
         }
     }
 
@@ -150,15 +138,13 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
      * @param id идентификатор
      */
     @Override
-    public void delete(Long id) {
-        logger.log(Level.INFO, "deleting employee");
+    public void delete(Long id) throws DatabaseAccessException {
         try (Connection connection = connectionService.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "sql exception while deleting employee", e);
-            throw new RuntimeException(e);
+            throw new DatabaseAccessException("Database exception occurred, deleting employee record", e);
         }
     }
 }

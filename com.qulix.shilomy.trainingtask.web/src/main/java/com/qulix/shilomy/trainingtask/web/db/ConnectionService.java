@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -40,7 +41,7 @@ public class ConnectionService {
             try {
                 instance = new ConnectionService();
             } catch (ConnectionServiceInitializationFailed | IOException e) {
-                throw new RuntimeException(e);
+                LOGGER.log(Level.SEVERE, e.getMessage());
             }
         }
         return instance;
@@ -53,7 +54,6 @@ public class ConnectionService {
      * возникают ошибки со стороны базы данных
      */
     public synchronized Connection getConnection() throws SQLException {
-        LOGGER.finest("creating connection");
         return DriverManager.getConnection(
                 appProperties.getProperty(DB_URL_PROPERTY_NAME),
                 appProperties.getProperty(DB_USER_PROPERTY_NAME),
@@ -65,11 +65,10 @@ public class ConnectionService {
      * @throws ConnectionServiceInitializationFailed ошибка при регистрации драйвера
      */
     public void registerDrivers() throws ConnectionServiceInitializationFailed {
-        LOGGER.finest("driver registration");
         try {
             DriverManager.registerDriver(DriverManager.getDriver(appProperties.getProperty(DB_URL_PROPERTY_NAME)));
         } catch (SQLException e) {
-            throw new ConnectionServiceInitializationFailed("Failed to register driver", e);
+            throw new ConnectionServiceInitializationFailed("Failed to register database driver", e);
         }
     }
 }

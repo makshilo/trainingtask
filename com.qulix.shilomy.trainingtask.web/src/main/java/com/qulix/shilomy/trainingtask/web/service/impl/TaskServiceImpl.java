@@ -3,9 +3,14 @@ package com.qulix.shilomy.trainingtask.web.service.impl;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
+import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +23,8 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
 
     // Объект дао для модели задачи
     private final TaskDao taskDao;
+
+    private final Logger logger = Logger.getLogger(TaskServiceImpl.class.getName());
 
     private TaskServiceImpl(TaskDao taskDao) {
         this.taskDao = taskDao;
@@ -37,7 +44,13 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
      */
     @Override
     public TaskEntity get(Long id) {
-        return taskDao.read(id);
+        Optional<TaskEntity> task = Optional.empty();
+        try {
+            task = taskDao.read(id);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
+        return task.orElseThrow();
     }
 
     /**
@@ -46,7 +59,12 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
      */
     @Override
     public List<TaskEntity> findAll() {
-        return taskDao.readAll();
+        try {
+            return taskDao.readAll();
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
+        return Collections.emptyList();
     }
 
     /**
@@ -56,7 +74,11 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
      */
     @Override
     public void add(TaskEntity taskEntity) {
-        taskDao.create(taskEntity);
+        try {
+            taskDao.create(taskEntity);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
     }
 
     /**
@@ -66,7 +88,11 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
      */
     @Override
     public void update(TaskEntity taskEntity) {
-        taskDao.update(taskEntity);
+        try {
+            taskDao.update(taskEntity);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
     }
 
     /**
@@ -76,7 +102,11 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
      */
     @Override
     public void delete(Long id) {
-        taskDao.delete(id);
+        try {
+            taskDao.delete(id);
+        } catch (DatabaseAccessException e) {
+            logger.log(Level.SEVERE, String.join(" : ", e.getMessage(), e.getCause().toString()));
+        }
     }
 
     /**
