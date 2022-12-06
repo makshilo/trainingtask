@@ -1,6 +1,5 @@
 package com.qulix.shilomy.trainingtask.web.controller.project;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
@@ -34,7 +33,7 @@ public class ProjectListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstant.PROJECTS_PARAM.get(), projectService.findAll());
+        request.setAttribute(ProjectParam.PROJECTS.get(), projectService.findAll());
         request.getRequestDispatcher(PROJECT_LIST_PAGE).forward(request, response);
     }
 }

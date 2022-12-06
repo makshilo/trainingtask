@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.validator.composite;
 
-import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParam;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
 import com.qulix.shilomy.trainingtask.web.validator.Validator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.CompositeValidator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessValidator;
@@ -26,12 +26,12 @@ public class ProjectComposite {
     public ProjectComposite(HttpServletRequest req) {
         projectValidators = Map.of(
 
-                ProjectFormParam.PROJECT_NAME_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(NAME_NULL_MESSAGE, req.getParameter(ProjectFormParam.PROJECT_NAME_PARAM.get()))
+                ProjectParam.NAME.get(), new CompositeValidator(
+                        new EmptinessValidator(NAME_NULL_MESSAGE, req.getParameter(ProjectParam.NAME.get()))
                 ),
 
-                ProjectFormParam.DESCRIPTION_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(DESCRIPTION_NULL_MESSAGE, req.getParameter(ProjectFormParam.DESCRIPTION_PARAM.get()))
+                ProjectParam.DESCRIPTION.get(), new CompositeValidator(
+                        new EmptinessValidator(DESCRIPTION_NULL_MESSAGE, req.getParameter(ProjectParam.DESCRIPTION.get()))
                 )
         );
     }

@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.controller.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -48,10 +49,10 @@ public class TaskListController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstant.TASKS_PARAM.get(), taskService.findAll());
-        request.setAttribute(ControllerConstant.EMPLOYEES_PARAM.get(), getEmployeeNames());
-        request.setAttribute(ControllerConstant.PROJECTS_PARAM.get(), getProjectNames());
-        request.setAttribute(TaskFormParam.STATUS_PARAM.get(), TaskStatus.values());
+        request.setAttribute(TaskParam.TASKS.get(), taskService.findAll());
+        request.setAttribute(EmployeeParam.EMPLOYEES.get(), getEmployeeNames());
+        request.setAttribute(ProjectParam.PROJECTS.get(), getProjectNames());
+        request.setAttribute(TaskParam.STATUS.get(), TaskStatus.values());
         request.getRequestDispatcher(TASK_LIST_PAGE).forward(request, response);
     }
 
@@ -62,8 +63,7 @@ public class TaskListController extends HttpServlet {
     private HashMap<Long, String> getEmployeeNames() {
         final HashMap<Long, String> employeeNames = new HashMap<>();
         for (EmployeeEntity employee : employeeService.findAll()) {
-            employeeNames.put(employee.getId(), String.join(ControllerConstant.SPACE_SIGN.get(),
-                    employee.getLastName(), employee.getFirstName()));
+            employeeNames.put(employee.getId(), String.join(" ", employee.getLastName(), employee.getFirstName()));
         }
         return employeeNames;
     }

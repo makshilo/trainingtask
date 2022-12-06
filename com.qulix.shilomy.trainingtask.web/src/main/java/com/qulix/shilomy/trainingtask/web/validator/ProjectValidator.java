@@ -1,10 +1,12 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
-import com.qulix.shilomy.trainingtask.web.controller.project.ProjectFormParam;
+import com.qulix.shilomy.trainingtask.web.controller.PageConstant;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
 import com.qulix.shilomy.trainingtask.web.validator.composite.ProjectComposite;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Валидатор параметров проекта
@@ -25,15 +27,15 @@ public class ProjectValidator {
     public static boolean validate(HttpServletRequest req) {
         String page = req.getRequestURI();
         if (page.equals(EDIT_PROJECT)) {
-            req.setAttribute(ControllerConstant.PAGE_MODE_PARAM_NAME.get(), ControllerConstant.EDIT_MODE.get());
+            req.setAttribute(PageConstant.PAGE_MODE.get(), PageConstant.EDIT.get());
         }
 
         ProjectComposite composite = new ProjectComposite(req);
 
-        for (String param : ProjectFormParam.getStringValues()){
+        for (String param : Stream.of(ProjectParam.values()).map(ProjectParam::get).collect(Collectors.toList())){
             String error = composite.validate(param);
             if (!error.isEmpty()) {
-                req.setAttribute(param + ControllerConstant.ERROR_MESSAGES_PARAM.get(), error);
+                req.setAttribute(param + PageConstant.ERROR.get(), error);
                 return false;
             }
         }

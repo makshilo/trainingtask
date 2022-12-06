@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.web.validator.composite;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParam;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
 import com.qulix.shilomy.trainingtask.web.validator.Validator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.CompositeValidator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessValidator;
@@ -28,20 +28,20 @@ public class EmployeeComposite {
     public EmployeeComposite(HttpServletRequest req) {
         employeeValidators = Map.of(
 
-                EmployeeFormParam.EMPLOYEE_FIRST_NAME.get(), new CompositeValidator(
-                        new EmptinessValidator(FIRST_NAME_NULL_MESSAGE, req.getParameter(EmployeeFormParam.EMPLOYEE_FIRST_NAME.get()))
+                EmployeeParam.FIRST_NAME.get(), new CompositeValidator(
+                        new EmptinessValidator(FIRST_NAME_NULL_MESSAGE, req.getParameter(EmployeeParam.FIRST_NAME.get()))
                 ),
 
-                EmployeeFormParam.EMPLOYEE_LAST_NAME.get(), new CompositeValidator(
-                        new EmptinessValidator(LAST_NAME_NULL_MESSAGE, req.getParameter(EmployeeFormParam.EMPLOYEE_LAST_NAME.get()))
+                EmployeeParam.LAST_NAME.get(), new CompositeValidator(
+                        new EmptinessValidator(LAST_NAME_NULL_MESSAGE, req.getParameter(EmployeeParam.LAST_NAME.get()))
                 ),
 
-                EmployeeFormParam.PATRONYMIC_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(PATRONYMIC_NULL_MESSAGE, req.getParameter(EmployeeFormParam.PATRONYMIC_PARAM.get()))
+                EmployeeParam.PATRONYMIC.get(), new CompositeValidator(
+                        new EmptinessValidator(PATRONYMIC_NULL_MESSAGE, req.getParameter(EmployeeParam.PATRONYMIC.get()))
                 ),
 
-                EmployeeFormParam.POSITION_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(POSITION_NULL_MESSAGE, req.getParameter(EmployeeFormParam.POSITION_PARAM.get()))
+                EmployeeParam.POSITION.get(), new CompositeValidator(
+                        new EmptinessValidator(POSITION_NULL_MESSAGE, req.getParameter(EmployeeParam.POSITION.get()))
                 )
         );
     }

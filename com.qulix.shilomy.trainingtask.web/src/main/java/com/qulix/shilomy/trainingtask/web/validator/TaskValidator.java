@@ -1,10 +1,12 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskFormParam;
+import com.qulix.shilomy.trainingtask.web.controller.PageConstant;
+import com.qulix.shilomy.trainingtask.web.controller.task.TaskParam;
 import com.qulix.shilomy.trainingtask.web.validator.composite.TaskComposite;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Валидатор параметров задачи
@@ -24,15 +26,15 @@ public class TaskValidator {
     public static boolean isValid(HttpServletRequest req) {
         String page = req.getRequestURI();
         if (page.equals(EDIT_TASK)) {
-            req.setAttribute(ControllerConstant.PAGE_MODE_PARAM_NAME.get(), ControllerConstant.EDIT_MODE.get());
+            req.setAttribute(PageConstant.PAGE_MODE.get(), PageConstant.EDIT.get());
         }
 
         TaskComposite composite = new TaskComposite(req);
 
-        for (String param : TaskFormParam.getStringValues()){
+        for (String param : Stream.of(TaskParam.values()).map(TaskParam::get).collect(Collectors.toList())){
             String error = composite.validate(param);
             if (!error.isEmpty()) {
-                req.setAttribute(param + ControllerConstant.ERROR_MESSAGES_PARAM.get(), error);
+                req.setAttribute(param + PageConstant.ERROR.get(), error);
                 return false;
             }
         }

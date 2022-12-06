@@ -1,6 +1,5 @@
 package com.qulix.shilomy.trainingtask.web.controller.project;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
@@ -33,8 +32,8 @@ public class CreateProjectController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstant.PAGE_MODE_PARAM_NAME.get(), ControllerConstant.CREATE_MODE.get());
-        request.getRequestDispatcher(ControllerConstant.EDIT_PROJECT_PAGE.get()).forward(request, response);
+        request.setAttribute(ProjectParam.PAGE_MODE.get(), ProjectParam.CREATE.get());
+        request.getRequestDispatcher(ProjectParam.EDIT_PROJECT_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -49,13 +48,13 @@ public class CreateProjectController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (ProjectValidator.validate(request)){
-            String projectName = request.getParameter(ProjectFormParam.PROJECT_NAME_PARAM.get());
-            String description = request.getParameter(ProjectFormParam.DESCRIPTION_PARAM.get());
+            String projectName = request.getParameter(ProjectParam.NAME.get());
+            String description = request.getParameter(ProjectParam.DESCRIPTION.get());
             ProjectEntity newProject = new ProjectEntity(projectName, description);
             projectService.add(newProject);
-            response.sendRedirect(ControllerConstant.PROJECT_LIST.get());
+            response.sendRedirect(ProjectParam.PROJECT_LIST.get());
         } else {
-            request.getRequestDispatcher(ControllerConstant.EDIT_PROJECT_PAGE.get()).forward(request, response);
+            request.getRequestDispatcher(ProjectParam.EDIT_PROJECT_PAGE.get()).forward(request, response);
         }
     }
 }

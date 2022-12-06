@@ -1,6 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.controller.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
+import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
 import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
 import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
@@ -48,9 +49,9 @@ public class CreateTaskController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute(ControllerConstant.PAGE_MODE_PARAM_NAME.get(), ControllerConstant.CREATE_MODE.get());
+        request.setAttribute(TaskParam.PAGE_MODE.get(), TaskParam.CREATE.get());
         fillPage(request);
-        request.getRequestDispatcher(ControllerConstant.EDIT_TASK_PAGE.get()).forward(request, response);
+        request.getRequestDispatcher(TaskParam.EDIT_TASK_PAGE.get()).forward(request, response);
     }
 
     /**
@@ -65,28 +66,28 @@ public class CreateTaskController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if(TaskValidator.isValid(request)) {
-            TaskStatus status = TaskStatus.of(request.getParameter(TaskFormParam.STATUS_PARAM.get()));
-            String taskName = request.getParameter(TaskFormParam.TASK_NAME.get());
-            String projectId = request.getParameter(ControllerConstant.PROJECT_PARAM.get());
-            String work = request.getParameter(TaskFormParam.WORK_PARAM.get());
-            String startYear = request.getParameter(TaskFormParam.START_YEAR_PARAM.get());
-            String startMonth = request.getParameter(TaskFormParam.START_MONTH_PARAM.get());
-            String startDay = request.getParameter(TaskFormParam.START_DAY_PARAM.get());
-            String endYear = request.getParameter(TaskFormParam.END_YEAR_PARAM.get());
-            String endMonth = request.getParameter(TaskFormParam.END_MONTH_PARAM.get());
-            String endDay = request.getParameter(TaskFormParam.END_DAY_PARAM.get());
-            String executorId = request.getParameter(TaskFormParam.EXECUTOR_PARAM.get());
+            TaskStatus status = TaskStatus.of(request.getParameter(TaskParam.STATUS.get()));
+            String taskName = request.getParameter(TaskParam.TASK_NAME.get());
+            String projectId = request.getParameter(ProjectParam.PROJECT.get());
+            String work = request.getParameter(TaskParam.WORK.get());
+            String startYear = request.getParameter(TaskParam.START_YEAR.get());
+            String startMonth = request.getParameter(TaskParam.START_MONTH.get());
+            String startDay = request.getParameter(TaskParam.START_DAY.get());
+            String endYear = request.getParameter(TaskParam.END_YEAR.get());
+            String endMonth = request.getParameter(TaskParam.END_MONTH.get());
+            String endDay = request.getParameter(TaskParam.END_DAY.get());
+            String executorId = request.getParameter(TaskParam.EXECUTOR.get());
 
-            Date startDate = Date.valueOf(String.join(ControllerConstant.MINUS_SIGN.get(), startYear, startMonth, startDay));
-            Date endDate = Date.valueOf(String.join(ControllerConstant.MINUS_SIGN.get(), endYear, endMonth, endDay));
+            Date startDate = Date.valueOf(String.join(TaskParam.MINUS.get(), startYear, startMonth, startDay));
+            Date endDate = Date.valueOf(String.join(TaskParam.MINUS.get(), endYear, endMonth, endDay));
 
             TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId));
 
             taskService.add(newTask);
-            response.sendRedirect(ControllerConstant.TASK_LIST.get());
+            response.sendRedirect(TaskParam.TASK_LIST.get());
         } else {
             fillPage(request);
-            request.getRequestDispatcher(ControllerConstant.EDIT_TASK_PAGE.get()).forward(request, response);
+            request.getRequestDispatcher(TaskParam.EDIT_TASK_PAGE.get()).forward(request, response);
         }
     }
 
@@ -96,13 +97,13 @@ public class CreateTaskController extends HttpServlet {
      * @param request объект {@link ServletRequest} который хранит запрос клиента, полученный от сервлета
      */
     public void fillPage(HttpServletRequest request) {
-        request.setAttribute(ControllerConstant.EMPLOYEES_PARAM.get(), employeeService.findAll());
-        request.setAttribute(ControllerConstant.PROJECTS_PARAM.get(), projectService.findAll());
-        request.setAttribute(TaskFormParam.STATUS_PARAM.get(), TaskStatus.values());
-        if (request.getParameter(ControllerConstant.PROJECT_LOCK_PARAM.get()) != null) {
-            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(ControllerConstant.CURRENT_PROJECT_PARAM.get())));
-            request.setAttribute(ControllerConstant.PROJECT_LOCK_PARAM.get(), true);
-            request.setAttribute(ControllerConstant.CURRENT_PROJECT_PARAM.get(), currentProject);
+        request.setAttribute(EmployeeParam.EMPLOYEES.get(), employeeService.findAll());
+        request.setAttribute(ProjectParam.PROJECTS.get(), projectService.findAll());
+        request.setAttribute(TaskParam.STATUS.get(), TaskStatus.values());
+        if (request.getParameter(TaskParam.PROJECT_LOCK.get()) != null) {
+            ProjectEntity currentProject = projectService.get(Long.parseLong(request.getParameter(TaskParam.CURRENT_PROJECT.get())));
+            request.setAttribute(TaskParam.PROJECT_LOCK.get(), true);
+            request.setAttribute(TaskParam.CURRENT_PROJECT.get(), currentProject);
         }
     }
 }

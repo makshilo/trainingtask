@@ -1,10 +1,12 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeFormParam;
+import com.qulix.shilomy.trainingtask.web.controller.PageConstant;
+import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
 import com.qulix.shilomy.trainingtask.web.validator.composite.EmployeeComposite;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Валидатор сотрудника
@@ -24,15 +26,15 @@ public class EmployeeValidator {
     public static boolean isValid(HttpServletRequest req) {
         String page = req.getRequestURI();
         if (page.equals(EDIT_EMPLOYEE)) {
-            req.setAttribute(ControllerConstant.PAGE_MODE_PARAM_NAME.get(), ControllerConstant.EDIT_MODE.get());
+            req.setAttribute(PageConstant.PAGE_MODE.get(), PageConstant.EDIT.get());
         }
 
         EmployeeComposite composite = new EmployeeComposite(req);
 
-        for (String param : EmployeeFormParam.getStringValues()){
+        for (String param : Stream.of(EmployeeParam.values()).map(EmployeeParam::get).collect(Collectors.toList())){
             String error = composite.validate(param);
             if (!error.isEmpty()) {
-                req.setAttribute(param + ControllerConstant.ERROR_MESSAGES_PARAM.get(), error);
+                req.setAttribute(param + PageConstant.ERROR.get(), error);
                 return false;
             }
         }

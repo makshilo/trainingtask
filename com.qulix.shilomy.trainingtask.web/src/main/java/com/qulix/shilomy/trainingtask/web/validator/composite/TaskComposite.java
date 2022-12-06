@@ -1,11 +1,11 @@
 package com.qulix.shilomy.trainingtask.web.validator.composite;
 
-import com.qulix.shilomy.trainingtask.web.controller.ControllerConstant;
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskFormParam;
+import com.qulix.shilomy.trainingtask.web.controller.task.TaskParam;
 import com.qulix.shilomy.trainingtask.web.validator.Validator;
 import com.qulix.shilomy.trainingtask.web.validator.impl.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Map;
 public class TaskComposite {
 
     // Таблица соответствия параметров и их валидаторов
-    private final Map<String, Validator> taskValidators;
+    private final Map<String, Validator> taskValidators = new HashMap<>();
 
     public static final String NAME_NULL_MESSAGE = "Наименование задачи не заполнено";
     public static final String WORK_NULL_MESSAGE = "Работа не заполнена";
@@ -41,68 +41,73 @@ public class TaskComposite {
      * @param req запрос клиента
      */
     public TaskComposite(HttpServletRequest req) {
-        taskValidators = Map.of(
+        taskValidators.put(TaskParam.TASK_NAME.get(), new CompositeValidator(
+                new EmptinessValidator(NAME_NULL_MESSAGE, req.getParameter(TaskParam.TASK_NAME.get()))
+        ));
 
-                TaskFormParam.TASK_NAME.get(), new CompositeValidator(
-                        new EmptinessValidator(NAME_NULL_MESSAGE, req.getParameter(TaskFormParam.TASK_NAME.get()))
-                ),
+        taskValidators.put(TaskParam.PROJECT.get(), new CompositeValidator(
+                new EmptinessValidator("Проект отсутствует", req.getParameter(TaskParam.PROJECT.get()))
+        ));
 
-                TaskFormParam.WORK_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(WORK_NULL_MESSAGE, req.getParameter(TaskFormParam.WORK_PARAM.get())),
-                        new RegexpValidator(WORK_INVALID_MESSAGE, req.getParameter(TaskFormParam.WORK_PARAM.get()), WORK_REGEX)
-                ),
+        taskValidators.put(TaskParam.WORK.get(), new CompositeValidator(
+                new EmptinessValidator(WORK_NULL_MESSAGE, req.getParameter(TaskParam.WORK.get())),
+                new RegexpValidator(WORK_INVALID_MESSAGE, req.getParameter(TaskParam.WORK.get()), WORK_REGEX)
+        ));
 
-                TaskFormParam.START_YEAR_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(START_YEAR_NULL_MESSAGE, req.getParameter(TaskFormParam.START_YEAR_PARAM.get())),
-                        new RegexpValidator(INVALID_START_YEAR_MESSAGE, req.getParameter(TaskFormParam.START_YEAR_PARAM.get()), YEAR_REGEX)
-                ),
+        taskValidators.put(TaskParam.START_YEAR.get(), new CompositeValidator(
+                new EmptinessValidator(START_YEAR_NULL_MESSAGE, req.getParameter(TaskParam.START_YEAR.get())),
+                new RegexpValidator(INVALID_START_YEAR_MESSAGE, req.getParameter(TaskParam.START_YEAR.get()), YEAR_REGEX)
+        ));
 
-                TaskFormParam.START_DAY_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(START_DAY_NULL_MESSAGE, req.getParameter(TaskFormParam.START_DAY_PARAM.get())),
-                        new RegexpValidator(INVALID_START_DAY_MESSAGE, req.getParameter(TaskFormParam.START_DAY_PARAM.get()), DAY_REGEX)
-                ),
+        taskValidators.put(TaskParam.START_DAY.get(), new CompositeValidator(
+                new EmptinessValidator(START_DAY_NULL_MESSAGE, req.getParameter(TaskParam.START_DAY.get())),
+                new RegexpValidator(INVALID_START_DAY_MESSAGE, req.getParameter(TaskParam.START_DAY.get()), DAY_REGEX)
+        ));
 
-                TaskFormParam.START_DATE_PARAM.get(), new CompositeValidator(
-                    new RegexpValidator(
-                            WRONG_START_DATE_MESSAGE,
-                            composeDate(
-                                    req.getParameter(TaskFormParam.START_YEAR_PARAM.get()),
-                                    req.getParameter(TaskFormParam.START_MONTH_PARAM.get()),
-                                    req.getParameter(TaskFormParam.START_DAY_PARAM.get())),
-                            DATE_REGEX
-                    )
-                ),
-
-                TaskFormParam.END_YEAR_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(END_YEAR_NULL_MESSAGE, req.getParameter(TaskFormParam.END_YEAR_PARAM.get())),
-                        new RegexpValidator(INVALID_END_YEAR_MESSAGE, req.getParameter(TaskFormParam.END_YEAR_PARAM.get()), YEAR_REGEX)
-                ),
-
-                TaskFormParam.END_DAY_PARAM.get(), new CompositeValidator(
-                        new EmptinessValidator(END_DAY_NULL_MESSAGE, req.getParameter(TaskFormParam.END_DAY_PARAM.get())),
-                        new RegexpValidator(INVALID_END_DAY_MESSAGE, req.getParameter(TaskFormParam.END_DAY_PARAM.get()), DAY_REGEX)
-                ),
-
-                TaskFormParam.END_DATE_PARAM.get(), new CompositeValidator(
-                        new RegexpValidator(
-                                WRONG_END_DATE_MESSAGE,
-                                composeDate(
-                                        req.getParameter(TaskFormParam.END_YEAR_PARAM.get()),
-                                        req.getParameter(TaskFormParam.END_MONTH_PARAM.get()),
-                                        req.getParameter(TaskFormParam.END_DAY_PARAM.get())),
-                                DATE_REGEX)
-                ),
-
-                TaskFormParam.DATE_COLLISION.get(), new CompositeValidator(
-                        new DateCollisionValidator(DATE_COLLISION_MESSAGE,
-                                composeDate(req.getParameter(TaskFormParam.START_YEAR_PARAM.get()),
-                                        req.getParameter(TaskFormParam.START_MONTH_PARAM.get()),
-                                        req.getParameter(TaskFormParam.START_DAY_PARAM.get())),
-                                composeDate(req.getParameter(TaskFormParam.END_YEAR_PARAM.get()),
-                                        req.getParameter(TaskFormParam.END_MONTH_PARAM.get()),
-                                        req.getParameter(TaskFormParam.END_DAY_PARAM.get())))
+        taskValidators.put(TaskParam.START_DATE.get(), new CompositeValidator(
+                new RegexpValidator(
+                        WRONG_START_DATE_MESSAGE,
+                        composeDate(
+                                req.getParameter(TaskParam.START_YEAR.get()),
+                                req.getParameter(TaskParam.START_MONTH.get()),
+                                req.getParameter(TaskParam.START_DAY.get())),
+                        DATE_REGEX
                 )
-        );
+        ));
+
+        taskValidators.put(TaskParam.END_YEAR.get(), new CompositeValidator(
+                new EmptinessValidator(END_YEAR_NULL_MESSAGE, req.getParameter(TaskParam.END_YEAR.get())),
+                new RegexpValidator(INVALID_END_YEAR_MESSAGE, req.getParameter(TaskParam.END_YEAR.get()), YEAR_REGEX)
+        ));
+
+        taskValidators.put(TaskParam.END_DAY.get(), new CompositeValidator(
+                new EmptinessValidator(END_DAY_NULL_MESSAGE, req.getParameter(TaskParam.END_DAY.get())),
+                new RegexpValidator(INVALID_END_DAY_MESSAGE, req.getParameter(TaskParam.END_DAY.get()), DAY_REGEX)
+        ));
+
+        taskValidators.put(TaskParam.END_DATE.get(), new CompositeValidator(
+                new RegexpValidator(
+                        WRONG_END_DATE_MESSAGE,
+                        composeDate(
+                                req.getParameter(TaskParam.END_YEAR.get()),
+                                req.getParameter(TaskParam.END_MONTH.get()),
+                                req.getParameter(TaskParam.END_DAY.get())),
+                        DATE_REGEX)
+        ));
+
+        taskValidators.put(TaskParam.DATE_COLLISION.get(), new CompositeValidator(
+                new DateCollisionValidator(DATE_COLLISION_MESSAGE,
+                        composeDate(req.getParameter(TaskParam.START_YEAR.get()),
+                                req.getParameter(TaskParam.START_MONTH.get()),
+                                req.getParameter(TaskParam.START_DAY.get())),
+                        composeDate(req.getParameter(TaskParam.END_YEAR.get()),
+                                req.getParameter(TaskParam.END_MONTH.get()),
+                                req.getParameter(TaskParam.END_DAY.get())))
+        ));
+
+        taskValidators.put(TaskParam.EXECUTOR.get(), new CompositeValidator(
+                new EmptinessValidator("Исполнитель отсутствует", req.getParameter(TaskParam.EXECUTOR.get()))
+        ));
     }
 
     /**
@@ -113,7 +118,7 @@ public class TaskComposite {
      * @return дата в формате гггг-мм-дд
      */
     private String composeDate(String year, String month, String day) {
-        return String.join(ControllerConstant.MINUS_SIGN.get(), year, month, day);
+        return String.join(TaskParam.MINUS.get(), year, month, day);
     }
 
     /**
