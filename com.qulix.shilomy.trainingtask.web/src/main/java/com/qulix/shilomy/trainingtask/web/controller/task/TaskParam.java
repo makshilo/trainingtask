@@ -21,6 +21,11 @@ public enum TaskParam {
     TASKS("tasks"),
 
     /**
+     * проект
+     */
+    PROJECT("project"),
+
+    /**
      * статус
      */
     STATUS("status"),

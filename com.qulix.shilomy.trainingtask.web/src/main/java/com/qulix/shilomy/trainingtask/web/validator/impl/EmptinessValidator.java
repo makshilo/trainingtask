@@ -20,6 +20,6 @@ public class EmptinessValidator implements Validator {
      */
     @Override
     public String isValid() {
-        return !param.isEmpty() ? "" : errorMessage;
+        return param != null && !param.isEmpty() ? "" : errorMessage;
     }
 }

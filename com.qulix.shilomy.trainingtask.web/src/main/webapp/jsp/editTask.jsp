@@ -51,7 +51,9 @@
                 </c:forEach>
             </select>
         </c:otherwise>
-    </c:choose><br><br>
+    </c:choose>
+
+    ${requestScope.projectError}<br><br>
 
     <label for="work">Работа:</label><br>
 
@@ -181,7 +183,9 @@
                     ${employee.patronymic}
             </option>
         </c:forEach>
-    </select><br><br>
+    </select>
+
+    ${requestScope.executorError}<br><br>
 
     <input type="submit" value="Сохранить">
 </form>
