@@ -101,8 +101,6 @@
         <option <c:if test="${startMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
 
-    ${requestScope.startMonthError}
-
     <label for="startDay">День:</label>
 
     <input style="width: 100px;" value="${fn:escapeXml(startDay)}" type="text" id="startDay" name="startDay">
@@ -148,13 +146,11 @@
         <option <c:if test="${endMonth == '12'}">selected</c:if> value="12">Декабрь</option>
     </select>
 
-    ${requestScope.endMonthError}
-
     <label for="endDay">День:</label>
 
     <input style="width: 100px;" value="${fn:escapeXml(endDay)}" type="text" id="endDay" name="endDay">
 
-    ${requestScope.endDayError}<br><br>
+    ${requestScope.endDayError}
     ${requestScope.endDateError}
     ${requestScope.dateCollisionError}<br><br>
 

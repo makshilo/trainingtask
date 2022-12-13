@@ -1,12 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
-import com.qulix.shilomy.trainingtask.web.controller.PageConstant;
 import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
-import com.qulix.shilomy.trainingtask.web.validator.composite.ProjectComposite;
+import com.qulix.shilomy.trainingtask.web.validator.project.DescriptionValidator;
+import com.qulix.shilomy.trainingtask.web.validator.project.ProjectNameValidator;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Валидатор параметров проекта
@@ -14,6 +12,11 @@ import java.util.stream.Stream;
 public class ProjectValidator {
 
     public static final String EDIT_PROJECT = "/editProject";
+
+    private static final ValidatorChain projectValidatorChain = ValidatorChain.link(
+            ProjectNameValidator.getInstance(),
+            DescriptionValidator.getInstance()
+    );
 
     private ProjectValidator() {
 
@@ -27,18 +30,9 @@ public class ProjectValidator {
     public static boolean validate(HttpServletRequest req) {
         String page = req.getRequestURI();
         if (page.equals(EDIT_PROJECT)) {
-            req.setAttribute(PageConstant.PAGE_MODE.get(), PageConstant.EDIT.get());
+            req.setAttribute(ProjectParam.PAGE_MODE.get(), ProjectParam.EDIT.get());
         }
 
-        ProjectComposite composite = new ProjectComposite(req);
-
-        for (String param : Stream.of(ProjectParam.values()).map(ProjectParam::get).collect(Collectors.toList())){
-            String error = composite.validate(param);
-            if (!error.isEmpty()) {
-                req.setAttribute(param + PageConstant.ERROR.get(), error);
-                return false;
-            }
-        }
-        return true;
+        return projectValidatorChain.check(req);
     }
 }

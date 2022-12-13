@@ -1,18 +1,25 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
-import com.qulix.shilomy.trainingtask.web.controller.PageConstant;
 import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
-import com.qulix.shilomy.trainingtask.web.validator.composite.EmployeeComposite;
+import com.qulix.shilomy.trainingtask.web.validator.employee.FirstNameValidator;
+import com.qulix.shilomy.trainingtask.web.validator.employee.LastNameValidator;
+import com.qulix.shilomy.trainingtask.web.validator.employee.PatronymicValidator;
+import com.qulix.shilomy.trainingtask.web.validator.employee.PositionValidator;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Валидатор сотрудника
  */
 public class EmployeeValidator {
     public static final String EDIT_EMPLOYEE = "/editEmployee";
+
+    private static final ValidatorChain employeeValidatorChain = ValidatorChain.link(
+            FirstNameValidator.getInstance(),
+            LastNameValidator.getInstance(),
+            PatronymicValidator.getInstance(),
+            PositionValidator.getInstance()
+    );
 
     private EmployeeValidator() {
 
@@ -26,18 +33,9 @@ public class EmployeeValidator {
     public static boolean isValid(HttpServletRequest req) {
         String page = req.getRequestURI();
         if (page.equals(EDIT_EMPLOYEE)) {
-            req.setAttribute(PageConstant.PAGE_MODE.get(), PageConstant.EDIT.get());
+            req.setAttribute(EmployeeParam.PAGE_MODE.get(), EmployeeParam.EDIT.get());
         }
 
-        EmployeeComposite composite = new EmployeeComposite(req);
-
-        for (String param : Stream.of(EmployeeParam.values()).map(EmployeeParam::get).collect(Collectors.toList())){
-            String error = composite.validate(param);
-            if (!error.isEmpty()) {
-                req.setAttribute(param + PageConstant.ERROR.get(), error);
-                return false;
-            }
-        }
-        return true;
+        return employeeValidatorChain.check(req);
     }
 }
