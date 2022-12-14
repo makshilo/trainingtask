@@ -41,10 +41,9 @@ public class CreateTaskController extends HttpServlet {
 
     /**
      * Обработка GET запроса перенаправления на форму задачи
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
@@ -56,16 +55,15 @@ public class CreateTaskController extends HttpServlet {
 
     /**
      * Обработка POST запроса создания задачи
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
-     * @throws IOException ошибка получения строки для перенаправления
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
+     * @throws IOException      ошибка получения строки для перенаправления
      * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if(TaskValidator.isValid(request)) {
+        if (TaskValidator.isValid(request)) {
             TaskStatus status = TaskStatus.of(request.getParameter(TaskParam.STATUS.get()));
             String taskName = request.getParameter(TaskParam.TASK_NAME.get());
             String projectId = request.getParameter(ProjectParam.PROJECT.get());
@@ -92,9 +90,9 @@ public class CreateTaskController extends HttpServlet {
     }
 
     /**
-     * Заполнение страницы необходимыми данными
+     * Добавление в запрос данных для отображения на странице
      *
-     * @param request объект {@link ServletRequest} который хранит запрос клиента, полученный от сервлета
+     * @param request {@link ServletRequest} запрос
      */
     public void fillPage(HttpServletRequest request) {
         request.setAttribute(EmployeeParam.EMPLOYEES.get(), employeeService.findAll());

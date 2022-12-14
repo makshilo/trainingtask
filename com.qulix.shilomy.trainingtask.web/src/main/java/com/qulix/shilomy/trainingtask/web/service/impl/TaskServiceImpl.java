@@ -14,14 +14,17 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Сервис для модели задачи
+ * Сервис для задачи
  */
 public class TaskServiceImpl implements EntityService<TaskEntity> {
-
-    // Объект одиночка
+    /**
+     * Единственный объект класса
+     */
     private static TaskServiceImpl instance;
 
-    // Объект дао для модели задачи
+    /**
+     * Объект доступа к данным задачи
+     */
     private final TaskDao taskDao;
 
     private final Logger logger = Logger.getLogger(TaskServiceImpl.class.getName());
@@ -30,6 +33,11 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
         this.taskDao = taskDao;
     }
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект TaskServiceImpl
+     */
     public static synchronized TaskServiceImpl getInstance(TaskDao taskDao) {
         if (instance == null) {
             instance = new TaskServiceImpl(taskDao);
@@ -39,6 +47,7 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
 
     /**
      * Получение задачи по идентификатору.
+     *
      * @param id идентификатор
      * @return модель задачи
      */
@@ -55,6 +64,7 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
 
     /**
      * Поиск всех задач
+     *
      * @return список задач
      */
     @Override
@@ -111,6 +121,7 @@ public class TaskServiceImpl implements EntityService<TaskEntity> {
 
     /**
      * Поиск задач по проекту
+     *
      * @param projectEntity модель проекта
      * @return список задач
      */

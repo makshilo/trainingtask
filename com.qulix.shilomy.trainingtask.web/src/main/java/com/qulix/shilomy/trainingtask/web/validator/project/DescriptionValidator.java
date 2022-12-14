@@ -6,11 +6,22 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор описания
+ */
 public class DescriptionValidator extends ValidatorChain {
     private static final String DESCRIPTION_NULL_MESSAGE = "Описание проекта не заполнено";
 
+    /**
+     * Единственный объект класса
+     */
     private static DescriptionValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект DescriptionValidator
+     */
     public static DescriptionValidator getInstance() {
         if (instance == null) {
             instance = new DescriptionValidator();
@@ -22,6 +33,12 @@ public class DescriptionValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка описания
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (EmptinessCheck.isValid(req.getParameter(ProjectParam.DESCRIPTION.get()))) {

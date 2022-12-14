@@ -13,20 +13,24 @@ import java.util.stream.Collectors;
 import static java.sql.Types.INTEGER;
 
 /**
- * Объекта доступа к данным для задачи
+ * Объекта доступа к данным задачи
  */
 public class TaskDao implements EntityDao<TaskEntity> {
 
-    // Объект одиночка
+    /**
+     * Единственный объект класса
+     */
     private static TaskDao instance;
 
-    // Объект сервиса подключений
+    /**
+     * Сервис подключений
+     */
     protected ConnectionService connectionService = ConnectionService.getInstance();
 
-    private static final String TABLE_NAME = "trainingtaskdb.task_list";
+    private static final String TABLE_NAME = "trainingtaskdb.tasks";
     private static final List<String> COLUMNS = Arrays.asList("status", "task_name", "project", "task_work", "start_date", "end_date", "executor");
     private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
-    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size()+1, "?"));
+    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size() + 1, "?"));
     private static final String SQL_INSERT = String.format("INSERT INTO %s VALUES(%s)", TABLE_NAME, placeholders);
     private static final String SQL_SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
     private static final String SQL_SELECT_BY_ID = String.format("SELECT * FROM %s WHERE id=?", TABLE_NAME);
@@ -34,9 +38,14 @@ public class TaskDao implements EntityDao<TaskEntity> {
     private static final String SQL_DELETE_BY_ID = String.format("DELETE FROM %s WHERE id=?", TABLE_NAME);
 
     protected TaskDao() {
-        
+
     }
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект TaskDao
+     */
     public static synchronized TaskDao getInstance() {
         if (instance == null) {
             instance = new TaskDao();
@@ -46,7 +55,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
 
     /**
      * Создание задачи
-     * @param entity сущность для создания
+     *
+     * @param entity задача
      */
     @Override
     public void create(TaskEntity entity) throws DatabaseAccessException {
@@ -70,7 +80,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
      * Поиск задачи
      *
      * @param id идентификатор
-     * @return найденная задача
+     * @return задача
      */
     @Override
     public Optional<TaskEntity> read(Long id) throws DatabaseAccessException {
@@ -98,7 +108,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
 
     /**
      * Поиск всех задач
-     * @return список найденных задач
+     *
+     * @return список задач
      */
     @Override
     public List<TaskEntity> readAll() throws DatabaseAccessException {
@@ -126,7 +137,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
 
     /**
      * Обновление задачи
-     * @param entity задача для обновления
+     *
+     * @param entity задача
      */
     @Override
     public void update(TaskEntity entity) throws DatabaseAccessException {
@@ -148,6 +160,7 @@ public class TaskDao implements EntityDao<TaskEntity> {
 
     /**
      * Удаление задачи по идентификатору
+     *
      * @param id идентификатор
      */
     @Override

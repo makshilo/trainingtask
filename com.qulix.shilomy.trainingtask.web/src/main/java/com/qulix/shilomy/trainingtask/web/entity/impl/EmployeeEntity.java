@@ -3,28 +3,42 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
 /**
- * Модель сотрудника
- * содержит поля:
- * <li>имя</li>
- * <li>фамилия</li>
- * <li>отчество</li>
- * <li>должность</li>
- * <li>идентификатор</li>
+ * Сотрудник
  */
 public class EmployeeEntity implements Entity {
+    /**
+     * Имя
+     */
     private final String firstName;
+
+    /**
+     * Фамилия
+     */
     private final String lastName;
+
+    /**
+     * Отчество
+     */
     private final String patronymic;
+
+    /**
+     * Должность
+     */
     private final String position;
+
+    /**
+     * Идентификатор
+     */
     private final Long id;
 
     /**
      * Конструктор с заполнением всех полей
-     * @param firstName имя
-     * @param lastName фамилия
+     *
+     * @param firstName  имя
+     * @param lastName   фамилия
      * @param patronymic отчество
-     * @param position должность
-     * @param id идентификатор
+     * @param position   должность
+     * @param id         идентификатор
      */
     public EmployeeEntity(String firstName, String lastName, String patronymic, String position, Long id) {
         this.firstName = firstName;
@@ -36,10 +50,11 @@ public class EmployeeEntity implements Entity {
 
     /**
      * Конструктор без идентификатора
-     * @param firstName имя
-     * @param lastName фамилия
+     *
+     * @param firstName  имя
+     * @param lastName   фамилия
      * @param patronymic отчество
-     * @param position должность
+     * @param position   должность
      */
     public EmployeeEntity(String firstName, String lastName, String patronymic, String position) {
         this(firstName, lastName, patronymic, position, null);

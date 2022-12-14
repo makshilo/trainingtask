@@ -24,12 +24,11 @@ public class EmployeeListController extends HttpServlet {
 
     /**
      * Обработка GET запроса по отображению списка сотрудников
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws ServletException ошибка сервлета при перенаправлении
-     * @throws IOException ошибка получения строки для перенаправления
+     * @throws IOException      ошибка получения строки для перенаправления
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -40,10 +40,9 @@ public class TaskListController extends HttpServlet {
 
     /**
      * Обработка GET запроса по отображению списка задач
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws ServletException если в работе сервлета возникают проблемы.
      * @throws ServletException ошибка сервлета при перенаправлении
      */
@@ -58,6 +57,7 @@ public class TaskListController extends HttpServlet {
 
     /**
      * Создание таблицы идентификаторов и полных имён сотрудников
+     *
      * @return таблица соответствия идентификаторов и имён сотрудников
      */
     private HashMap<Long, String> getEmployeeNames() {
@@ -70,6 +70,7 @@ public class TaskListController extends HttpServlet {
 
     /**
      * Создание таблицы идентификаторов и имён проектов
+     *
      * @return таблица идентификаторов и имён проектов
      */
     private HashMap<Long, String> getProjectNames() {

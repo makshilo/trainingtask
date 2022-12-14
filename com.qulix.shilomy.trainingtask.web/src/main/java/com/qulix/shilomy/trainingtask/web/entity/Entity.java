@@ -5,7 +5,8 @@ package com.qulix.shilomy.trainingtask.web.entity;
  */
 public interface Entity {
     /**
-     * Получение идентификатора сущности.
+     * Получение идентификатора
+     *
      * @return идентификатор
      */
     Long getId();

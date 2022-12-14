@@ -3,7 +3,7 @@ package com.qulix.shilomy.trainingtask.web.validator.impl;
 import java.sql.Date;
 
 /**
- * Валидатор пересечения дат
+ * Проверка пересечения дат
  */
 public class DateCollisionCheck {
 
@@ -14,7 +14,7 @@ public class DateCollisionCheck {
     /**
      * Проверка пересечения дат
      *
-     * @return если первая дата до второй или равна ей пустая строка, в остальных случаях errorMessage
+     * @return если первая дата до второй или равна ей true, иначе false
      */
     public static boolean isValid(String firstDate, String secondDate) {
         Date start = Date.valueOf(firstDate);

@@ -3,22 +3,30 @@ package com.qulix.shilomy.trainingtask.web.entity.impl;
 import com.qulix.shilomy.trainingtask.web.entity.Entity;
 
 /**
- * Модель проекта
- * содержит поля:
- * <li>Наименование</li>
- * <li>Описание</li>
- * <li>Идентификатор</li>
+ * Проект
  */
 public class ProjectEntity implements Entity {
+    /**
+     * Наименование
+     */
     private final String name;
+
+    /**
+     * Описание
+     */
     private final String description;
+
+    /**
+     * Идентификатор
+     */
     private final Long id;
 
     /**
      * Конструктор с заполнением всех полей
-     * @param name Наименование
+     *
+     * @param name        Наименование
      * @param description Описание
-     * @param id Идентификатор
+     * @param id          Идентификатор
      */
     public ProjectEntity(String name, String description, Long id) {
         this.name = name;
@@ -28,7 +36,8 @@ public class ProjectEntity implements Entity {
 
     /**
      * Конструктор без идентификатора
-     * @param name Наименование
+     *
+     * @param name        Наименование
      * @param description Описание
      */
     public ProjectEntity(String name, String description) {

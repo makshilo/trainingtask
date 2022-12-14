@@ -20,10 +20,9 @@ public class DeleteTaskController extends HttpServlet {
 
     /**
      * Обработка POST запроса по удалению задачи
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws IOException ошибка получения строки для перенаправления
      */
     @Override

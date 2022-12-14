@@ -6,11 +6,14 @@ import com.qulix.shilomy.trainingtask.web.validator.task.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Валидатор параметров задачи
+ * Валидатор задачи
  */
 public class TaskValidator {
     public static final String EDIT_TASK = "/editTask";
 
+    /**
+     * Цепочка валидаторов задачи
+     */
     private static final ValidatorChain taskValidatorChain = ValidatorChain.link(
             TaskNameValidator.getInstance(),
             TaskProjectValidator.getInstance(),
@@ -26,8 +29,9 @@ public class TaskValidator {
     }
 
     /**
-     * Проверка параметров и добавление ошибок на страницу
-     * @param req <code>ServletRequest</code> запрос пользователя
+     * Запуск цепочки проверок задачи
+     *
+     * @param req <code>ServletRequest</code> запрос
      * @return true когда все параметры корректны, в остальных случаях false
      */
     public static boolean isValid(HttpServletRequest req) {

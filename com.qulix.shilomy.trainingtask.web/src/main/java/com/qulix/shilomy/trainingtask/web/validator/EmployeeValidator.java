@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 public class EmployeeValidator {
     public static final String EDIT_EMPLOYEE = "/editEmployee";
 
+    /**
+     * Цепочка валидаторов работника
+     */
     private static final ValidatorChain employeeValidatorChain = ValidatorChain.link(
             FirstNameValidator.getInstance(),
             LastNameValidator.getInstance(),
@@ -26,7 +29,8 @@ public class EmployeeValidator {
     }
 
     /**
-     * Проверка параметров и добавление ошибок на страницу
+     * Запуск цепочки проверок сотрудника
+     *
      * @param req <code>ServletRequest</code> запрос пользователя
      * @return true если все параметры проходят проверку, в остальных случаях false
      */

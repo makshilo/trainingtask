@@ -5,37 +5,60 @@ import com.qulix.shilomy.trainingtask.web.entity.Entity;
 import java.sql.Date;
 
 /**
- * Модель задачи
- * содержит поля:
- * <li>статус</li>
- * <li>наименование</li>
- * <li>идентификатор проекта</li>
- * <li>работа</li>
- * <li>дата начала</li>
- * <li>дата окончания</li>
- * <li>идентификатор работника</li>
- * <li>идентификатор</li>
+ * Задача
  */
 public class TaskEntity implements Entity {
+    /**
+     * Статус
+     */
     private final TaskStatus status;
+
+    /**
+     * Наименование
+     */
     private final String name;
+
+    /**
+     * Идентификатор проекта
+     */
     private final Long projectId;
+
+    /**
+     * Работа
+     */
     private final String work;
+
+    /**
+     * Дата начала
+     */
     private final Date startDate;
+
+    /**
+     * Дата окончания
+     */
     private final Date endDate;
+
+    /**
+     * Идентификатор исполнителя
+     */
     private final Long executorId;
+
+    /**
+     * Идентификатор
+     */
     private final Long id;
 
     /**
      * Конструктор с заполнением всех полей
-     * @param status статус
-     * @param name наименование
-     * @param projectId идентификатор проекта
-     * @param work работа
-     * @param startDate дата начала
-     * @param endDate дата окончания
+     *
+     * @param status     статус
+     * @param name       наименование
+     * @param projectId  идентификатор проекта
+     * @param work       работа
+     * @param startDate  дата начала
+     * @param endDate    дата окончания
      * @param executorId идентификатор работника
-     * @param id идентификатор
+     * @param id         идентификатор
      */
     public TaskEntity(TaskStatus status, String name, Long projectId, String work, Date startDate, Date endDate, Long executorId, Long id) {
         this.status = status;
@@ -50,12 +73,13 @@ public class TaskEntity implements Entity {
 
     /**
      * Конструктор без идентификатора
-     * @param status статус
-     * @param name наименование
-     * @param projectId идентификатор проекта
-     * @param work работа
-     * @param startDate дата начала
-     * @param endDate дата окончания
+     *
+     * @param status     статус
+     * @param name       наименование
+     * @param projectId  идентификатор проекта
+     * @param work       работа
+     * @param startDate  дата начала
+     * @param endDate    дата окончания
      * @param executorId идентификатор работника
      */
     public TaskEntity(TaskStatus status, String name, Long projectId, String work, Date startDate, Date endDate, Long executorId) {

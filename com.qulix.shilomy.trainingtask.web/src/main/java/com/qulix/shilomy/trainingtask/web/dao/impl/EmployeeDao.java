@@ -12,20 +12,23 @@ import java.util.stream.Collectors;
 import static java.sql.Types.INTEGER;
 
 /**
- * Объект доступа к данным для сотрудника
+ * Объект доступа к данным сотрудника
  */
 public class EmployeeDao implements EntityDao<EmployeeEntity> {
-
-    // Объект одиночка
+    /**
+     * Единственный объект класса
+     */
     private static EmployeeDao instance;
 
-    // Объект сервиса подключений
+    /**
+     * Сервис подключений
+     */
     protected ConnectionService connectionService = ConnectionService.getInstance();
 
-    private static final String TABLE_NAME = "trainingtaskdb.employee_list";
+    private static final String TABLE_NAME = "trainingtaskdb.employees";
     private static final List<String> COLUMNS = Arrays.asList("last_name", "first_name", "patronymic", "employee_position");
     private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
-    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size()+1, "?"));
+    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size() + 1, "?"));
     private static final String SQL_INSERT = String.format("INSERT INTO %s VALUES(%s)", TABLE_NAME, placeholders);
     private static final String SQL_SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
     private static final String SQL_SELECT_BY_ID = String.format("SELECT * FROM %s WHERE id=?", TABLE_NAME);
@@ -36,6 +39,11 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
 
     }
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект EmployeeDao
+     */
     public static synchronized EmployeeDao getInstance() {
         if (instance == null) {
             instance = new EmployeeDao();
@@ -45,7 +53,8 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
 
     /**
      * Создание работника
-     * @param entity работник с данными
+     *
+     * @param entity работник
      */
     @Override
     public void create(EmployeeEntity entity) throws DatabaseAccessException {
@@ -66,7 +75,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
      * Поиск работника
      *
      * @param id идентификатор
-     * @return найденный работник
+     * @return работник
      */
     @Override
     public Optional<EmployeeEntity> read(Long id) throws DatabaseAccessException {
@@ -91,7 +100,8 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
 
     /**
      * Поиск всех работников
-     * @return список найденных работников
+     *
+     * @return список работников
      */
     @Override
     public List<EmployeeEntity> readAll() throws DatabaseAccessException {
@@ -116,7 +126,8 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
 
     /**
      * Обновление работника
-     * @param entity работник с данными
+     *
+     * @param entity работник
      */
     @Override
     public void update(EmployeeEntity entity) throws DatabaseAccessException {
@@ -135,6 +146,7 @@ public class EmployeeDao implements EntityDao<EmployeeEntity> {
 
     /**
      * Удаление работника по идентификатору
+     *
      * @param id идентификатор
      */
     @Override

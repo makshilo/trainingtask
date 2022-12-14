@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Валидатор по регулярному выражению
+ * Проверка по регулярному выражению
  */
 public class RegexpCheck {
     private RegexpCheck() {
@@ -14,8 +14,7 @@ public class RegexpCheck {
     /**
      * Проверка параметра на соответствие регулярному выражению
      *
-     * @return если параметр соответствует регулярному выражению пустая строка,
-     * в остальных случаях errorMessage
+     * @return true если параметр соответствует, иначе false
      */
     public static boolean isValid(String param, String regexp) {
         final Pattern pattern = Pattern.compile(regexp);

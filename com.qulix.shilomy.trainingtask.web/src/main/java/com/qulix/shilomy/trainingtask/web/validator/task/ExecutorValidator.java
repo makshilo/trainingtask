@@ -6,12 +6,23 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор исполнителя
+ */
 public class ExecutorValidator extends ValidatorChain {
 
     private static final String EXECUTOR_NULL = "Исполнитель не выбран";
 
+    /**
+     * Единственный объект класса
+     */
     private static ExecutorValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект ExecutorValidator
+     */
     public static ExecutorValidator getInstance() {
         if (instance == null) {
             instance = new ExecutorValidator();
@@ -23,6 +34,12 @@ public class ExecutorValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка исполнителя
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (EmptinessCheck.isValid(req.getParameter(TaskParam.EXECUTOR.get()))) {

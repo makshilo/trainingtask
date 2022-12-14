@@ -35,10 +35,9 @@ public class EditProjectController extends HttpServlet {
 
     /**
      * Обработка GET запроса перенаправления на форму проекта для редактирования
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос клиента
+     * @param response {@link HttpServletResponse} ответ сервлета
      * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
@@ -53,6 +52,7 @@ public class EditProjectController extends HttpServlet {
 
     /**
      * Создание таблицы идентификаторов и полных имён работников
+     *
      * @return таблица соответствия идентификаторов и имён работников
      */
     private HashMap<Long, String> getEmployeeNames() {
@@ -65,11 +65,10 @@ public class EditProjectController extends HttpServlet {
 
     /**
      * Обработка POST запроса изменения проекта
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
-     * @throws IOException ошибка получения строки для перенаправления
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
+     * @throws IOException      ошибка получения строки для перенаправления
      * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override

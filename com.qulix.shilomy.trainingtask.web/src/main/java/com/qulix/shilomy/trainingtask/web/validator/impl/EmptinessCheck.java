@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.web.validator.impl;
 
 /**
- * Валидатор пустоты параметра
+ * Проверка пустоты параметра
  */
 public class EmptinessCheck {
 
@@ -11,7 +11,8 @@ public class EmptinessCheck {
 
     /**
      * Проверка параметра на пустоту
-     * @return если параметр не пуст, пустая строка, в остальных случаях errorMessage
+     *
+     * @return если параметр не пуст true, иначе false
      */
     public static boolean isValid(String param) {
         return param != null && !param.isEmpty();

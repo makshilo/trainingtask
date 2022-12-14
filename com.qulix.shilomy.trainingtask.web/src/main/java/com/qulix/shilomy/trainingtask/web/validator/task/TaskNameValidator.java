@@ -6,11 +6,22 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор наименования задачи
+ */
 public class TaskNameValidator extends ValidatorChain {
     private static final String NAME_NULL_MESSAGE = "Наименование задачи не заполнено";
 
+    /**
+     * Единственный объект класса
+     */
     private static TaskNameValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект TaskNameValidator
+     */
     public static TaskNameValidator getInstance() {
         if (instance == null) {
             instance = new TaskNameValidator();
@@ -22,6 +33,12 @@ public class TaskNameValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка наименования
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (EmptinessCheck.isValid(req.getParameter(TaskParam.TASK_NAME.get()))) {

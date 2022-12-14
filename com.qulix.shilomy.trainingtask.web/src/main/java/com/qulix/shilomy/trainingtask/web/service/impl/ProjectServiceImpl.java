@@ -12,14 +12,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Сервис для модели проекта
+ * Сервис для проекта
  */
 public class ProjectServiceImpl implements EntityService<ProjectEntity> {
-
-    // Объект одиночка
+    /**
+     * Единственный объект класса
+     */
     private static ProjectServiceImpl instance;
 
-    // Объект дао для модели проекта
+    /**
+     * Объект доступа к данным проекта
+     */
     private final ProjectDao projectDao;
 
     private final Logger logger = Logger.getLogger(ProjectServiceImpl.class.getName());
@@ -28,6 +31,11 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
         this.projectDao = projectDao;
     }
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект ProjectServiceImpl
+     */
     public static synchronized ProjectServiceImpl getInstance(ProjectDao projectDao) {
         if (instance == null) {
             instance = new ProjectServiceImpl(projectDao);
@@ -37,8 +45,9 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
 
     /**
      * Получение проекта по идентификатору.
+     *
      * @param id идентификатор
-     * @return модель проекта
+     * @return проект
      */
     @Override
     public ProjectEntity get(Long id) {
@@ -53,7 +62,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
 
     /**
      * Поиск всех проектов
-     * @return список найденных проектов
+     *
+     * @return список проектов
      */
     @Override
     public List<ProjectEntity> findAll() {
@@ -67,7 +77,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
 
     /**
      * Добавление проекта
-     * @param projectEntity модель проекта
+     *
+     * @param projectEntity проект
      */
     @Override
     public void add(ProjectEntity projectEntity) {
@@ -80,7 +91,8 @@ public class ProjectServiceImpl implements EntityService<ProjectEntity> {
 
     /**
      * Обновление проекта
-     * @param projectEntity модель проекта
+     *
+     * @param projectEntity проект
      */
     @Override
     public void update(ProjectEntity projectEntity) {

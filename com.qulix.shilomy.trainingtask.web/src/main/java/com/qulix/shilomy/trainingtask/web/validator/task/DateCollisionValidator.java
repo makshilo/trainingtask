@@ -6,11 +6,22 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.DateCollisionCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор пересечения дат
+ */
 public class DateCollisionValidator extends ValidatorChain {
     private static final String DATE_COLLISION_MESSAGE = "Дата начала больше даты окончания";
 
+    /**
+     * Единственный объект класса
+     */
     private static DateCollisionValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект DateCollisionValidator
+     */
     public static DateCollisionValidator getInstance() {
         if (instance == null) {
             instance = new DateCollisionValidator();
@@ -22,6 +33,12 @@ public class DateCollisionValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка пересечения дат
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (DateCollisionCheck.isValid(

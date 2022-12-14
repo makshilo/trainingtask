@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Сервис выдачи соединений в базу данных
+ * Сервис выдачи соединений
  */
 public class ConnectionService {
     public static final String DB_URL_PROPERTY_NAME = "dbUrl";
@@ -28,8 +28,9 @@ public class ConnectionService {
 
     /**
      * Конструктор с регистрацией драйвера
+     *
      * @throws ConnectionServiceInitializationFailed ошибка инициализации сервиса подключений
-     * @throws IOException ошибка чтения файла с параметрами
+     * @throws IOException                           ошибка чтения файла с параметрами
      */
     private ConnectionService() throws ConnectionServiceInitializationFailed, IOException {
         appProperties.load(new FileInputStream(APP_CONFIG_PATH));
@@ -49,9 +50,10 @@ public class ConnectionService {
 
     /**
      * Получение соединения
+     *
      * @return Connection
      * @throws SQLException если при открытии соединения,
-     * возникают ошибки со стороны базы данных
+     *                      возникают ошибки со стороны базы данных
      */
     public synchronized Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
@@ -62,6 +64,7 @@ public class ConnectionService {
 
     /**
      * Регистрация сервера базы данных
+     *
      * @throws ConnectionServiceInitializationFailed ошибка при регистрации драйвера
      */
     public void registerDrivers() throws ConnectionServiceInitializationFailed {

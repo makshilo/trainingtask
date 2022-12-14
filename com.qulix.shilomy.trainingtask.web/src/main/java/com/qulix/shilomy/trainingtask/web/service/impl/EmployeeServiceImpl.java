@@ -12,14 +12,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Сервис для модели сотрудника
+ * Сервис для сотрудника
  */
 public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
-
-    // Объект одиночка
+    /**
+     * Единственный объект класса
+     */
     private static EmployeeServiceImpl instance;
 
-    // Объект дао для модели сотрудников
+    /**
+     * Объект доступа к данным сотрудника
+     */
     private final EmployeeDao employeeDao;
 
     private final Logger logger = Logger.getLogger(EmployeeServiceImpl.class.getName());
@@ -28,6 +31,11 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
         this.employeeDao = employeeDao;
     }
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект EmployeeServiceImpl
+     */
     public static synchronized EmployeeServiceImpl getInstance(EmployeeDao employeeDao) {
         if (instance == null) {
             instance = new EmployeeServiceImpl(employeeDao);
@@ -37,6 +45,7 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
 
     /**
      * Получение сотрудника по идентификатору
+     *
      * @param id идентификатор
      * @return модель сотрудника
      */
@@ -52,7 +61,8 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
 
     /**
      * Поиск всех сотрудников
-     * @return список найденных сотрудников
+     *
+     * @return список сотрудников
      */
     @Override
     public List<EmployeeEntity> findAll() {
@@ -67,7 +77,7 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     /**
      * Добавление сотрудника
      *
-     * @param employeeEntity модель сотрудника
+     * @param employeeEntity сотрудник
      */
     @Override
     public void add(EmployeeEntity employeeEntity) {
@@ -79,9 +89,9 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     }
 
     /**
-     * Обновление сотрудника.
+     * Обновление сотрудника
      *
-     * @param employeeEntity модель сотрудника
+     * @param employeeEntity сотрудник
      */
     @Override
     public void update(EmployeeEntity employeeEntity) {
@@ -93,7 +103,7 @@ public class EmployeeServiceImpl implements EntityService<EmployeeEntity> {
     }
 
     /**
-     * Метод удаления сотрудника по идентификатору.
+     * Удаление сотрудника по идентификатору.
      *
      * @param id идентификатор
      */

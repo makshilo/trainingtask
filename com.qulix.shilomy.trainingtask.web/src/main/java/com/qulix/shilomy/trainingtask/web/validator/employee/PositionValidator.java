@@ -6,11 +6,22 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор должности
+ */
 public class PositionValidator extends ValidatorChain {
     private static final String POSITION_NULL_MESSAGE = "Должность не заполнена";
 
+    /**
+     * Единственный объект класса
+     */
     private static PositionValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект PositionValidator
+     */
     public static PositionValidator getInstance() {
         if (instance == null) {
             instance = new PositionValidator();
@@ -22,6 +33,12 @@ public class PositionValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка должности
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (EmptinessCheck.isValid(req.getParameter(EmployeeParam.POSITION.get()))) {

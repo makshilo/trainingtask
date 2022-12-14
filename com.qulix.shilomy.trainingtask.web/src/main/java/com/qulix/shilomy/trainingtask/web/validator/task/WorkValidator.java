@@ -7,14 +7,25 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.RegexpCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор работы
+ */
 public class WorkValidator extends ValidatorChain {
     private static final String WORK_NULL_MESSAGE = "Работа не заполнена";
     private static final String WORK_INVALID_MESSAGE = "Значение работы должно быть целым, положительным числом";
 
     private static final String WORK_REGEX = "^[0-9]+";
 
+    /**
+     * Единственный объект класса
+     */
     private static WorkValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект WorkValidator
+     */
     public static WorkValidator getInstance() {
         if (instance == null) {
             instance = new WorkValidator();
@@ -26,6 +37,12 @@ public class WorkValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка работы
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (!EmptinessCheck.isValid(req.getParameter(TaskParam.WORK.get()))) {

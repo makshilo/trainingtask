@@ -35,10 +35,9 @@ public class EditTaskController extends HttpServlet {
 
     /**
      * Обработка GET запроса перенаправления на форму задачи для редактирования
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
@@ -52,11 +51,10 @@ public class EditTaskController extends HttpServlet {
 
     /**
      * Обработка POST запроса изменения задачи
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
-     * @throws IOException ошибка получения строки для перенаправления
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
+     * @throws IOException      ошибка получения строки для перенаправления
      * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
@@ -89,9 +87,9 @@ public class EditTaskController extends HttpServlet {
     }
 
     /**
-     * Заполнение страницы необходимыми данными
+     * Добавление в запрос данных для отображения на странице
      *
-     * @param request объект {@link ServletRequest} который хранит запрос клиента, полученный от сервлета
+     * @param request {@link ServletRequest} запрос
      */
     public void fillPage(HttpServletRequest request) {
         request.setAttribute(EmployeeParam.EMPLOYEES.get(), employeeService.findAll());

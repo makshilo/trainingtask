@@ -6,11 +6,22 @@ import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Валидатор имени
+ */
 public class FirstNameValidator extends ValidatorChain {
     private static final String FIRST_NAME_NULL_MESSAGE = "Имя не заполнено";
 
+    /**
+     * Единственный объект класса
+     */
     private static FirstNameValidator instance;
 
+    /**
+     * Получение объекта класса
+     *
+     * @return объект FirstNameValidator
+     */
     public static FirstNameValidator getInstance() {
         if (instance == null) {
             instance = new FirstNameValidator();
@@ -22,6 +33,12 @@ public class FirstNameValidator extends ValidatorChain {
 
     }
 
+    /**
+     * Проверка имени
+     *
+     * @param req запрос
+     * @return если проверка пройдена, результат следующего в цепи, иначе false
+     */
     @Override
     public boolean check(HttpServletRequest req) {
         if (EmptinessCheck.isValid(req.getParameter(EmployeeParam.FIRST_NAME.get()))) {

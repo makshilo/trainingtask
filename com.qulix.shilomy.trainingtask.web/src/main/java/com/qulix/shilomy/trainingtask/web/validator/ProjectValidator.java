@@ -7,12 +7,15 @@ import com.qulix.shilomy.trainingtask.web.validator.project.ProjectNameValidator
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Валидатор параметров проекта
+ * Валидатор проекта
  */
 public class ProjectValidator {
 
     public static final String EDIT_PROJECT = "/editProject";
 
+    /**
+     * Цепочка валидаторов проекта
+     */
     private static final ValidatorChain projectValidatorChain = ValidatorChain.link(
             ProjectNameValidator.getInstance(),
             DescriptionValidator.getInstance()
@@ -23,7 +26,8 @@ public class ProjectValidator {
     }
 
     /**
-     * Проверка параметров и добавление ошибок на страницу
+     * Запуск цепочки проверок проекта
+     *
      * @param req <code>ServletRequest</code> запрос пользователя
      * @return true когда все параметры корректны, в остальных случаях false
      */

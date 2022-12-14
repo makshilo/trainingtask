@@ -24,10 +24,9 @@ public class ProjectListController extends HttpServlet {
 
     /**
      * Обработка GET запроса по отображению списка проектов
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws ServletException если в работе сервлета возникают проблемы.
      * @throws ServletException ошибка сервлета при перенаправлении
      */

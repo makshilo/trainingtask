@@ -24,10 +24,9 @@ public class CreateProjectController extends HttpServlet {
 
     /**
      * Обработка GET запроса перенаправления на форму проекта
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
@@ -38,16 +37,15 @@ public class CreateProjectController extends HttpServlet {
 
     /**
      * Обработка POST запроса создания проекта
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
-     * @throws IOException ошибка получения строки для перенаправления
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
+     * @throws IOException      ошибка получения строки для перенаправления
      * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (ProjectValidator.validate(request)){
+        if (ProjectValidator.validate(request)) {
             String projectName = request.getParameter(ProjectParam.NAME.get());
             String description = request.getParameter(ProjectParam.DESCRIPTION.get());
             ProjectEntity newProject = new ProjectEntity(projectName, description);

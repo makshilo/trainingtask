@@ -8,42 +8,53 @@ import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import static java.sql.Types.INTEGER;
 
 /**
- * Объект доступа к данным для проекта
+ * Объект доступа к данным проекта
  */
 public class ProjectDao implements EntityDao<ProjectEntity> {
-
-    // Объект одиночка
+    /**
+     * Единственный объект класса
+     */
     private static ProjectDao instance;
 
-    // Объект сервиса подключений
+    /**
+     * Сервис подключений
+     */
     protected ConnectionService connectionService = ConnectionService.getInstance();
 
-    private static final String TABLE_NAME = "trainingtaskdb.project_list";
+    private static final String TABLE_NAME = "trainingtaskdb.projects";
     private static final List<String> COLUMNS = Arrays.asList("project_name", "description");
     private static final List<String> fields = COLUMNS.stream().map(column -> column + "=?").collect(Collectors.toList());
-    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size()+1, "?"));
+    private static final String placeholders = String.join(", ", Collections.nCopies(COLUMNS.size() + 1, "?"));
     private static final String SQL_INSERT = String.format("INSERT INTO %s VALUES(%s)", TABLE_NAME, placeholders);
     private static final String SQL_SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
     private static final String SQL_SELECT_BY_ID = String.format("SELECT * FROM %s WHERE id=?", TABLE_NAME);
     private static final String SQL_UPDATE = String.format("UPDATE %s SET %s WHERE id=?", TABLE_NAME, String.join(", ", fields));
     private static final String SQL_DELETE_BY_ID = String.format("DELETE FROM %s WHERE id=?", TABLE_NAME);
 
+    public ProjectDao() {
+
+    }
+
+    /**
+     * Получение объекта класса
+     *
+     * @return объект ProjectDao
+     */
     public static synchronized ProjectDao getInstance() {
         if (instance == null) {
             instance = new ProjectDao();
         }
         return instance;
     }
-    public ProjectDao() {
-
-    }
 
     /**
      * Добавление проекта
-     * @param entity проект с данными
+     *
+     * @param entity проект
      */
     @Override
     public void create(ProjectEntity entity) throws DatabaseAccessException {
@@ -62,13 +73,13 @@ public class ProjectDao implements EntityDao<ProjectEntity> {
      * Поиск проекта
      *
      * @param id идентификатор
-     * @return найденный проект
+     * @return проект
      */
     @Override
     public Optional<ProjectEntity> read(Long id) throws DatabaseAccessException {
         Optional<ProjectEntity> entity = Optional.empty();
         try (Connection connection = connectionService.getConnection();
-        PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -85,7 +96,8 @@ public class ProjectDao implements EntityDao<ProjectEntity> {
 
     /**
      * Поиск всех проектов
-     * @return список найденных проектов
+     *
+     * @return список проектов
      */
     @Override
     public List<ProjectEntity> readAll() throws DatabaseAccessException {
@@ -108,7 +120,8 @@ public class ProjectDao implements EntityDao<ProjectEntity> {
 
     /**
      * Обновление проекта
-     * @param entity проект с данными
+     *
+     * @param entity проект
      */
     @Override
     public void update(ProjectEntity entity) throws DatabaseAccessException {
@@ -125,6 +138,7 @@ public class ProjectDao implements EntityDao<ProjectEntity> {
 
     /**
      * Удаление проекта по идентификатору
+     *
      * @param id идентификатор
      */
     @Override

@@ -5,15 +5,15 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
- * Фильтр кодировки символов с использованием UTF-8
+ * Фильтр кодировки символов
  */
 @WebFilter(filterName = "CharacterEncodingFilter", urlPatterns = "/*")
 public class CharacterEncodingFilter implements Filter {
 
     /**
-     * Метод инициализации
-     * @param filterConfig a <code>FilterConfig</code> обЪект который хранит параметры
-     *               конфигурации и инициализации фильтра
+     * Инициализация
+     *
+     * @param filterConfig a <code>FilterConfig</code> объект который хранит параметры фильтра
      */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -21,12 +21,13 @@ public class CharacterEncodingFilter implements Filter {
     }
 
     /**
-     * Метод фильтрации символов
-     * @param request <code>ServletRequest</code> обЪект который хранит запрос пользователя
-     * @param response <code>ServletResponse</code> объект который хранит ответ фильтра
-     * @param chain <code>FilterChain</code> для вызова следующего ресурса фильтра
-     * @throws IOException возникает в случае проблем с получением/записью данных
-     * @throws ServletException если в работе сервлета возникают проблемы
+     * Фильтрация символов
+     *
+     * @param request  <code>ServletRequest</code> запрос
+     * @param response <code>ServletResponse</code> ответ
+     * @param chain    <code>FilterChain</code> цепочка фильтров
+     * @throws IOException      возникает в случае проблем с получением/записью данных
+     * @throws ServletException если в работе фильтра возникают проблемы
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -35,7 +36,7 @@ public class CharacterEncodingFilter implements Filter {
     }
 
     /**
-     * Метод завершения работы фильтра
+     * Завершение работы фильтра
      */
     @Override
     public void destroy() {

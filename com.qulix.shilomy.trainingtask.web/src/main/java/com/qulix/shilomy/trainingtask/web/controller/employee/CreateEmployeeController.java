@@ -24,10 +24,9 @@ public class CreateEmployeeController extends HttpServlet {
 
     /**
      * Обработка GET запроса по перенаправлению на форму работника
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
      * @throws IOException ошибка получения строки для перенаправления
      */
     @Override
@@ -38,11 +37,10 @@ public class CreateEmployeeController extends HttpServlet {
 
     /**
      * Обработка POST запроса по добавлению работника
-     * @param request   объект {@link HttpServletRequest} запрос клиента
      *
-     * @param response  объект {@link HttpServletResponse} ответ сервлета
-     *
-     * @throws IOException проблема с получением строки для перенаправления
+     * @param request  {@link HttpServletRequest} запрос
+     * @param response {@link HttpServletResponse} ответ
+     * @throws IOException      проблема с получением строки для перенаправления
      * @throws ServletException ошибка сервлета при перенаправлении
      */
     @Override
