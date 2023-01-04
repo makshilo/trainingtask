@@ -1,0 +1,57 @@
+input[type=submit]{
+    background-color: #393e46;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 50px;
+    width: 120px;
+    transition-duration: 0.2s;
+}
+
+input[type=submit]:hover{
+    background-color: gray;
+}
+
+input[type=submit]:active{
+    background-color: darkgray;
+}
+
+input[type=text] {
+    width: 25%;
+    padding: 12px 20px;
+    margin: 10px;
+    background-color: #393e46;
+    border: 2px white;
+    border-radius: 4px;
+    color: white;
+  }
+
+textarea{
+    width: 40%;
+    padding: 12px 20px;
+    margin: 10px;
+    background-color: #393e46;
+    border: 2px white;
+    border-radius: 4px;
+    color: white;
+}
+
+select{
+    width: 25%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #393e46;
+    margin: 10px;
+    color: white;
+}
+
+.month-select{
+    width: 120px;
+}

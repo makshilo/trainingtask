@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Список проектов</title>
+</head>
+<body>
+<wicket:extend>
+    <a class="button" href="..">Назад</a><br><br>
+    <h3>Сотрудники</h3>
+    <table>
+        <tr>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Должность</th>
+        </tr>
+        <tr wicket:id="employees">
+            <td><span wicket:id="lastName"></span></td>
+            <td><span wicket:id="firstName"></span></td>
+            <td><span wicket:id="patronymic"></span></td>
+            <td><span wicket:id="position"></span></td>
+            <td><a class="table-button" href wicket:id="editEmployee">Изменить</a></td>
+            <td><a class="table-button" href wicket:id="deleteEmployee">Удалить</a></td>
+        </tr>
+    </table>
+    <wicket:link>
+        <a class="add-button" href="EmployeeEditPage.html">Добавить</a>
+    </wicket:link>
+</wicket:extend>
+</body>
+</html>

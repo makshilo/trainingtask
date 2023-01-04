@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<wicket:panel>
+    <h3>Задачи</h3>
+    <table>
+        <tr>
+            <th>Статус</th>
+            <th>Наименование</th>
+            <th>Наименование проекта</th>
+            <th>Работа</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Исполнитель</th>
+        </tr>
+        <tr wicket:id="tasks">
+            <td><span wicket:id="status"></span></td>
+            <td><span wicket:id="taskName"></span></td>
+            <td><span wicket:id="project"></span></td>
+            <td><span wicket:id="work"></span></td>
+            <td><span wicket:id="startDate"></span></td>
+            <td><span wicket:id="endDate"></span></td>
+            <td><span wicket:id="executor"></span></td>
+            <td><a class="table-button" href wicket:id="editTask">Изменить</a></td>
+            <td><a class="table-button" href wicket:id="deleteTask">Удалить</a></td>
+        </tr>
+    </table>
+    <a class="add-button" wicket:id="addTask" href="">Добавить</a>
+</wicket:panel>
+</body>
+</html>

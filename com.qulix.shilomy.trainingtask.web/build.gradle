@@ -31,18 +31,18 @@ dependencies {
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 }
 
-task createDatabase() {
+tasks.register('createDatabase') {
     group = 'database'
-    doLast{
-        String createQuery = new File('com.qulix.shilomy.trainingtask.web/src/main/resources/database/create.sql').text
+    doLast {
+        String createQuery = new File('src/main/resources/database/create.sql').text
         executeSqlQuery(createQuery)
     }
 }
 
-task dropDatabase() {
+tasks.register('dropDatabase') {
     group = 'database'
-    doLast{
-        String dropQuery = new File('com.qulix.shilomy.trainingtask.web/src/main/resources/database/drop.sql').text
+    doLast {
+        String dropQuery = new File('src/main/resources/database/drop.sql').text
         executeSqlQuery(dropQuery)
     }
 }
@@ -57,7 +57,7 @@ def executeSqlQuery(String query) {
     sql.close()
 }
 
-task startDatabase() {
+tasks.register('startDatabase') {
     group = 'database'
     doLast {
         def javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"
@@ -73,7 +73,7 @@ task startDatabase() {
     }
 }
 
-task stopDatabase() {
+tasks.register('stopDatabase') {
     group = 'database'
     doLast {
         executeSqlQuery('SHUTDOWN;')
@@ -89,7 +89,7 @@ tomcat {
     }
 }
 
-task startServer {
+tasks.register('startServer') {
     group = 'execution'
     description = "Start tomcat embedded server"
     dependsOn(war)

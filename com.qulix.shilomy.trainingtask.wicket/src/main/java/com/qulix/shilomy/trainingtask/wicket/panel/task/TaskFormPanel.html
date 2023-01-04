@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<wicket:panel>
+    <form wicket:id="taskForm" action="" method="post">
+        <label for="taskName">Наименование:</label><br>
+
+        <input wicket:id="taskName" maxlength="50" type="text" id="taskName">
+
+        <span wicket:id="taskNameError"></span><br><br>
+
+        <label for="project">Наименование проекта:</label><br>
+
+        <select wicket:id="project" id="project"></select>
+
+        <span wicket:id="projectError"></span><br><br>
+
+        <label for="work">Работа:</label><br>
+
+        <input wicket:id="work" type="text" id="work">
+
+        <span wicket:id="workError"></span><br><br>
+
+        <label for="startDate">Дата начала:</label><br>
+
+        <input wicket:id="startDate" type="text" id="startDate">
+
+        <span wicket:id="startDateError"></span><br><br>
+
+        <label for="endDate">Дата окончания:</label><br>
+
+        <input wicket:id="endDate" type="text" id="endDate">
+
+        <span wicket:id="endDateError"></span><br><br>
+
+        <label for="status">Статус:</label><br>
+
+        <select wicket:id="status" id="status"></select>
+
+        <span wicket:id="statusError"></span><br><br>
+
+        <label for="executor">Исполнитель:</label><br>
+
+        <select wicket:id="executor" id="executor"></select>
+
+        <span wicket:id="executorError"></span><br><br>
+
+        <input type="submit" value="Сохранить">
+    </form>
+</wicket:panel>
+</body>
+</html>

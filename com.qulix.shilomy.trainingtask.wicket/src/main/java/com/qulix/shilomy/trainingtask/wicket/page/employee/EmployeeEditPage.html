@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменить сотрудника</title>
+</head>
+<body>
+<wicket:extend>
+
+    <wicket:link>
+        <a class="button" href="EmployeeListPage.html">Назад</a>
+    </wicket:link><br><br>
+
+    <form wicket:id="employeeForm" action="" method="post">
+        <label for="firstName">Имя:</label><br>
+
+        <input maxlength="50" type="text" id="firstName" wicket:id="firstName">
+        <span wicket:id="firstNameError"></span><br><br>
+
+        <label for="lastName">Фамилия:</label><br>
+
+        <input maxlength="50" type="text" id="lastName" wicket:id="lastName">
+        <span wicket:id="lastNameError"></span><br><br>
+
+        <label for="patronymic">Отчество:</label><br>
+
+        <input maxlength="50" type="text" id="patronymic" wicket:id="patronymic">
+        <span wicket:id="patronymicError"></span><br><br>
+
+        <label for="position">Должность:</label><br>
+
+        <input maxlength="50" type="text" id="position" wicket:id="position">
+        <span wicket:id="positionError"></span><br><br>
+
+        <input type="submit" value="Сохранить">
+    </form>
+</wicket:extend>
+</body>
+</html>

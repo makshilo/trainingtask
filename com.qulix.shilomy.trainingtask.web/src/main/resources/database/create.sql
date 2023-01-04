@@ -49,8 +49,8 @@ CREATE SCHEMA trainingtaskdb
      * executor - идентификатор работника
      * id - идентификатор
      *
-     * task_list_employee_list_employee_id_fk - внешний ключ идентификатора работника
-     * task_list_project_list_project_id_fk - внешний ключ идентификатора проекта
+     * task_list_employees_employee_id_fk - внешний ключ идентификатора работника
+     * task_list_projects_project_id_fk - внешний ключ идентификатора проекта
      */
     CREATE TABLE trainingtaskdb.tasks
     (
@@ -63,10 +63,10 @@ CREATE SCHEMA trainingtaskdb
         executor INTEGER,
         id          INTEGER identity,
         PRIMARY KEY (id),
-        CONSTRAINT task_list_employee_list_employee_id_fk
-            FOREIGN KEY (executor) REFERENCES trainingtaskdb.employee_list
+        CONSTRAINT task_list_employees_employee_id_fk
+            FOREIGN KEY (executor) REFERENCES trainingtaskdb.employees
                 ON UPDATE CASCADE ON DELETE SET NULL,
-        CONSTRAINT task_list_project_list_project_id_fk
-            FOREIGN KEY (project) REFERENCES trainingtaskdb.project_list
+        CONSTRAINT task_list_projects_project_id_fk
+            FOREIGN KEY (project) REFERENCES trainingtaskdb.projects
                 ON UPDATE CASCADE ON DELETE CASCADE
     )

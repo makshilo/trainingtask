@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Список проектов</title>
+</head>
+<body>
+<wicket:extend>
+    <a class="button" href="..">Назад</a><br><br>
+    <h3>Проекты</h3>
+    <table>
+        <tr>
+            <th>Наименование</th>
+            <th>Описание</th>
+        </tr>
+        <tr wicket:id="projects">
+            <td><span wicket:id="name"></span></td>
+            <td><span wicket:id="description"></span></td>
+            <td><a class="table-button" href wicket:id="editProject">Изменить</a></td>
+            <td><a class="table-button" href wicket:id="deleteProject">Удалить</a></td>
+        </tr>
+    </table>
+    <wicket:link>
+        <a class="add-button" href="ProjectEditPage.html">Добавить</a>
+    </wicket:link>
+</wicket:extend>
+</body>
+</html>
