@@ -7,13 +7,14 @@ import com.qulix.shilomy.trainingtask.wicket.link.EmployeeEditLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.List;
 
 public class EmployeeTable extends ListView<EmployeeEntity> {
 
-    public static final String EDIT_EMPLOYEE = "editEmployee";
-    public static final String DELETE_EMPLOYEE = "deleteEmployee";
+    private static final String EDIT_EMPLOYEE = "editEmployee";
+    private static final String DELETE_EMPLOYEE = "deleteEmployee";
 
     public EmployeeTable(String id, List<EmployeeEntity> list) {
         super(id, list);
@@ -26,7 +27,7 @@ public class EmployeeTable extends ListView<EmployeeEntity> {
         item.add(new Label(EmployeeParam.FIRST_NAME.get(), employee.getFirstName()));
         item.add(new Label(EmployeeParam.PATRONYMIC.get(), employee.getPatronymic()));
         item.add(new Label(EmployeeParam.POSITION.get(), employee.getPosition()));
-        item.add(new EmployeeEditLink(EDIT_EMPLOYEE, employee));
+        item.add(new EmployeeEditLink(EDIT_EMPLOYEE, employee, new PageParameters()));
         item.add(new EmployeeDeleteLink(DELETE_EMPLOYEE, employee));
     }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<wicket:panel>
+    <form wicket:id="projectForm" action="" method="post">
+        <label for="name">Наименование:</label><br>
+
+        <input maxlength="100" type="text" id="name" wicket:id="name">
+
+        <span wicket:id="nameError"></span><br><br>
+
+        <label for="description">Описание:</label><br>
+
+        <textarea maxlength="1000" id="description" rows="4" cols="50"
+                  wicket:id="description"></textarea>
+
+        <span wicket:id="descriptionError"></span><br><br>
+
+        <input type="submit" value="Сохранить">
+    </form>
+</wicket:panel>
+</body>
+</html>

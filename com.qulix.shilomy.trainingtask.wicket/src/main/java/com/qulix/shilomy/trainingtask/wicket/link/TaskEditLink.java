@@ -8,20 +8,21 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class TaskEditLink extends Link<Void> {
     private final TaskEntity task;
+    private final PageParameters parameters;
 
-    public TaskEditLink(String id, TaskEntity task) {
+    public TaskEditLink(String id, TaskEntity task, PageParameters parameters) {
         super(id);
         this.task = task;
+        this.parameters = parameters;
     }
 
     @Override
     public void onClick() {
         if (task.getId() != null) {
-            PageParameters parameters = new PageParameters();
             parameters.add(TaskParam.ID.get(), task.getId());
             setResponsePage(TaskEditPage.class, parameters);
         } else {
-            setResponsePage(TaskEditPage.class);
+            setResponsePage(TaskEditPage.class, parameters);
         }
     }
 }

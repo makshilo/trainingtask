@@ -6,11 +6,11 @@ import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
 import com.qulix.shilomy.trainingtask.web.service.EntityService;
 import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
 import com.qulix.shilomy.trainingtask.wicket.page.BasePage;
-import com.qulix.shilomy.trainingtask.wicket.table.ProjectTable;
+import com.qulix.shilomy.trainingtask.wicket.panel.project.ProjectListPanel;
 
 public class ProjectListPage extends BasePage {
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
     public ProjectListPage() {
-        add(new ProjectTable(ProjectParam.PROJECTS.get(), projectService.findAll()));
+        add(new ProjectListPanel(ProjectParam.PROJECTS.get(), projectService.findAll()));
     }
 }

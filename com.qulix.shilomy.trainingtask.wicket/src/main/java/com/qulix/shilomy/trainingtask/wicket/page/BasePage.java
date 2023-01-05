@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 public abstract class BasePage extends WebPage {
-    public static final String HOME = "home";
+    private static final String HOME = "home";
 
     public BasePage() {
         add(new BookmarkablePageLink<>(HOME, MainPage.class));

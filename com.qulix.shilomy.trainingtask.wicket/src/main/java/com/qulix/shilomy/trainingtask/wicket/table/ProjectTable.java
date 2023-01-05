@@ -8,14 +8,15 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.List;
 
 public class ProjectTable extends ListView<ProjectEntity> {
 
-    public static final String NAME = "name";
-    public static final String EDIT_PROJECT = "editProject";
-    public static final String DELETE_PROJECT = "deleteProject";
+    private static final String NAME = "name";
+    private static final String EDIT_PROJECT = "editProject";
+    private static final String DELETE_PROJECT = "deleteProject";
 
     public ProjectTable(String id, List<ProjectEntity> list) {
         super(id, list);
@@ -26,7 +27,7 @@ public class ProjectTable extends ListView<ProjectEntity> {
         ProjectEntity project = item.getModelObject();
         item.add(new Label(NAME, project.getName()));
         item.add(new MultiLineLabel(ProjectParam.DESCRIPTION.get(), project.getDescription()));
-        item.add(new ProjectEditLink(EDIT_PROJECT, project));
+        item.add(new ProjectEditLink(EDIT_PROJECT, project, new PageParameters()));
         item.add(new ProjectDeleteLink(DELETE_PROJECT, project));
     }
 }

@@ -8,16 +8,21 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class ProjectEditLink extends Link<ProjectEntity> {
     private final ProjectEntity project;
+    private PageParameters parameters;
 
-    public ProjectEditLink(String id, ProjectEntity project) {
+    public ProjectEditLink(String id, ProjectEntity project, PageParameters parameters) {
         super(id);
         this.project = project;
+        this.parameters = parameters;
     }
 
     @Override
     public void onClick() {
-        PageParameters parameters = new PageParameters();
-        parameters.add(ProjectParam.ID.get(), project.getId());
-        setResponsePage(ProjectEditPage.class, parameters);
+        if (project.getId() != null) {
+            parameters.add(ProjectParam.ID.get(), project.getId());
+            setResponsePage(ProjectEditPage.class, parameters);
+        } else {
+            setResponsePage(ProjectEditPage.class, parameters);
+        }
     }
 }

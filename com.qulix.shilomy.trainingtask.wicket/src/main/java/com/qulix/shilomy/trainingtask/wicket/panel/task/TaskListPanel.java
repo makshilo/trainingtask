@@ -6,18 +6,18 @@ import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.wicket.link.TaskEditLink;
 import com.qulix.shilomy.trainingtask.wicket.table.TaskTable;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.List;
 
 public class TaskListPanel extends Panel {
-    public static final String EMPTY_STRING = "";
-    public static final long ZERO_LONG = 0L;
-    public static final String ADD_TASK = "addTask";
+    private static final String EMPTY_STRING = "";
+    private static final long ZERO_LONG = 0L;
+    private static final String ADD_TASK = "addTask";
 
-    public TaskListPanel(String id, List<TaskEntity> tasks) {
+    public TaskListPanel(String id, List<TaskEntity> tasks, PageParameters parameters) {
         super(id);
-
-        add(new TaskTable(TaskParam.TASKS.get(), tasks));
+        add(new TaskTable(TaskParam.TASKS.get(), tasks, parameters));
         add(new TaskEditLink(ADD_TASK,
                 new TaskEntity(
                         TaskStatus.NOT_STARTED,
@@ -26,6 +26,7 @@ public class TaskListPanel extends Panel {
                         EMPTY_STRING,
                         null,
                         null,
-                        ZERO_LONG)));
+                        ZERO_LONG),
+                parameters));
     }
 }

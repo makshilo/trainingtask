@@ -44,14 +44,15 @@ public class TaskForm extends Form<ValueMap> {
     private static final String END_DATE_ERROR = "endDateError";
     private static final String STATUS_ERROR = "statusError";
     private static final String EXECUTOR_ERROR = "executorError";
-    public static final String NAME = "name";
+    private static final String NAME = "name";
+
     TaskEntity task;
 
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
     private final EntityService<TaskEntity> taskService = TaskServiceImpl.getInstance(TaskDao.getInstance());
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
-    public TaskForm(String id, TaskEntity task) {
+    public TaskForm(String id, TaskEntity task, boolean projectLock) {
         super(id, new CompoundPropertyModel<>(new ValueMap()));
 
         this.task = task;
@@ -63,6 +64,13 @@ public class TaskForm extends Form<ValueMap> {
                             TaskParam.WORK.get(), task.getWork(),
                             TaskParam.START_DATE.get(), task.getStartDate().toString(),
                             TaskParam.END_DATE.get(), task.getEndDate().toString(),
+                            TaskParam.STATUS.get(), task.getStatus(),
+                            TaskParam.EXECUTOR.get(), employeeService.get(task.getExecutorId()))));
+        } else {
+            setModelObject(new ValueMap(
+                    Map.of(TaskParam.TASK_NAME.get(), task.getName(),
+                            TaskParam.PROJECT.get(), projectService.get(task.getProjectId()),
+                            TaskParam.WORK.get(), task.getWork(),
                             TaskParam.STATUS.get(), task.getStatus(),
                             TaskParam.EXECUTOR.get(), employeeService.get(task.getExecutorId()))));
         }
@@ -79,10 +87,8 @@ public class TaskForm extends Form<ValueMap> {
                 .setRequired(true));
         add(new ComponentFeedbackPanel(PROJECT_ID_ERROR, get(TaskParam.PROJECT.get())));
 
-        if ((boolean) getSession().getAttribute("projectLock")) {
+        if (projectLock) {
             get(TaskParam.PROJECT.get()).setEnabled(false);
-            getSession().removeAttribute("projectLock");
-            getSession().removeAttribute("lockedProject");
         }
 
         add(new TextField<String>(TaskParam.WORK.get())
@@ -105,7 +111,7 @@ public class TaskForm extends Form<ValueMap> {
 
         add(new DropDownChoice<>(
                 TaskParam.STATUS.get(),
-                Arrays.stream(TaskStatus.values()).toList(),
+                Arrays.asList(TaskStatus.values()),
                 new ChoiceRenderer<>(TaskParam.STATUS.get()))
                 .setLabel(Model.of(STATUS_LABEL))
                 .setRequired(true));

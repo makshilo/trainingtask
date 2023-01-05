@@ -14,14 +14,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 public class EmployeeForm extends Form<EmployeeEntity> {
-    public static final String FIRST_NAME_LABEL = "Имя";
-    public static final String FIRST_NAME_ERROR = "firstNameError";
-    public static final String LAST_NAME_LABEL = "Фамилия";
-    public static final String LAST_NAME_ERROR = "lastNameError";
-    public static final String PATRONYMIC_LABEL = "Отчество";
-    public static final String PATRONYMIC_ERROR = "patronymicError";
-    public static final String POSITION_LABEL = "Должность";
-    public static final String POSITION_ERROR = "positionError";
+    private static final String FIRST_NAME_LABEL = "Имя";
+    private static final String FIRST_NAME_ERROR = "firstNameError";
+    private static final String LAST_NAME_LABEL = "Фамилия";
+    private static final String LAST_NAME_ERROR = "lastNameError";
+    private static final String PATRONYMIC_LABEL = "Отчество";
+    private static final String PATRONYMIC_ERROR = "patronymicError";
+    private static final String POSITION_LABEL = "Должность";
+    private static final String POSITION_ERROR = "positionError";
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
     public EmployeeForm(String id, EmployeeEntity employee) {

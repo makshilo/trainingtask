@@ -8,16 +8,21 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class EmployeeEditLink extends Link<Void> {
     private final EmployeeEntity employee;
+    private PageParameters parameters;
 
-    public EmployeeEditLink(String id, EmployeeEntity employee) {
+    public EmployeeEditLink(String id, EmployeeEntity employee, PageParameters parameters) {
         super(id);
         this.employee = employee;
+        this.parameters = parameters;
     }
 
     @Override
     public void onClick() {
-        PageParameters parameters = new PageParameters();
-        parameters.add(EmployeeParam.ID.get(), employee.getId());
-        setResponsePage(EmployeeEditPage.class, parameters);
+        if (employee.getId() != null) {
+            parameters.add(EmployeeParam.ID.get(), employee.getId());
+            setResponsePage(EmployeeEditPage.class, parameters);
+        } else {
+            setResponsePage(EmployeeEditPage.class, parameters);
+        }
     }
 }

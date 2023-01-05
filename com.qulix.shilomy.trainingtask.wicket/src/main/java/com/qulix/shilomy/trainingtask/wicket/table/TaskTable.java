@@ -14,19 +14,23 @@ import com.qulix.shilomy.trainingtask.wicket.link.TaskEditLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class TaskTable extends ListView<TaskEntity> {
-    public static final String EDIT_TASK = "editTask";
-    public static final String DELETE_TASK = "deleteTask";
+    private static final String EDIT_TASK = "editTask";
+    private static final String DELETE_TASK = "deleteTask";
+
+    private PageParameters parameters;
 
     private final EntityService<ProjectEntity> projectService = ProjectServiceImpl.getInstance(ProjectDao.getInstance());
     private final EntityService<EmployeeEntity> employeeService = EmployeeServiceImpl.getInstance(EmployeeDao.getInstance());
 
-    public TaskTable(String id, List<TaskEntity> list) {
+    public TaskTable(String id, List<TaskEntity> list, PageParameters parameters) {
         super(id, list);
+        this.parameters = parameters;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class TaskTable extends ListView<TaskEntity> {
         item.add(new Label(TaskParam.START_DATE.get(), task.getStartDate().toString()));
         item.add(new Label(TaskParam.END_DATE.get(), task.getEndDate().toString()));
         item.add(new Label(TaskParam.EXECUTOR.get(), getEmployeeNames().get(task.getExecutorId())));
-        item.add(new TaskEditLink(EDIT_TASK, task));
+        item.add(new TaskEditLink(EDIT_TASK, task, parameters));
         item.add(new TaskDeleteLink(DELETE_TASK, task));
     }
 

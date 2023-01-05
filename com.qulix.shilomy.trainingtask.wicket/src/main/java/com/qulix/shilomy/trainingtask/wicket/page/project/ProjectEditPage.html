@@ -10,22 +10,8 @@
         <a class="button" href="ProjectListPage.html">Назад</a>
     </wicket:link><br><br>
 
-    <form wicket:id="projectForm" action="" method="post">
-        <label for="name">Наименование:</label><br>
+    <div wicket:id="projectFormPanel"></div>
 
-        <input maxlength="100" type="text" id="name" wicket:id="name">
-
-        <span wicket:id="nameError"></span><br><br>
-
-        <label for="description">Описание:</label><br>
-
-        <textarea maxlength="1000" id="description" rows="4" cols="50"
-                  wicket:id="description"></textarea>
-
-        <span wicket:id="descriptionError"></span><br><br>
-
-        <input type="submit" value="Сохранить">
-    </form>
     <div wicket:id="tasks"></div>
 </wicket:extend>
 </body>
