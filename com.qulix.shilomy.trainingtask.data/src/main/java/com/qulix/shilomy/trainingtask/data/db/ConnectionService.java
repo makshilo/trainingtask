@@ -1,6 +1,6 @@
-package com.qulix.shilomy.trainingtask.web.db;
+package com.qulix.shilomy.trainingtask.data.db;
 
-import com.qulix.shilomy.trainingtask.web.exception.ConnectionServiceInitializationFailed;
+import com.qulix.shilomy.trainingtask.data.exception.ConnectionServiceInitializationFailed;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.wicket.table;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.data.param.EmployeeParam;
 import com.qulix.shilomy.trainingtask.wicket.link.EmployeeDeleteLink;
 import com.qulix.shilomy.trainingtask.wicket.link.EmployeeEditLink;
 import org.apache.wicket.markup.html.basic.Label;

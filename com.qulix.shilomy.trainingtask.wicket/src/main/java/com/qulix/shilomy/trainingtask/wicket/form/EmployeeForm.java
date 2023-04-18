@@ -1,10 +1,10 @@
 package com.qulix.shilomy.trainingtask.wicket.form;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
-import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
-import com.qulix.shilomy.trainingtask.web.service.EntityService;
-import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
+import com.qulix.shilomy.trainingtask.data.dao.impl.EmployeeDao;
+import com.qulix.shilomy.trainingtask.data.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.data.param.EmployeeParam;
+import com.qulix.shilomy.trainingtask.data.service.EntityService;
+import com.qulix.shilomy.trainingtask.data.service.impl.EmployeeServiceImpl;
 import com.qulix.shilomy.trainingtask.wicket.page.employee.EmployeeListPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;

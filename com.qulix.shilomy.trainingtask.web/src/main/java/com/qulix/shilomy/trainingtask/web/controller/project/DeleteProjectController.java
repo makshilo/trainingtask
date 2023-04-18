@@ -1,15 +1,17 @@
 package com.qulix.shilomy.trainingtask.web.controller.project;
 
-import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.service.EntityService;
-import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import com.qulix.shilomy.trainingtask.data.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.data.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.data.param.ProjectParam;
+import com.qulix.shilomy.trainingtask.data.service.EntityService;
+import com.qulix.shilomy.trainingtask.data.service.impl.ProjectServiceImpl;
 
 /**
  * Сервлет обрабатывающий запросы по удалению проекта

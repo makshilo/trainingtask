@@ -1,14 +1,14 @@
 package com.qulix.shilomy.trainingtask.wicket.table;
 
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskParam;
-import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
-import com.qulix.shilomy.trainingtask.web.dao.impl.ProjectDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
-import com.qulix.shilomy.trainingtask.web.service.EntityService;
-import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
-import com.qulix.shilomy.trainingtask.web.service.impl.ProjectServiceImpl;
+import com.qulix.shilomy.trainingtask.data.dao.impl.EmployeeDao;
+import com.qulix.shilomy.trainingtask.data.dao.impl.ProjectDao;
+import com.qulix.shilomy.trainingtask.data.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.TaskEntity;
+import com.qulix.shilomy.trainingtask.data.param.TaskParam;
+import com.qulix.shilomy.trainingtask.data.service.EntityService;
+import com.qulix.shilomy.trainingtask.data.service.impl.EmployeeServiceImpl;
+import com.qulix.shilomy.trainingtask.data.service.impl.ProjectServiceImpl;
 import com.qulix.shilomy.trainingtask.wicket.link.TaskDeleteLink;
 import com.qulix.shilomy.trainingtask.wicket.link.TaskEditLink;
 import org.apache.wicket.markup.html.basic.Label;

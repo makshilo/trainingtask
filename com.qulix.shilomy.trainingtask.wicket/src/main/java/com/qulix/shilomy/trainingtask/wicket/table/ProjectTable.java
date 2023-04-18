@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.wicket.table;
 
-import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.data.param.ProjectParam;
 import com.qulix.shilomy.trainingtask.wicket.link.ProjectDeleteLink;
 import com.qulix.shilomy.trainingtask.wicket.link.ProjectEditLink;
 import org.apache.wicket.markup.html.basic.Label;

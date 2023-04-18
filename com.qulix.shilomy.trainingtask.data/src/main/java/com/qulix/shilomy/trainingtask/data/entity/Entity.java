@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.entity;
+package com.qulix.shilomy.trainingtask.data.entity;
 
 /**
  * Общие требования для моделей

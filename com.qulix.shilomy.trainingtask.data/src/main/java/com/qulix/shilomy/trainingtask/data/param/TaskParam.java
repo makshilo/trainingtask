@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.task;
+package com.qulix.shilomy.trainingtask.data.param;
 
 /**
  * Константы задачи

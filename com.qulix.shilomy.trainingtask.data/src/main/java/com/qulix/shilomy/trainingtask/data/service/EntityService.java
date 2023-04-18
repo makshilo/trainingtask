@@ -1,6 +1,6 @@
-package com.qulix.shilomy.trainingtask.web.service;
+package com.qulix.shilomy.trainingtask.data.service;
 
-import com.qulix.shilomy.trainingtask.web.entity.Entity;
+import com.qulix.shilomy.trainingtask.data.entity.Entity;
 
 import java.util.List;
 

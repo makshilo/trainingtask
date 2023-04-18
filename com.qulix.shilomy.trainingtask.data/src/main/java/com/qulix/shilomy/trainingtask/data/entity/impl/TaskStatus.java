@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.entity.impl;
+package com.qulix.shilomy.trainingtask.data.entity.impl;
 
 /**
  * Статусы задачи

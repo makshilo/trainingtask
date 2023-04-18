@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.exception;
+package com.qulix.shilomy.trainingtask.data.exception;
 
 /**
  * Ошибка инициализации сервиса подключений.

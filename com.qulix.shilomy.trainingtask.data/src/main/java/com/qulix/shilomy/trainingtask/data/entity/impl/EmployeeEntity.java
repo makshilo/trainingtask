@@ -1,6 +1,6 @@
-package com.qulix.shilomy.trainingtask.web.entity.impl;
+package com.qulix.shilomy.trainingtask.data.entity.impl;
 
-import com.qulix.shilomy.trainingtask.web.entity.Entity;
+import com.qulix.shilomy.trainingtask.data.entity.Entity;
 
 /**
  * Сотрудник

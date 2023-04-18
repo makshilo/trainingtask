@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.wicket.page.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskParam;
+import com.qulix.shilomy.trainingtask.data.param.TaskParam;
 import com.qulix.shilomy.trainingtask.wicket.page.BasePage;
 import com.qulix.shilomy.trainingtask.wicket.panel.task.TaskFormPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;

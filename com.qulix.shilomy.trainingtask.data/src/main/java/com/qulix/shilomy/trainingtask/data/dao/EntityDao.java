@@ -1,7 +1,7 @@
-package com.qulix.shilomy.trainingtask.web.dao;
+package com.qulix.shilomy.trainingtask.data.dao;
 
-import com.qulix.shilomy.trainingtask.web.entity.Entity;
-import com.qulix.shilomy.trainingtask.web.exception.DatabaseAccessException;
+import com.qulix.shilomy.trainingtask.data.entity.Entity;
+import com.qulix.shilomy.trainingtask.data.exception.DatabaseAccessException;
 
 import java.util.List;
 import java.util.Optional;

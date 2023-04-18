@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.employee;
+package com.qulix.shilomy.trainingtask.data.param;
 
 /**
  * Константы сотрудника

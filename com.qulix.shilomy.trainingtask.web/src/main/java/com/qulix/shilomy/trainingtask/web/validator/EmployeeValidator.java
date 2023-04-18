@@ -1,12 +1,11 @@
 package com.qulix.shilomy.trainingtask.web.validator;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
+import com.qulix.shilomy.trainingtask.data.param.EmployeeParam;
 import com.qulix.shilomy.trainingtask.web.validator.employee.FirstNameValidator;
 import com.qulix.shilomy.trainingtask.web.validator.employee.LastNameValidator;
 import com.qulix.shilomy.trainingtask.web.validator.employee.PatronymicValidator;
 import com.qulix.shilomy.trainingtask.web.validator.employee.PositionValidator;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Валидатор сотрудника

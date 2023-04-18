@@ -1,4 +1,4 @@
-package com.qulix.shilomy.trainingtask.web.controller.project;
+package com.qulix.shilomy.trainingtask.data.param;
 
 /**
  * Константы проекта

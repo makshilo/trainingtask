@@ -1,10 +1,10 @@
 package com.qulix.shilomy.trainingtask.wicket.panel.task;
 
-import com.qulix.shilomy.trainingtask.web.dao.impl.TaskDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
-import com.qulix.shilomy.trainingtask.web.service.EntityService;
-import com.qulix.shilomy.trainingtask.web.service.impl.TaskServiceImpl;
+import com.qulix.shilomy.trainingtask.data.dao.impl.TaskDao;
+import com.qulix.shilomy.trainingtask.data.entity.impl.TaskEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.TaskStatus;
+import com.qulix.shilomy.trainingtask.data.service.EntityService;
+import com.qulix.shilomy.trainingtask.data.service.impl.TaskServiceImpl;
 import com.qulix.shilomy.trainingtask.wicket.form.TaskForm;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.string.StringValue;

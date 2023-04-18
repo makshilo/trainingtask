@@ -1,9 +1,9 @@
 package com.qulix.shilomy.trainingtask.wicket.panel.employee;
 
-import com.qulix.shilomy.trainingtask.web.dao.impl.EmployeeDao;
-import com.qulix.shilomy.trainingtask.web.entity.impl.EmployeeEntity;
-import com.qulix.shilomy.trainingtask.web.service.EntityService;
-import com.qulix.shilomy.trainingtask.web.service.impl.EmployeeServiceImpl;
+import com.qulix.shilomy.trainingtask.data.dao.impl.EmployeeDao;
+import com.qulix.shilomy.trainingtask.data.entity.impl.EmployeeEntity;
+import com.qulix.shilomy.trainingtask.data.service.EntityService;
+import com.qulix.shilomy.trainingtask.data.service.impl.EmployeeServiceImpl;
 import com.qulix.shilomy.trainingtask.wicket.form.EmployeeForm;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.string.StringValue;

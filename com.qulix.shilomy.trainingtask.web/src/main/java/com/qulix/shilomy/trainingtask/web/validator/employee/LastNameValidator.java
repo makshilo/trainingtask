@@ -1,10 +1,9 @@
 package com.qulix.shilomy.trainingtask.web.validator.employee;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
+import com.qulix.shilomy.trainingtask.data.param.EmployeeParam;
 import com.qulix.shilomy.trainingtask.web.validator.ValidatorChain;
 import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Валидатор фамилии

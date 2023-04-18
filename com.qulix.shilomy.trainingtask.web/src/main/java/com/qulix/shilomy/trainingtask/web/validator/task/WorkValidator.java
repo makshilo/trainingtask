@@ -1,11 +1,10 @@
 package com.qulix.shilomy.trainingtask.web.validator.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskParam;
+import com.qulix.shilomy.trainingtask.data.param.TaskParam;
 import com.qulix.shilomy.trainingtask.web.validator.ValidatorChain;
 import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
 import com.qulix.shilomy.trainingtask.web.validator.impl.RegexpCheck;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Валидатор работы

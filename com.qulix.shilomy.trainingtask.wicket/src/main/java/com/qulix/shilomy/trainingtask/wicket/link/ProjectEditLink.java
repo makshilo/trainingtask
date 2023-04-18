@@ -1,7 +1,7 @@
 package com.qulix.shilomy.trainingtask.wicket.link;
 
-import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
-import com.qulix.shilomy.trainingtask.web.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.ProjectEntity;
+import com.qulix.shilomy.trainingtask.data.param.ProjectParam;
 import com.qulix.shilomy.trainingtask.wicket.page.project.ProjectEditPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;

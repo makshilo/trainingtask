@@ -1,8 +1,8 @@
 package com.qulix.shilomy.trainingtask.wicket.panel.task;
 
-import com.qulix.shilomy.trainingtask.web.controller.task.TaskParam;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskEntity;
-import com.qulix.shilomy.trainingtask.web.entity.impl.TaskStatus;
+import com.qulix.shilomy.trainingtask.data.entity.impl.TaskEntity;
+import com.qulix.shilomy.trainingtask.data.entity.impl.TaskStatus;
+import com.qulix.shilomy.trainingtask.data.param.TaskParam;
 import com.qulix.shilomy.trainingtask.wicket.link.TaskEditLink;
 import com.qulix.shilomy.trainingtask.wicket.table.TaskTable;
 import org.apache.wicket.markup.html.panel.Panel;

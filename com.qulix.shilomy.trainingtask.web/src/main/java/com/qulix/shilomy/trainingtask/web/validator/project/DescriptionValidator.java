@@ -1,10 +1,9 @@
 package com.qulix.shilomy.trainingtask.web.validator.project;
 
-import com.qulix.shilomy.trainingtask.web.controller.project.ProjectParam;
+import com.qulix.shilomy.trainingtask.data.param.ProjectParam;
 import com.qulix.shilomy.trainingtask.web.validator.ValidatorChain;
 import com.qulix.shilomy.trainingtask.web.validator.impl.EmptinessCheck;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Валидатор описания

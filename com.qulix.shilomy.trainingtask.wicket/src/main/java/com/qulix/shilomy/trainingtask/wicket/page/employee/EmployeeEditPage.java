@@ -1,6 +1,6 @@
 package com.qulix.shilomy.trainingtask.wicket.page.employee;
 
-import com.qulix.shilomy.trainingtask.web.controller.employee.EmployeeParam;
+import com.qulix.shilomy.trainingtask.data.param.EmployeeParam;
 import com.qulix.shilomy.trainingtask.wicket.page.BasePage;
 import com.qulix.shilomy.trainingtask.wicket.panel.employee.EmployeeFormPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
