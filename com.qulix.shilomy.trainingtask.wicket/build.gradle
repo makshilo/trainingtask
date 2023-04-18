@@ -3,14 +3,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'org.hsqldb', name: 'hsqldb', version: '2.6.1'
+
     }
 }
 
 plugins {
     id 'java'
     id 'war'
-    id 'com.github.sahara3.tomcat-runner' version '0.2.1'
+    id "org.gretty" version "4.0.3"
 }
 
 compileJava.options.encoding = 'UTF-8'
@@ -23,8 +23,8 @@ repositories {
 }
 
 dependencies {
-    implementation project(':com.qulix.shilomy.trainingtask.web')
-    implementation 'org.apache.wicket:wicket:9.12.0'
+    implementation project(':com.qulix.shilomy.trainingtask.data')
+    implementation 'org.apache.wicket:wicket:+'
 }
 
 sourceSets {
@@ -36,18 +36,14 @@ sourceSets {
     }
 }
 
-tomcat {
-    version = 9.0
-    port = serverPort as int
-
-    webapp("build/libs/${projectDir.name}.war") {
-        contextPath = webAppContextPath
-    }
+gretty {
+    httpPort = serverPort as Integer
+    contextPath = webAppContextPath
+    tomcat10Version = '9.0.70'
 }
 
 tasks.register('startServer') {
     group = 'execution'
     description = "Start tomcat embedded server"
-    dependsOn(war)
-    finalizedBy tomcatRun
+    finalizedBy tomcatRunWar
 }

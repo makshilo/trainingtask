@@ -1,0 +1,74 @@
+import groovy.sql.Sql
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.hsqldb', name: 'hsqldb', version: '2.7.1'
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+compileJava.options.encoding = 'UTF-8'
+group 'com.qulix.shilomy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.7.1'
+}
+
+tasks.register('createDatabase') {
+    group = 'database'
+    doLast {
+        String createQuery = new File('src/main/resources/database/create.sql').text
+        executeSqlQuery(createQuery)
+    }
+}
+
+tasks.register('dropDatabase') {
+    group = 'database'
+    doLast {
+        String dropQuery = new File('src/main/resources/database/drop.sql').text
+        executeSqlQuery(dropQuery)
+    }
+}
+
+def executeSqlQuery(String query) {
+    ClassLoader loader = Sql.class.classLoader
+    project.buildscript.configurations.classpath.each { File file ->
+        loader.addURL(file.toURI().toURL())
+    }
+    def sql = Sql.newInstance(dbUrl, dbUser, dbPassword, dbDrive)
+    sql.execute(query)
+    sql.close()
+}
+
+tasks.register('startDatabase') {
+    group = 'database'
+    doLast {
+        def javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"
+        def classpath = project.buildscript.configurations.classpath.asPath
+
+        def className = "org.hsqldb.server.Server"
+        def filePath = "file:${projectDir}/${dbFile};user=${dbUser};password=${dbPassword}"
+
+        def builder = new ProcessBuilder(javaBin, "-cp", classpath, className, "-database.0", filePath, "-dbname.0", dbName)
+        builder.redirectErrorStream(true)
+        builder.directory(projectDir)
+        builder.start()
+    }
+}
+
+tasks.register('stopDatabase') {
+    group = 'database'
+    doLast {
+        executeSqlQuery('SHUTDOWN;')
+    }
+}
