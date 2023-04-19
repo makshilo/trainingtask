@@ -7,6 +7,7 @@ import com.qulix.shilomy.trainingtask.data.entity.impl.TaskStatus;
 import com.qulix.shilomy.trainingtask.data.exception.DatabaseAccessException;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,8 +67,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
             statement.setString(2, entity.getName());
             statement.setLong(3, entity.getProjectId());
             statement.setString(4, entity.getWork());
-            statement.setDate(5, entity.getStartDate());
-            statement.setDate(6, entity.getEndDate());
+            statement.setDate(5, Date.valueOf(entity.getStartDate()));
+            statement.setDate(6, Date.valueOf(entity.getEndDate()));
             statement.setLong(7, entity.getExecutorId());
             statement.setNull(8, INTEGER);
             statement.executeUpdate();
@@ -95,8 +96,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
                         resultSet.getString(2),
                         resultSet.getLong(3),
                         resultSet.getString(4),
-                        resultSet.getDate(5),
-                        resultSet.getDate(6),
+                        resultSet.getDate(5).toLocalDate(),
+                        resultSet.getDate(6).toLocalDate(),
                         resultSet.getLong(7),
                         id));
             }
@@ -123,8 +124,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
                         resultSet.getString(2),
                         resultSet.getLong(3),
                         resultSet.getString(4),
-                        resultSet.getDate(5),
-                        resultSet.getDate(6),
+                        resultSet.getDate(5).toLocalDate(),
+                        resultSet.getDate(6).toLocalDate(),
                         resultSet.getLong(7),
                         resultSet.getLong(8))
                 );
@@ -148,8 +149,8 @@ public class TaskDao implements EntityDao<TaskEntity> {
             statement.setString(2, entity.getName());
             statement.setLong(3, entity.getProjectId());
             statement.setString(4, entity.getWork());
-            statement.setDate(5, entity.getStartDate());
-            statement.setDate(6, entity.getEndDate());
+            statement.setDate(5, Date.valueOf(entity.getStartDate()));
+            statement.setDate(6, Date.valueOf(entity.getEndDate()));
             statement.setLong(7, entity.getExecutorId());
             statement.setLong(8, entity.getId());
             statement.executeUpdate();

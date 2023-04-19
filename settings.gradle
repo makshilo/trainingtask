@@ -1,4 +1,5 @@
 rootProject.name = 'trainingtask'
-include 'com.qulix.shilomy.trainingtask.web', 'com.qulix.shilomy.trainingtask.wicket'
+include 'com.qulix.shilomy.trainingtask.web'
+include 'com.qulix.shilomy.trainingtask.wicket'
 include 'com.qulix.shilomy.trainingtask.data'
-
+include 'edu.shilomy.trainingtask.spring.mvc'

@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     implementation project(':com.qulix.shilomy.trainingtask.data')
-    implementation 'org.apache.wicket:wicket:+'
+    implementation 'org.apache.wicket:wicket:9.12.0'
 }
 
 sourceSets {

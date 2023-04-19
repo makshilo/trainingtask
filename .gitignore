@@ -1,2 +1,8 @@
 .idea/
-/database/
+.gradle
+.vscode
+build
+com.qulix.shilomy.trainingtask.data/bin
+com.qulix.shilomy.trainingtask.data/database
+com.qulix.shilomy.trainingtask.web/bin
+com.qulix.shilomy.trainingtask.wicket/bin

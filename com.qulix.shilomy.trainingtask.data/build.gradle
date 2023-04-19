@@ -27,16 +27,14 @@ dependencies {
 tasks.register('createDatabase') {
     group = 'database'
     doLast {
-        String createQuery = new File('src/main/resources/database/create.sql').text
-        executeSqlQuery(createQuery)
+        executeSqlQuery(file('src/main/resources/database/create.sql').text)
     }
 }
 
 tasks.register('dropDatabase') {
     group = 'database'
     doLast {
-        String dropQuery = new File('src/main/resources/database/drop.sql').text
-        executeSqlQuery(dropQuery)
+        executeSqlQuery(file('src/main/resources/database/drop.sql').text)
     }
 }
 

@@ -2,7 +2,7 @@ package com.qulix.shilomy.trainingtask.data.entity.impl;
 
 import com.qulix.shilomy.trainingtask.data.entity.Entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * Задача
@@ -31,12 +31,12 @@ public class TaskEntity implements Entity {
     /**
      * Дата начала
      */
-    private final Date startDate;
+    private final LocalDate startDate;
 
     /**
      * Дата окончания
      */
-    private final Date endDate;
+    private final LocalDate endDate;
 
     /**
      * Идентификатор исполнителя
@@ -60,7 +60,7 @@ public class TaskEntity implements Entity {
      * @param executorId идентификатор работника
      * @param id         идентификатор
      */
-    public TaskEntity(TaskStatus status, String name, Long projectId, String work, Date startDate, Date endDate, Long executorId, Long id) {
+    public TaskEntity(TaskStatus status, String name, Long projectId, String work, LocalDate startDate, LocalDate endDate, Long executorId, Long id) {
         this.status = status;
         this.name = name;
         this.projectId = projectId;
@@ -82,7 +82,7 @@ public class TaskEntity implements Entity {
      * @param endDate    дата окончания
      * @param executorId идентификатор работника
      */
-    public TaskEntity(TaskStatus status, String name, Long projectId, String work, Date startDate, Date endDate, Long executorId) {
+    public TaskEntity(TaskStatus status, String name, Long projectId, String work, LocalDate startDate, LocalDate endDate, Long executorId) {
         this(status, name, projectId, work, startDate, endDate, executorId, null);
     }
 
@@ -102,11 +102,11 @@ public class TaskEntity implements Entity {
         return work;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 

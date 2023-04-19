@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * Сервлет обрабатывающий запросы по редактированию задачи
@@ -73,8 +73,8 @@ public class EditTaskController extends HttpServlet {
             String executorId = request.getParameter(TaskParam.EXECUTOR.get());
             Long id = Long.parseLong(request.getParameter(TaskParam.ID.get()));
 
-            Date startDate = Date.valueOf(String.join(TaskParam.MINUS.get(), startYear, startMonth, startDay));
-            Date endDate = Date.valueOf(String.join(TaskParam.MINUS.get(), endYear, endMonth, endDay));
+            LocalDate startDate = LocalDate.parse(String.join(TaskParam.MINUS.get(), startYear, startMonth, startDay));
+            LocalDate endDate = LocalDate.parse(String.join(TaskParam.MINUS.get(), endYear, endMonth, endDay));
 
             TaskEntity newTask = new TaskEntity(status, taskName, Long.parseLong(projectId), work, startDate, endDate, Long.parseLong(executorId), id);
             taskService.update(newTask);

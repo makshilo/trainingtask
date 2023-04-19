@@ -25,7 +25,7 @@ import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.model.*;
 import org.apache.wicket.util.value.ValueMap;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -68,11 +68,14 @@ public class TaskForm extends Form<ValueMap> {
                             TaskParam.EXECUTOR.get(), employeeService.get(task.getExecutorId()))));
         } else {
             setModelObject(new ValueMap(
-                    Map.of(TaskParam.TASK_NAME.get(), task.getName(),
+                    /* Map.of(TaskParam.TASK_NAME.get(), task.getName(),
                             TaskParam.PROJECT.get(), projectService.get(task.getProjectId()),
                             TaskParam.WORK.get(), task.getWork(),
                             TaskParam.STATUS.get(), task.getStatus(),
-                            TaskParam.EXECUTOR.get(), employeeService.get(task.getExecutorId()))));
+                            TaskParam.EXECUTOR.get(), employeeService.get(task.getExecutorId())
+                            ) */
+                        )
+                    );
         }
 
         add(new TextField<String>(TaskParam.TASK_NAME.get())
@@ -136,8 +139,8 @@ public class TaskForm extends Form<ValueMap> {
                     (String) values.get(TaskParam.TASK_NAME.get()),
                     ((ProjectEntity) values.get(TaskParam.PROJECT.get())).getId(),
                     ((String) values.get(TaskParam.WORK.get())),
-                    Date.valueOf((String) values.get(TaskParam.START_DATE.get())),
-                    Date.valueOf((String) values.get(TaskParam.END_DATE.get())),
+                    LocalDate.parse((String) values.get(TaskParam.START_DATE.get())),
+                    LocalDate.parse((String) values.get(TaskParam.END_DATE.get())),
                     ((EmployeeEntity) values.get(TaskParam.EXECUTOR.get())).getId(),
                     task.getId()));
         } else {
@@ -146,8 +149,8 @@ public class TaskForm extends Form<ValueMap> {
                     (String) values.get(TaskParam.TASK_NAME.get()),
                     ((ProjectEntity) values.get(TaskParam.PROJECT.get())).getId(),
                     ((String) values.get(TaskParam.WORK.get())),
-                    Date.valueOf((String) values.get(TaskParam.START_DATE.get())),
-                    Date.valueOf((String) values.get(TaskParam.END_DATE.get())),
+                    LocalDate.parse((String) values.get(TaskParam.START_DATE.get())),
+                    LocalDate.parse((String) values.get(TaskParam.END_DATE.get())),
                     ((EmployeeEntity) values.get(TaskParam.EXECUTOR.get())).getId()));
         }
         setResponsePage(TaskListPage.class);
