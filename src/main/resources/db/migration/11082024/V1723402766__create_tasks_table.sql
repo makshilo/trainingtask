@@ -1,11 +1,11 @@
 CREATE TABLE trainingtask.tasks
 (
-    id         SERIAL PRIMARY KEY,
+    id         BIGSERIAL PRIMARY KEY,
     name       VARCHAR(200),
-    project_id INT REFERENCES trainingtask.projects(id),
-    estimate INT,
+    project_id BIGINT REFERENCES trainingtask.projects(id),
+    estimate SMALLINT,
     start_date DATE,
     end_date DATE,
     status VARCHAR(20),
-    employee_id INT REFERENCES trainingtask.employees(id)
+    employee_id BIGINT REFERENCES trainingtask.employees(id)
 );
