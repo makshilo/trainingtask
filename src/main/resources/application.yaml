@@ -7,3 +7,31 @@ spring:
     username: root
     password: root
     url: jdbc:postgresql://localhost:5432/trainingtask
+
+database:
+  entity:
+    project:
+      tableName: projects
+      columns:
+        - id
+        - name
+        - description
+    employee:
+      tableName: employees
+      columns:
+        - id
+        - surname
+        - name
+        - patronymic
+        - position
+    task:
+      tableName: tasks
+      columns:
+        - id
+        - name
+        - project_id
+        - estimate
+        - start_date
+        - end_date
+        - status
+        - employee_id

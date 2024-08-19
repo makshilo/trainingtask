@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class TrainingtaskKotlinSpringApplication
 
 fun main(args: Array<String>) {
-	runApplication<TrainingtaskKotlinSpringApplication>(*args)
+  runApplication<TrainingtaskKotlinSpringApplication>(*args)
 }
