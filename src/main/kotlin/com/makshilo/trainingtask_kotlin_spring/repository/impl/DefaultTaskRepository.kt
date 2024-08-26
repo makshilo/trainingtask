@@ -49,8 +49,7 @@ class DefaultTaskRepository(
                 val tasks = mutableListOf<Task>()
                 while (resultSet.next()) {
                   projectRepository.findById(resultSet.getLong("project_id"))?.let { project ->
-                    employeeRepository.findById(resultSet.getLong("employee_id")
-                    )?.let { employee ->
+                    employeeRepository.findById(resultSet.getLong("employee_id"))?.let { employee ->
                       Task(
                         id = resultSet.getLong("id"),
                         name = resultSet.getString("name"),

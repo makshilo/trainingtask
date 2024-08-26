@@ -1,0 +1,20 @@
+package com.makshilo.trainingtask_kotlin_spring.service.impl
+
+import com.makshilo.trainingtask_kotlin_spring.model.Project
+import com.makshilo.trainingtask_kotlin_spring.repository.AbstractEntityRepository
+import com.makshilo.trainingtask_kotlin_spring.service.ProjectRepositoryService
+import org.springframework.stereotype.Service
+
+@Service
+class DefaultProjectRepositoryService(
+  private val projectRepository: AbstractEntityRepository<Project>
+): ProjectRepositoryService {
+
+  override fun create(project: Project): Boolean = projectRepository.create(project)
+
+  override fun findAll(): List<Project> = projectRepository.findAll()
+
+  override fun findById(id: Long): Project? = projectRepository.findById(id)
+
+  override fun update(project: Project): Boolean = projectRepository.update(project)
+}
