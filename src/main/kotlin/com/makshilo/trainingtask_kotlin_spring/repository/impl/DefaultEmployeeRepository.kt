@@ -97,7 +97,7 @@ class DefaultEmployeeRepository(
       }
   }
 
-  fun deleteById(id: Long): Boolean {
+  override fun deleteById(id: Long): Boolean {
     return dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(getDeleteQuery(employeeDatabaseProperties.tableName).trim())

@@ -12,6 +12,8 @@ abstract class AbstractEntityRepository<T: Entity> {
 
   abstract fun update(entity: T): Boolean
 
+  abstract fun deleteById(id: Long): Boolean
+
   protected fun getSelectQuery(tableName: String) =
     "SELECT * FROM $tableName"
 

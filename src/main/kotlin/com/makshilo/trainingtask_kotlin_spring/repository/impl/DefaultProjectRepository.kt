@@ -89,7 +89,7 @@ class DefaultProjectRepository(
       }
   }
 
-  fun deleteById(id: Long): Boolean {
+  override fun deleteById(id: Long): Boolean {
     return dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(getDeleteQuery(projectDatabaseProperties.tableName).trim())
