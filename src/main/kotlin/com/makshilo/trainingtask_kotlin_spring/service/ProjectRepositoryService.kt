@@ -11,4 +11,6 @@ interface ProjectRepositoryService {
   fun findById(id: Long): Project?
 
   fun update(project: Project): Boolean
+
+  fun deleteById(id: Long): Boolean
 }

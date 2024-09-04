@@ -11,4 +11,6 @@ interface EmployeeRepositoryService {
   fun findById(id: Long): Employee?
 
   fun update(employee: Employee): Boolean
+
+  fun deleteById(id: Long): Boolean
 }

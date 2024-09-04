@@ -17,4 +17,6 @@ class DefaultProjectRepositoryService(
   override fun findById(id: Long): Project? = projectRepository.findById(id)
 
   override fun update(project: Project): Boolean = projectRepository.update(project)
+
+  override fun deleteById(id: Long): Boolean = projectRepository.deleteById(id)
 }

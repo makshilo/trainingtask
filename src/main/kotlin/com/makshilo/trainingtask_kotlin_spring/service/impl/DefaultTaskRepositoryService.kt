@@ -17,4 +17,6 @@ class DefaultTaskRepositoryService(
   override fun findById(id: Long): Task? = taskRepository.findById(id)
 
   override fun update(task: Task): Boolean = taskRepository.update(task)
+
+  override fun deleteById(id: Long): Boolean = taskRepository.deleteById(id)
 }

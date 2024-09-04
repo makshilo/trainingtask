@@ -17,4 +17,6 @@ class DefaultEmployeeRepositoryService(
   override fun findById(id: Long): Employee? = employeeRepository.findById(id)
 
   override fun update(employee: Employee): Boolean = employeeRepository.update(employee)
+
+  override fun deleteById(id: Long): Boolean  = employeeRepository.deleteById(id)
 }

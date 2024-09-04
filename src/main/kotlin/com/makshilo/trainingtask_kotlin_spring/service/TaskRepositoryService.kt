@@ -11,4 +11,6 @@ interface TaskRepositoryService {
   fun findById(id: Long): Task?
 
   fun update(task: Task): Boolean
+
+  fun deleteById(id: Long): Boolean
 }
