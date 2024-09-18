@@ -1,3 +1,0 @@
-package com.makshilo.trainingtask_kotlin_spring.model
-
-interface Entity
