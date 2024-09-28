@@ -1,12 +1,12 @@
 spring:
   application:
-    name: trainingtask-kotlin-spring
+    name: trainingtask
 
   datasource:
     driver-class-name: org.postgresql.Driver
     username: root
     password: root
-    url: jdbc:postgresql://localhost:5432/trainingtask
+    url: jdbc:postgresql://localhost:5432/postgres
 
 database:
   entity:
