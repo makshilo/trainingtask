@@ -1,5 +1,3 @@
-version: '3.5'
-
 services:
   postgres:
     container_name: postgres_trainingtask
@@ -31,6 +29,25 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
+  trainingtask:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: trainingtask:latest
+    container_name: trainingtask_container
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-postgres}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-root}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-root}
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres
+    restart: unless-stopped
+
 
 networks:
   postgres:
