@@ -1,40 +1,42 @@
 package com.makshilo.trainingtask.repository.impl
 
-import com.makshilo.trainingtask.config.properties.database.TaskDatabaseProperties
-import com.makshilo.trainingtask.model.Employee
-import com.makshilo.trainingtask.model.Project
 import com.makshilo.trainingtask.model.Task
 import com.makshilo.trainingtask.model.TaskStatus
-import com.makshilo.trainingtask.repository.AbstractEntityRepository
+import com.makshilo.trainingtask.repository.TaskRepository
 import com.makshilo.trainingtask.service.database.DataSourceService
 import org.springframework.stereotype.Repository
 import java.sql.Date
+import java.sql.PreparedStatement
 
-@Suppress("DuplicatedCode")
 @Repository
 class DefaultTaskRepository(
   private val dataSourceService: DataSourceService,
-  private val taskDatabaseProperties: TaskDatabaseProperties,
-  private val projectRepository: AbstractEntityRepository<Project>,
-  private val employeeRepository: AbstractEntityRepository<Employee>
-): AbstractEntityRepository<Task>() {
+): TaskRepository {
 
-  override fun create(entity: Task): Boolean {
-    return dataSourceService.getConnection()
+  override fun add(task: Task): Task {
+    dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(
-          getInsertQuery(taskDatabaseProperties.tableName, taskDatabaseProperties.columns).trim()
+          "INSERT " +
+            "INTO trainingtask.task (name, project_id, estimate, start_date, end_date, status, employee_id) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+          PreparedStatement.RETURN_GENERATED_KEYS
         )
           .use { statement ->
-            statement.setLong(1, 0)
-            statement.setString(2, entity.name)
-            entity.project.id?.let { statement.setLong(3, it) }
-            statement.setShort(4, entity.estimate)
-            statement.setDate(5, Date.valueOf(entity.startDate))
-            statement.setDate(6, Date.valueOf(entity.endDate))
-            statement.setString(7, entity.status.name)
-            entity.employee.id?.let { statement.setLong(8, it) }
-            statement.executeUpdate() > 0
+            statement.setString(1, task.name)
+            statement.setLong(2, task.projectId)
+            statement.setShort(3, task.estimate)
+            statement.setDate(4, Date.valueOf(task.startDate))
+            statement.setDate(5, Date.valueOf(task.endDate))
+            statement.setString(6, task.status.name)
+            statement.setLong(7, task.employeeId)
+            statement.executeUpdate()
+            val generatedKeys = statement.generatedKeys
+            return if (generatedKeys.next()) {
+              task.copy(id = generatedKeys.getLong(1))
+            } else {
+              task
+            }
           }
       }
   }
@@ -42,26 +44,26 @@ class DefaultTaskRepository(
   override fun findAll(): List<Task> {
     return dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getSelectQuery(taskDatabaseProperties.tableName).trim())
+        connection.prepareStatement(
+          "SELECT * FROM trainingtask.task"
+        )
           .use { statement ->
             statement.executeQuery()
               .use { resultSet ->
                 val tasks = mutableListOf<Task>()
                 while (resultSet.next()) {
-                  projectRepository.findById(resultSet.getLong("project_id"))?.let { project ->
-                    employeeRepository.findById(resultSet.getLong("employee_id"))?.let { employee ->
-                      Task(
-                        id = resultSet.getLong("id"),
-                        name = resultSet.getString("name"),
-                        project = project,
-                        estimate = resultSet.getShort("estimate"),
-                        startDate = resultSet.getDate("start_date").toLocalDate(),
-                        endDate = resultSet.getDate("end_date").toLocalDate(),
-                        status = TaskStatus.valueOf(resultSet.getString("status")),
-                        employee = employee
-                      )
-                    }
-                  }?.let { tasks.add(it) }
+                  tasks.add(
+                    Task(
+                      id = resultSet.getLong("id"),
+                      name = resultSet.getString("name"),
+                      projectId = resultSet.getLong("project_id"),
+                      estimate = resultSet.getShort("estimate"),
+                      startDate = resultSet.getDate("start_date").toLocalDate(),
+                      endDate = resultSet.getDate("end_date").toLocalDate(),
+                      status = TaskStatus.valueOf(resultSet.getString("status")),
+                      employeeId = resultSet.getLong("employee_id")
+                    )
+                  )
                 }
                 tasks
               }
@@ -72,64 +74,67 @@ class DefaultTaskRepository(
   override fun findById(id: Long): Task? {
     return dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getSelectByIdQuery(taskDatabaseProperties.tableName).trim())
+        connection.prepareStatement(
+          "SELECT * FROM trainingtask.task WHERE id = ?"
+        )
           .use { statement ->
             statement.setLong(1, id)
             statement.executeQuery()
               .use { resultSet ->
                 if (resultSet.next()) {
-                  projectRepository.findById(resultSet.getLong("project_id"))?.let { project ->
-                    employeeRepository.findById(resultSet.getLong("employee_id")
-                    )?.let { employee ->
-                      Task(
-                        id = resultSet.getLong("id"),
-                        name = resultSet.getString("name"),
-                        project = project,
-                        estimate = resultSet.getShort("estimate"),
-                        startDate = resultSet.getDate("start_date").toLocalDate(),
-                        endDate = resultSet.getDate("end_date").toLocalDate(),
-                        status = TaskStatus.valueOf(resultSet.getString("status")),
-                        employee = employee
-                      )
-                    }
-                  }
+                  Task(
+                    id = resultSet.getLong("id"),
+                    name = resultSet.getString("name"),
+                    projectId = resultSet.getLong("project_id"),
+                    estimate = resultSet.getShort("estimate"),
+                    startDate = resultSet.getDate("start_date").toLocalDate(),
+                    endDate = resultSet.getDate("end_date").toLocalDate(),
+                    status = TaskStatus.valueOf(resultSet.getString("status")),
+                    employeeId = resultSet.getLong("employee_id")
+                  )
                 } else {
                   null
                 }
               }
           }
-
       }
   }
 
-  override fun update(entity: Task): Boolean {
-    return dataSourceService.getConnection()
+  override fun update(task: Task): Task {
+    val result = dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(
-          getUpdateQuery(taskDatabaseProperties.tableName, taskDatabaseProperties.columns).trim()
+          "UPDATE trainingtask.task " +
+            "SET name = ?, project_id = ?, estimate = ?, start_date = ?, end_date = ?, status = ?, employee_id = ? " +
+            "WHERE id = ?"
         )
           .use { statement ->
-            entity.id?.let { statement.setLong(1, it) }
-            statement.setString(2, entity.name)
-            entity.project.id?.let { statement.setLong(3, it) }
-            statement.setShort(4, entity.estimate)
-            statement.setDate(5, Date.valueOf(entity.startDate))
-            statement.setDate(6, Date.valueOf(entity.endDate))
-            statement.setString(7, entity.status.name)
-            entity.employee.id?.let { statement.setLong(8, it) }
-            statement.executeUpdate() > 0
+            statement.setString(1, task.name)
+            statement.setLong(2, task.projectId)
+            statement.setShort(3, task.estimate)
+            statement.setDate(4, Date.valueOf(task.startDate))
+            statement.setDate(5, Date.valueOf(task.endDate))
+            statement.setString(6, task.status.name)
+            statement.setLong(7, task.employeeId)
+            task.id?.let { id -> statement.setLong(8, id) }
+            statement.executeUpdate()
           }
       }
+    require(result != 0) { "Task with id ${task.id} does not exist and cannot be updated" }
+    return task
   }
 
-  override fun deleteById(id: Long): Boolean {
-    return dataSourceService.getConnection()
+  override fun remove(id: Long) {
+    val result = dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getDeleteQuery(taskDatabaseProperties.tableName).trim())
+        connection.prepareStatement(
+          "DELETE FROM trainingtask.task WHERE id = ?"
+        )
           .use { statement ->
             statement.setLong(1, id)
-            statement.executeUpdate() > 0
+            statement.executeUpdate()
           }
       }
+    require(result != 0) { "Task with id $id does not exist and cannot be deleted" }
   }
 }

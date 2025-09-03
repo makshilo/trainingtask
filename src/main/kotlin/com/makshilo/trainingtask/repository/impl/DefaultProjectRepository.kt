@@ -1,28 +1,33 @@
 package com.makshilo.trainingtask.repository.impl
 
-import com.makshilo.trainingtask.config.properties.database.ProjectDatabaseProperties
 import com.makshilo.trainingtask.model.Project
-import com.makshilo.trainingtask.repository.AbstractEntityRepository
+import com.makshilo.trainingtask.repository.ProjectRepository
 import com.makshilo.trainingtask.service.database.DataSourceService
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 
 @Repository
 class DefaultProjectRepository(
   private val dataSourceService: DataSourceService,
-  private val projectDatabaseProperties: ProjectDatabaseProperties
-) : AbstractEntityRepository<Project>() {
+) : ProjectRepository {
 
-  override fun create(entity: Project): Boolean {
-    return dataSourceService.getConnection()
+  override fun add(project: Project): Project {
+    dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(
-          getInsertQuery(projectDatabaseProperties.tableName, projectDatabaseProperties.columns).trim()
+          "INSERT INTO trainingtask.project (name, description) VALUES (?, ?)",
+          PreparedStatement.RETURN_GENERATED_KEYS
         )
           .use { statement ->
-            statement.setLong(1, 0)
-            statement.setString(2, entity.name)
-            statement.setString(3, entity.description)
-            statement.executeUpdate() > 0
+            statement.setString(1, project.name)
+            statement.setString(2, project.description)
+            statement.executeUpdate()
+            val generatedKeys = statement.generatedKeys
+            return if (generatedKeys.next()) {
+              project.copy(id = generatedKeys.getLong(1))
+            } else {
+              project
+            }
           }
       }
   }
@@ -30,7 +35,7 @@ class DefaultProjectRepository(
   override fun findAll(): List<Project> {
     return dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getSelectQuery(projectDatabaseProperties.tableName).trim())
+        connection.prepareStatement("SELECT * FROM trainingtask.project")
           .use { statement ->
             statement.executeQuery()
               .use { resultSet ->
@@ -39,11 +44,10 @@ class DefaultProjectRepository(
                   projects.add(
                     Project(
                       id = resultSet.getLong("id"),
-                      name = resultSet.getString("project_name"),
+                      name = resultSet.getString("name"),
                       description = resultSet.getString("description")
                     )
                   )
-
                 }
                 projects
               }
@@ -54,7 +58,7 @@ class DefaultProjectRepository(
   override fun findById(id: Long): Project? {
     return dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getSelectByIdQuery(projectDatabaseProperties.tableName).trim())
+        connection.prepareStatement("SELECT * FROM trainingtask.project WHERE id = ?")
           .use { statement ->
             statement.setLong(1, id)
             statement.executeQuery()
@@ -62,7 +66,7 @@ class DefaultProjectRepository(
                 if (resultSet.next()) {
                   Project(
                     id = resultSet.getLong("id"),
-                    name = resultSet.getString("project_name"),
+                    name = resultSet.getString("name"),
                     description = resultSet.getString("description")
                   )
                 } else {
@@ -74,29 +78,34 @@ class DefaultProjectRepository(
       }
   }
 
-  override fun update(entity: Project): Boolean {
-    return dataSourceService.getConnection()
+  override fun update(project: Project): Project {
+    val result = dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(
-          getUpdateQuery(projectDatabaseProperties.tableName, projectDatabaseProperties.columns).trim()
+          "UPDATE trainingtask.project SET name = ?, description = ? WHERE id = ?"
         )
           .use { statement ->
-            entity.id?.let { statement.setLong(1, it) }
-            statement.setString(2, entity.name)
-            statement.setString(3, entity.description)
-            statement.executeUpdate() > 0
+            statement.setString(1, project.name)
+            statement.setString(2, project.description)
+            project.id?.let { id -> statement.setLong(3, id) }
+            statement.executeUpdate()
           }
       }
+    require(result != 0) { "Project with id ${project.id} does not exist and cannot be updated" }
+    return project
   }
 
-  override fun deleteById(id: Long): Boolean {
-    return dataSourceService.getConnection()
+  override fun remove(id: Long) {
+    val result = dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getDeleteQuery(projectDatabaseProperties.tableName).trim())
+        connection.prepareStatement(
+          "DELETE FROM trainingtask.project WHERE id = ?"
+        )
           .use { statement ->
             statement.setLong(1, id)
-            statement.executeUpdate() > 0
+            statement.executeUpdate()
           }
       }
+    require(result != 0) { "Project with id $id does not exist and cannot be deleted" }
   }
 }

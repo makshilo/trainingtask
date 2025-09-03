@@ -1,30 +1,35 @@
 package com.makshilo.trainingtask.repository.impl
 
-import com.makshilo.trainingtask.config.properties.database.EmployeeDatabaseProperties
 import com.makshilo.trainingtask.model.Employee
-import com.makshilo.trainingtask.repository.AbstractEntityRepository
+import com.makshilo.trainingtask.repository.EmployeeRepository
 import com.makshilo.trainingtask.service.database.DataSourceService
 import org.springframework.stereotype.Repository
+import java.sql.PreparedStatement
 
 @Repository
 class DefaultEmployeeRepository(
   private val dataSourceService: DataSourceService,
-  private val employeeDatabaseProperties: EmployeeDatabaseProperties
-): AbstractEntityRepository<Employee>() {
+): EmployeeRepository {
 
-  override fun create(entity: Employee): Boolean {
-    return dataSourceService.getConnection()
+  override fun add(employee: Employee): Employee {
+    dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(
-          getInsertQuery(employeeDatabaseProperties.tableName, employeeDatabaseProperties.columns).trim()
+          "INSERT INTO trainingtask.employee (surname, name, patronymic, position) VALUES (?, ?, ?, ?)",
+          PreparedStatement.RETURN_GENERATED_KEYS
         )
           .use { statement ->
-            statement.setLong(1, 0)
-            statement.setString(2, entity.surname)
-            statement.setString(3, entity.name)
-            statement.setString(4, entity.patronymic)
-            statement.setString(5, entity.position)
-            statement.executeUpdate() > 0
+            statement.setString(1, employee.surname)
+            statement.setString(2, employee.name)
+            statement.setString(3, employee.patronymic)
+            statement.setString(4, employee.position)
+            statement.executeUpdate()
+            val generatedKeys = statement.generatedKeys
+            return if (generatedKeys.next()) {
+              employee.copy(id = generatedKeys.getLong(1))
+            } else {
+              employee
+            }
           }
       }
   }
@@ -32,7 +37,7 @@ class DefaultEmployeeRepository(
   override fun findAll(): List<Employee> {
     return dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getSelectQuery(employeeDatabaseProperties.tableName).trim())
+        connection.prepareStatement("SELECT * FROM trainingtask.employee")
           .use { statement ->
             statement.executeQuery()
               .use { resultSet ->
@@ -47,7 +52,6 @@ class DefaultEmployeeRepository(
                       position = resultSet.getString("position")
                     )
                   )
-
                 }
                 employees
               }
@@ -58,7 +62,7 @@ class DefaultEmployeeRepository(
   override fun findById(id: Long): Employee? {
     return dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getSelectByIdQuery(employeeDatabaseProperties.tableName).trim())
+        connection.prepareStatement("SELECT * FROM trainingtask.employee WHERE id = ?")
           .use { statement ->
             statement.setLong(1, id)
             statement.executeQuery()
@@ -80,31 +84,34 @@ class DefaultEmployeeRepository(
       }
   }
 
-  override fun update(entity: Employee): Boolean {
-    return dataSourceService.getConnection()
+  override fun update(employee: Employee): Employee {
+    val result = dataSourceService.getConnection()
       .use { connection ->
         connection.prepareStatement(
-          getUpdateQuery(employeeDatabaseProperties.tableName, employeeDatabaseProperties.columns).trim()
+          "UPDATE trainingtask.employee SET surname = ?, name = ?, patronymic = ?, position = ? WHERE id = ?",
         )
           .use { statement ->
-            entity.id?.let { statement.setLong(1, it) }
-            statement.setString(2, entity.surname)
-            statement.setString(3, entity.name)
-            statement.setString(4, entity.patronymic)
-            statement.setString(5, entity.position)
-            statement.executeUpdate() > 0
+            statement.setString(1, employee.surname)
+            statement.setString(2, employee.name)
+            statement.setString(3, employee.patronymic)
+            statement.setString(4, employee.position)
+            employee.id?.let { id -> statement.setLong(5, id) }
+            statement.executeUpdate()
           }
       }
+    require(result != 0) { "Employee with id ${employee.id} does not exist and cannot be updated" }
+    return employee
   }
 
-  override fun deleteById(id: Long): Boolean {
-    return dataSourceService.getConnection()
+  override fun remove(id: Long) {
+    val result = dataSourceService.getConnection()
       .use { connection ->
-        connection.prepareStatement(getDeleteQuery(employeeDatabaseProperties.tableName).trim())
+        connection.prepareStatement("DELETE FROM trainingtask.employee WHERE id = ?")
           .use { statement ->
             statement.setLong(1, id)
-            statement.executeUpdate() > 0
+            statement.executeUpdate()
           }
       }
+    require(result != 0) { "Employee with id $id does not exist and cannot be deleted" }
   }
 }

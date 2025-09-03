@@ -32,14 +32,14 @@ class TaskController(
   }
 
   @PostMapping
-  fun createTask(@RequestBody employee: Task): ResponseEntity<Boolean> =
-    ResponseEntity.ok(taskService.create(employee))
+  fun createTask(@RequestBody employee: Task): ResponseEntity<Task> =
+    ResponseEntity.ok(taskService.add(employee))
 
   @PutMapping
-  fun updateTask(@RequestBody employee: Task): ResponseEntity<Boolean> =
+  fun updateTask(@RequestBody employee: Task): ResponseEntity<Task> =
     ResponseEntity.ok(taskService.update(employee))
 
   @DeleteMapping("/{id}")
-  fun deleteTask(@PathVariable id: String): ResponseEntity<Boolean> =
-    ResponseEntity.ok(taskService.deleteById(id.toLong()))
+  fun deleteTask(@PathVariable id: String): ResponseEntity<Unit> =
+    ResponseEntity.ok(taskService.remove(id.toLong()))
 }

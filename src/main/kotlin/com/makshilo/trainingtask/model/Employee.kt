@@ -6,4 +6,4 @@ data class Employee(
     val name: String,
     val patronymic: String,
     val position: String
-): Entity
+)

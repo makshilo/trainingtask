@@ -1,16 +1,11 @@
-package com.makshilo.trainingtask.service
+package com.makshilo.trainingtask.repository
 
 import com.makshilo.trainingtask.model.Project
 
-interface ProjectRepositoryService {
-
+interface ProjectRepository {
   fun add(project: Project): Project
-
-  fun findAll(): List<Project>
-
-  fun findById(id: Long): Project?
-
   fun update(project: Project): Project
-
   fun remove(id: Long)
+  fun findById(id: Long): Project?
+  fun findAll(): List<Project>
 }

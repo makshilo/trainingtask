@@ -4,13 +4,13 @@ import com.makshilo.trainingtask.model.Task
 
 interface TaskRepositoryService {
 
-  fun create(task: Task): Boolean
+  fun add(task: Task): Task
 
   fun findAll(): List<Task>
 
   fun findById(id: Long): Task?
 
-  fun update(task: Task): Boolean
+  fun update(task: Task): Task
 
-  fun deleteById(id: Long): Boolean
+  fun remove(id: Long)
 }

@@ -31,14 +31,14 @@ class ProjectController(
   }
 
   @PostMapping
-  fun createProject(@RequestBody project: Project): ResponseEntity<Boolean> =
-    ResponseEntity.ok(projectService.create(project))
+  fun createProject(@RequestBody project: Project): ResponseEntity<Project> =
+    ResponseEntity.ok(projectService.add(project))
 
   @PutMapping
-  fun updateProject(@RequestBody project: Project): ResponseEntity<Boolean> =
+  fun updateProject(@RequestBody project: Project): ResponseEntity<Project> =
     ResponseEntity.ok(projectService.update(project))
 
   @DeleteMapping("/{id}")
-  fun deleteProject(@PathVariable id: String): ResponseEntity<Boolean> =
-    ResponseEntity.ok(projectService.deleteById(id.toLong()))
+  fun deleteProject(@PathVariable id: String): ResponseEntity<Unit> =
+    ResponseEntity.ok(projectService.remove(id.toLong()))
 }

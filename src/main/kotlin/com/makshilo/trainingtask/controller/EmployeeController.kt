@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 class EmployeeController(
   private val employeeService: EmployeeRepositoryService
 ) {
@@ -32,15 +32,15 @@ class EmployeeController(
   }
 
   @PostMapping
-  fun createEmployee(@RequestBody employee: Employee): ResponseEntity<Boolean> =
-    ResponseEntity.ok(employeeService.create(employee))
+  fun createEmployee(@RequestBody employee: Employee): ResponseEntity<Employee> =
+    ResponseEntity.ok(employeeService.add(employee))
 
   @PutMapping
-  fun updateEmployee(@RequestBody employee: Employee): ResponseEntity<Boolean> =
+  fun updateEmployee(@RequestBody employee: Employee): ResponseEntity<Employee> =
     ResponseEntity.ok(employeeService.update(employee))
 
   @DeleteMapping("/{id}")
-  fun deleteEmployee(@PathVariable id: String): ResponseEntity<Boolean> =
-    ResponseEntity.ok(employeeService.deleteById(id.toLong()))
+  fun deleteEmployee(@PathVariable id: String): ResponseEntity<Unit> =
+    ResponseEntity.ok(employeeService.remove(id.toLong()))
 }
 

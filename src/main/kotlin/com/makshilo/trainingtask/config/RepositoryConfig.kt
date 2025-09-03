@@ -1,12 +1,8 @@
 package com.makshilo.trainingtask.config
 
-import com.makshilo.trainingtask.config.properties.database.EmployeeDatabaseProperties
-import com.makshilo.trainingtask.config.properties.database.ProjectDatabaseProperties
-import com.makshilo.trainingtask.config.properties.database.TaskDatabaseProperties
-import com.makshilo.trainingtask.model.Employee
-import com.makshilo.trainingtask.model.Project
-import com.makshilo.trainingtask.model.Task
-import com.makshilo.trainingtask.repository.AbstractEntityRepository
+import com.makshilo.trainingtask.repository.EmployeeRepository
+import com.makshilo.trainingtask.repository.ProjectRepository
+import com.makshilo.trainingtask.repository.TaskRepository
 import com.makshilo.trainingtask.repository.impl.DefaultEmployeeRepository
 import com.makshilo.trainingtask.repository.impl.DefaultProjectRepository
 import com.makshilo.trainingtask.repository.impl.DefaultTaskRepository
@@ -19,23 +15,26 @@ import javax.sql.DataSource
 @Configuration
 class RepositoryConfig(
   @Autowired val dataSource: DataSource,
-  @Autowired val projectDatabaseProperties: ProjectDatabaseProperties,
-  @Autowired val employeeDatabaseProperties: EmployeeDatabaseProperties,
-  @Autowired val taskDatabaseProperties: TaskDatabaseProperties
 ) {
 
   @Bean
   fun dataSourceService() = DataSourceService(dataSource)
 
   @Bean
-  fun projectRepository(): AbstractEntityRepository<Project> =
-    DefaultProjectRepository(dataSourceService(), projectDatabaseProperties)
+  fun projectRepository(): ProjectRepository =
+    DefaultProjectRepository(
+      dataSourceService()
+    )
 
   @Bean
-  fun employeeRepository(): AbstractEntityRepository<Employee> =
-    DefaultEmployeeRepository(dataSourceService(), employeeDatabaseProperties)
+  fun employeeRepository(): EmployeeRepository =
+    DefaultEmployeeRepository(
+      dataSourceService()
+    )
 
   @Bean
-  fun taskRepository(): AbstractEntityRepository<Task> =
-    DefaultTaskRepository(dataSourceService(), taskDatabaseProperties, projectRepository(), employeeRepository())
+  fun taskRepository(): TaskRepository =
+    DefaultTaskRepository(
+      dataSourceService()
+    )
 }
