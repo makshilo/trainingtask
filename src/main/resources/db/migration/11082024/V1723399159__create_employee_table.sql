@@ -1,4 +1,4 @@
-CREATE TABLE trainingtask.employees
+CREATE TABLE trainingtask.employee
 (
     id         BIGSERIAL PRIMARY KEY,
     surname    VARCHAR(200),
